@@ -5,487 +5,354 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 12 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 11 May 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>/post/</link>
     </image>
     
     <item>
-      <title>Writing technical content in Academic</title>
-      <link>/post/writing-technical-content/</link>
-      <pubDate>Fri, 12 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>/post/writing-technical-content/</guid>
-      <description>&lt;p&gt;Academic is designed to give technical content creators a seamless experience. You can focus on the content and Academic handles the rest.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Highlight your code snippets, take notes on math classes, and draw diagrams from textual representation.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;On this page, you&amp;rsquo;ll find some examples of the types of technical content that can be rendered with Academic.&lt;/p&gt;
-&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
-&lt;h3 id=&#34;code&#34;&gt;Code&lt;/h3&gt;
-&lt;p&gt;Academic supports a Markdown extension for highlighting code syntax. You can enable this feature by toggling the &lt;code&gt;highlight&lt;/code&gt; option in your &lt;code&gt;config/_default/params.toml&lt;/code&gt; file.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;```python
-import pandas as pd
-data = pd.read_csv(&amp;quot;data.csv&amp;quot;)
-data.head()
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import pandas as pd
-data = pd.read_csv(&amp;quot;data.csv&amp;quot;)
-data.head()
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;math&#34;&gt;Math&lt;/h3&gt;
-&lt;p&gt;Academic supports a Markdown extension for $\LaTeX$ math. You can enable this feature by toggling the &lt;code&gt;math&lt;/code&gt; option in your &lt;code&gt;config/_default/params.toml&lt;/code&gt; file.&lt;/p&gt;
-&lt;p&gt;To render &lt;em&gt;inline&lt;/em&gt; or &lt;em&gt;block&lt;/em&gt; math, wrap your LaTeX math with &lt;code&gt;$...$&lt;/code&gt; or &lt;code&gt;$$...$$&lt;/code&gt;, respectively.&lt;/p&gt;
-&lt;p&gt;Example &lt;strong&gt;math block&lt;/strong&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-tex&#34;&gt;$$\gamma_{n} = \frac{ 
-\left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T 
-\left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}
-{\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2}$$
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;p&gt;$$\gamma_{n} = \frac{ \left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T \left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}{\left |\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right |^2}$$&lt;/p&gt;
-&lt;p&gt;Example &lt;strong&gt;inline math&lt;/strong&gt; &lt;code&gt;$\nabla F(\mathbf{x}_{n})$&lt;/code&gt; renders as $\nabla F(\mathbf{x}_{n})$.&lt;/p&gt;
-&lt;p&gt;Example &lt;strong&gt;multi-line math&lt;/strong&gt; using the &lt;code&gt;\\\\&lt;/code&gt; math linebreak:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-tex&#34;&gt;$$f(k;p_0^*) = \begin{cases} p_0^* &amp;amp; \text{if }k=1, \\\\
-1-p_0^* &amp;amp; \text {if }k=0.\end{cases}$$
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;p&gt;$$f(k;p_0^*) = \begin{cases} p_0^* &amp;amp; \text{if }k=1, \\&lt;br&gt;
-1-p_0^* &amp;amp; \text {if }k=0.\end{cases}$$&lt;/p&gt;
-&lt;h3 id=&#34;diagrams&#34;&gt;Diagrams&lt;/h3&gt;
-&lt;p&gt;Academic supports a Markdown extension for diagrams. You can enable this feature by toggling the &lt;code&gt;diagram&lt;/code&gt; option in your &lt;code&gt;config/_default/params.toml&lt;/code&gt; file or by adding &lt;code&gt;diagram: true&lt;/code&gt; to your page front matter.&lt;/p&gt;
-&lt;p&gt;An example &lt;strong&gt;flowchart&lt;/strong&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;```mermaid
-graph TD
-A[Hard] --&amp;gt;|Text| B(Round)
-B --&amp;gt; C{Decision}
-C --&amp;gt;|One| D[Result 1]
-C --&amp;gt;|Two| E[Result 2]
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;graph TD
-A[Hard] --&amp;gt;|Text| B(Round)
-B --&amp;gt; C{Decision}
-C --&amp;gt;|One| D[Result 1]
-C --&amp;gt;|Two| E[Result 2]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;An example &lt;strong&gt;sequence diagram&lt;/strong&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;```mermaid
-sequenceDiagram
-Alice-&amp;gt;&amp;gt;John: Hello John, how are you?
-loop Healthcheck
-    John-&amp;gt;&amp;gt;John: Fight against hypochondria
-end
-Note right of John: Rational thoughts!
-John--&amp;gt;&amp;gt;Alice: Great!
-John-&amp;gt;&amp;gt;Bob: How about you?
-Bob--&amp;gt;&amp;gt;John: Jolly good!
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;sequenceDiagram
-Alice-&amp;gt;&amp;gt;John: Hello John, how are you?
-loop Healthcheck
-    John-&amp;gt;&amp;gt;John: Fight against hypochondria
-end
-Note right of John: Rational thoughts!
-John--&amp;gt;&amp;gt;Alice: Great!
-John-&amp;gt;&amp;gt;Bob: How about you?
-Bob--&amp;gt;&amp;gt;John: Jolly good!
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;An example &lt;strong&gt;Gantt diagram&lt;/strong&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;```mermaid
-gantt
-section Section
-Completed :done,    des1, 2014-01-06,2014-01-08
-Active        :active,  des2, 2014-01-07, 3d
-Parallel 1   :         des3, after des1, 1d
-Parallel 2   :         des4, after des1, 1d
-Parallel 3   :         des5, after des3, 1d
-Parallel 4   :         des6, after des4, 1d
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;gantt
-section Section
-Completed :done,    des1, 2014-01-06,2014-01-08
-Active        :active,  des2, 2014-01-07, 3d
-Parallel 1   :         des3, after des1, 1d
-Parallel 2   :         des4, after des1, 1d
-Parallel 3   :         des5, after des3, 1d
-Parallel 4   :         des6, after des4, 1d
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;An example &lt;strong&gt;class diagram&lt;/strong&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;```mermaid
-classDiagram
-Class01 &amp;lt;|-- AveryLongClass : Cool
-&amp;lt;&amp;lt;interface&amp;gt;&amp;gt; Class01
-Class09 --&amp;gt; C2 : Where am i?
-Class09 --* C3
-Class09 --|&amp;gt; Class07
-Class07 : equals()
-Class07 : Object[] elementData
-Class01 : size()
-Class01 : int chimp
-Class01 : int gorilla
-class Class10 {
-  &amp;lt;&amp;lt;service&amp;gt;&amp;gt;
-  int id
-  size()
-}
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;classDiagram
-Class01 &amp;lt;|-- AveryLongClass : Cool
-&amp;lt;&amp;lt;interface&amp;gt;&amp;gt; Class01
-Class09 --&amp;gt; C2 : Where am i?
-Class09 --* C3
-Class09 --|&amp;gt; Class07
-Class07 : equals()
-Class07 : Object[] elementData
-Class01 : size()
-Class01 : int chimp
-Class01 : int gorilla
-class Class10 {
-  &amp;lt;&amp;lt;service&amp;gt;&amp;gt;
-  int id
-  size()
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;An example &lt;strong&gt;state diagram&lt;/strong&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;```mermaid
-stateDiagram
-[*] --&amp;gt; Still
-Still --&amp;gt; [*]
-Still --&amp;gt; Moving
-Moving --&amp;gt; Still
-Moving --&amp;gt; Crash
-Crash --&amp;gt; [*]
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;stateDiagram
-[*] --&amp;gt; Still
-Still --&amp;gt; [*]
-Still --&amp;gt; Moving
-Moving --&amp;gt; Still
-Moving --&amp;gt; Crash
-Crash --&amp;gt; [*]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;todo-lists&#34;&gt;Todo lists&lt;/h3&gt;
-&lt;p&gt;You can even write your todo lists in Academic too:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;- [x] Write math example
-- [x] Write diagram example
-- [ ] Do something else
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Write math example&lt;/li&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Write diagram example&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Do something else&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;tables&#34;&gt;Tables&lt;/h3&gt;
-&lt;p&gt;Represent your data in tables:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;First Header&lt;/th&gt;
-&lt;th&gt;Second Header&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Content Cell&lt;/td&gt;
-&lt;td&gt;Content Cell&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Content Cell&lt;/td&gt;
-&lt;td&gt;Content Cell&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3 id=&#34;asides&#34;&gt;Asides&lt;/h3&gt;
-&lt;p&gt;Academic supports a 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/#alerts&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;shortcode for asides&lt;/a&gt;, also referred to as &lt;em&gt;notices&lt;/em&gt;, &lt;em&gt;hints&lt;/em&gt;, or &lt;em&gt;alerts&lt;/em&gt;. By wrapping a paragraph in &lt;code&gt;{{% alert note %}} ... {{% /alert %}}&lt;/code&gt;, it will render as an aside.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{% alert note %}}
-A Markdown aside is useful for displaying notices, hints, or definitions to your readers.
-{{% /alert %}}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    A Markdown aside is useful for displaying notices, hints, or definitions to your readers.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;h3 id=&#34;icons&#34;&gt;Icons&lt;/h3&gt;
-&lt;p&gt;Academic enables you to use a wide range of 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/page-builder/#icons&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;icons from &lt;em&gt;Font Awesome&lt;/em&gt; and &lt;em&gt;Academicons&lt;/em&gt;&lt;/a&gt; in addition to 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/#emojis&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;emojis&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Here are some examples using the &lt;code&gt;icon&lt;/code&gt; shortcode to render icons:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{&amp;lt; icon name=&amp;quot;terminal&amp;quot; pack=&amp;quot;fas&amp;quot; &amp;gt;}} Terminal  
-{{&amp;lt; icon name=&amp;quot;python&amp;quot; pack=&amp;quot;fab&amp;quot; &amp;gt;}} Python  
-{{&amp;lt; icon name=&amp;quot;r-project&amp;quot; pack=&amp;quot;fab&amp;quot; &amp;gt;}} R
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;renders as&lt;/p&gt;
-&lt;p&gt;
-  &lt;i class=&#34;fas fa-terminal  pr-1 fa-fw&#34;&gt;&lt;/i&gt; Terminal&lt;br&gt;
-
-  &lt;i class=&#34;fab fa-python  pr-1 fa-fw&#34;&gt;&lt;/i&gt; Python&lt;br&gt;
-
-  &lt;i class=&#34;fab fa-r-project  pr-1 fa-fw&#34;&gt;&lt;/i&gt; R&lt;/p&gt;
-&lt;h3 id=&#34;did-you-find-this-page-helpful-consider-sharing-it-&#34;&gt;Did you find this page helpful? Consider sharing it 🙌&lt;/h3&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Display Jupyter Notebooks with Academic</title>
-      <link>/post/jupyter/</link>
-      <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
-      <guid>/post/jupyter/</guid>
-      <description>&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from IPython.core.display import Image
-Image(&#39;https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;./index_1_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(&amp;quot;Welcome to Academic!&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Welcome to Academic!
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;install-python-and-jupyterlab&#34;&gt;Install Python and JupyterLab&lt;/h2&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://www.anaconda.com/distribution/#download-section&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Install Anaconda&lt;/a&gt; which includes Python 3 and JupyterLab.&lt;/p&gt;
-&lt;p&gt;Alternatively, install JupyterLab with &lt;code&gt;pip3 install jupyterlab&lt;/code&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;create-or-upload-a-jupyter-notebook&#34;&gt;Create or upload a Jupyter notebook&lt;/h2&gt;
-&lt;p&gt;Run the following commands in your Terminal, substituting &lt;code&gt;&amp;lt;MY-WEBSITE-FOLDER&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;SHORT-POST-TITLE&amp;gt;&lt;/code&gt; with the file path to your Academic website folder and a short title for your blog post (use hyphens instead of spaces), respectively:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir -p &amp;lt;MY-WEBSITE-FOLDER&amp;gt;/content/post/&amp;lt;SHORT-POST-TITLE&amp;gt;/
-cd &amp;lt;MY-WEBSITE-FOLDER&amp;gt;/content/post/&amp;lt;SHORT-POST-TITLE&amp;gt;/
-jupyter lab index.ipynb
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The &lt;code&gt;jupyter&lt;/code&gt; command above will launch the JupyterLab editor, allowing us to add Academic metadata and write the content.&lt;/p&gt;
-&lt;h2 id=&#34;edit-your-post-metadata&#34;&gt;Edit your post metadata&lt;/h2&gt;
-&lt;p&gt;The first cell of your Jupter notebook will contain your post metadata (
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/front-matter/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;front matter&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;In Jupter, choose &lt;em&gt;Markdown&lt;/em&gt; as the type of the first cell and wrap your Academic metadata in three dashes, indicating that it is YAML front matter:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;---
-title: My post&#39;s title
-date: 2019-09-01
-
-# Put any other Academic metadata here...
----
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Edit the metadata of your post, using the 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/managing-content&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;documentation&lt;/a&gt; as a guide to the available options.&lt;/p&gt;
-&lt;p&gt;To set a 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/managing-content/#featured-image&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;featured image&lt;/a&gt;, place an image named &lt;code&gt;featured&lt;/code&gt; into your post&amp;rsquo;s folder.&lt;/p&gt;
-&lt;p&gt;For other tips, such as using math, see the guide on 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;writing content with Academic&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;convert-notebook-to-markdown&#34;&gt;Convert notebook to Markdown&lt;/h2&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;jupyter nbconvert index.ipynb --to markdown --NbConvertApp.output_files_dir=.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
-&lt;p&gt;This post was created with Jupyter. The orginal files can be found at &lt;a href=&#34;https://github.com/gcushen/hugo-academic/tree/master/exampleSite/content/post/jupyter&#34;&gt;https://github.com/gcushen/hugo-academic/tree/master/exampleSite/content/post/jupyter&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Academic: the website builder for Hugo</title>
-      <link>/post/getting-started/</link>
-      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/post/getting-started/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;Create a free website with Academic using Markdown, Jupyter, or RStudio. Choose a beautiful color theme and build anything with the Page Builder - over 40 &lt;em&gt;widgets&lt;/em&gt;, &lt;em&gt;themes&lt;/em&gt;, and &lt;em&gt;language packs&lt;/em&gt; included!&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://academic-demo.netlify.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Check out the latest &lt;strong&gt;demo&lt;/strong&gt;&lt;/a&gt; of what you&amp;rsquo;ll get in less than 10 minutes, or 
-&lt;a href=&#34;https://sourcethemes.com/academic/#expo&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;view the &lt;strong&gt;showcase&lt;/strong&gt;&lt;/a&gt; of personal, project, and business sites.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;👉 
-&lt;a href=&#34;#install&#34;&gt;&lt;strong&gt;Get Started&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;📚 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;View the &lt;strong&gt;documentation&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;💬 
-&lt;a href=&#34;https://discourse.gohugo.io&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;Ask a question&lt;/strong&gt; on the forum&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;👥 
-&lt;a href=&#34;https://spectrum.chat/academic&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Chat with the &lt;strong&gt;community&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;🐦 Twitter: 
-&lt;a href=&#34;https://twitter.com/source_themes&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@source_themes&lt;/a&gt; 
-&lt;a href=&#34;https://twitter.com/GeorgeCushen&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@GeorgeCushen&lt;/a&gt; 
-&lt;a href=&#34;https://twitter.com/search?q=%23MadeWithAcademic&amp;amp;src=typd&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;#MadeWithAcademic&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;💡 
-&lt;a href=&#34;https://github.com/gcushen/hugo-academic/issues&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Request a &lt;strong&gt;feature&lt;/strong&gt; or report a &lt;strong&gt;bug&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;⬆️ &lt;strong&gt;Updating?&lt;/strong&gt; View the 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/update/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Update Guide&lt;/a&gt; and 
-&lt;a href=&#34;https://sourcethemes.com/academic/updates/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Release Notes&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;❤️ &lt;strong&gt;Support development&lt;/strong&gt; of Academic:
-&lt;ul&gt;
-&lt;li&gt;☕️ 
-&lt;a href=&#34;https://paypal.me/cushen&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;Donate a coffee&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;💵 
-&lt;a href=&#34;https://www.patreon.com/cushen&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Become a backer on &lt;strong&gt;Patreon&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;🖼️ 
-&lt;a href=&#34;https://www.redbubble.com/people/neutreno/works/34387919-academic&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Decorate your laptop or journal with an Academic &lt;strong&gt;sticker&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;👕 
-&lt;a href=&#34;https://academic.threadless.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wear the &lt;strong&gt;T-shirt&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;👩‍💻 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/contribute/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;Contribute&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+      <title>All About the Population Pyramid!</title>
+      <link>/post/population-pyramid/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
+      <guid>/post/population-pyramid/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;CS530_ARoten_GraphBrief1_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A Population Pyramid, also known as an Age and Sex Pyramid is a
+histogram-like visualization often used to provide a succinct, elegant
+summary of differences in distribution of groups within a population.
+The population is broken up by a two-level factor variable, with one on
+each side of the visualization, and then the data is binned based on a
+continuous variable. Although population pyramids typically use a factor
+variable of sex (male and female), and a continuous variable of age, and
+are often used to convey such information as a country’s fertility rate,
+the visualization can be generalized to other situations, in which it
+may be referred to as simply a “dual-sided histogram”. The type of
+visualization is a handy way to enhance a typical histogram by splitting
+it into two factor variables in order to facilitate comparison across
+groups within a population, while still being able to make observations
+about the population as a whole.&lt;/p&gt;
+&lt;h2 id=&#34;how-to-read-a-population-pyramid-visualization&#34;&gt;How to Read a Population Pyramid Visualization&lt;/h2&gt;
+&lt;p&gt;There are several useful takeaways that can be gleaned quickly and
+easily using a population pyramid:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;How the overall distribution changes on the basis of &lt;em&gt;age&lt;/em&gt;&lt;/strong&gt;: To
+get a sense of the age distribution for the overall population, one
+can simply examine the shape of the plot/pyramid, focusing on how
+&lt;em&gt;width changes from top to bottom&lt;/em&gt;. The wider the plot at any
+particular height, the more individuals in the age group
+corresponding to that position on the y-axis contribute to the
+overall population. So, if the “base”/bottom is wide compared to the
+rest of the plot, giving it a “pyramid”-like shape, the population
+is comprised of mostly younger individuals. However, if the overall
+“pyramid” is more rectangular, the age distribution is balanced. An
+upside-down pyramid would indicate a generally older population, and
+a “bulge” could indicate something like a baby boom around that
+particular age bracket’s birth years.&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ul&gt;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure id=&#34;figure-academic-is-mobile-first-with-a-responsive-design-to-ensure-that-your-site-looks-stunning-on-every-device&#34;&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://raw.githubusercontent.com/gcushen/hugo-academic/master/academic.png&#34; data-caption=&#34;Academic is mobile first with a responsive design to ensure that your site looks stunning on every device.&#34;&gt;
-
-
-  &lt;img src=&#34;https://raw.githubusercontent.com/gcushen/hugo-academic/master/academic.png&#34; alt=&#34;&#34;  &gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;How the overall distribution differs based on &lt;em&gt;sex&lt;/em&gt;&lt;/strong&gt;: This is a
+fairly simple piece of information to glean from this type of plot –
+if the pyramid is &lt;em&gt;heavier on one side than the other&lt;/em&gt;, then the
+population is skewed more heavily toward one particular sex than the
+other.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;How the &lt;em&gt;sex&lt;/em&gt; distribution changes as a &lt;em&gt;function of age&lt;/em&gt;&lt;/strong&gt;: We
+also can take into account both of the variables above and determine
+whether the sex distribution differs based on the age of that
+segment of the population. It’s difficult to think of an example
+that is not tragic, but, say, a plot of the demographics of the U.S.
+shortly after World War II may have more females than males in the
+age bracket 18-25 years old, but would likely be balanced in age
+brackets younger and older. In this case, the pyramid would be
+&lt;em&gt;vertically asymmetric&lt;/em&gt;, with a &lt;em&gt;“notch”&lt;/em&gt; on the male side at that
+age bracket. Examining the plot for these &lt;em&gt;notches&lt;/em&gt; is a quick,
+simple way to determine whether the sex distribution differs for a
+particular age group.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Finally, in traditional population pyramids which depict age/sex
+distribution in a particular region, there are three shapes so commonly
+seen that they are given specific labels: expanding, contracting, and
+stationary, as shown below (graphic, as well as paraphrased information
+on each shape from a paper by Daniel Staetsky, full citation can be
+found in final section):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;pyramid_types.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A very triangular shape, with many more young representatives than
+older, as in the &lt;strong&gt;expanding&lt;/strong&gt; pyramid, is indicative of a population
+that is growing, along with high fertility/mortality rates. The
+&lt;strong&gt;contracting&lt;/strong&gt; shape, where the pyramid is pinched at the base is
+indicative of low fertility/mortality rates, corresponding to a
+population with few young people, relative to the rest of the group.
+Finally, the &lt;strong&gt;stationary&lt;/strong&gt; pyramid, which has a columnal shape, tends
+to correspond to stable populations, with balanced, low fertility and
+mortality rates.&lt;/p&gt;
+&lt;p&gt;Disclosure: Given the wide spectrum of gender identities present in
+modern society, I can absolutely understand how some may object to the
+binary nature of the population pyramid. Although I, and most who employ
+this type of visualization, specify the binary factor as biological
+“sex”, not gender, issues still remain. After a quick search, it doesn’t
+look like many have addressed this issue currently, but I would not be
+surprised to see multi-way analyses in the future (population stars??)!&lt;/p&gt;
+&lt;h2 id=&#34;data&#34;&gt;Data&lt;/h2&gt;
+&lt;p&gt;The data used to generate the examples at the top of this page comes
+from the United States Consumer Product Safety Commission’s National
+Electronic Injury Surveillance System dataset, which can be found at the
+following link:
+&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34;&gt;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&lt;/a&gt;&lt;/a&gt;
+. This dataset is quite rich, containing data gathered from a large
+number of emergency departments in the US. The overall dataset contains
+demographic information, including sex, age, and ethnicity, as well as a
+number of other interesting pieces of information including whether a
+particular product was involved in the injury (as in the left plot
+above, which includes all ER visits in the dataset from 2019 which
+involved a trampoline), and whether drugs or alcohol were involved in
+the injury. The dataset also includes for each datapoint/injury, a brief
+narrative outlining the loose details of the incident. The website
+contains a neat query system where the user can narrow down the dataset
+by filtering for year, product involved, and other data characteristics.&lt;/p&gt;
+&lt;h2 id=&#34;figure-specific-details&#34;&gt;Figure-Specific Details&lt;/h2&gt;
+&lt;p&gt;I opted to use a population pyramid for a slighly atypical analysis in
+the , that is, to examine the demographics of patients who visited a
+number of U.S. emergency rooms in 2019, using the dataset described
+above. I chose to narrow the dataset to two types of emergency room
+incidents, to depict two very different-looking population pyramids: the
+left plot shows the distribution of patients who visited the ER due to
+trampoline-related accidents, and the right plot shows the same of
+patients who visited the ER due to incidents involving the use of
+alcohol.&lt;/p&gt;
+&lt;p&gt;I’ll use the general framework for interpreting a population pyramid
+described above to discuss the information I gleaned from these plots,
+first analyzing the plot on the left, then the plot on the right.&lt;/p&gt;
+&lt;h3 id=&#34;trampoline-based-injuries&#34;&gt;Trampoline-Based Injuries&lt;/h3&gt;
+&lt;p&gt;As stated, this plot shows a breakdown of the age and sex
+characteristics of the group of individuals who visited the emergency
+room due to trampoline accidents in 2019. Prior to generating the plot,
+I hypothesized that the shape would be heavy at the base, and thinner on
+the top, as children are typical trampoline users, and I recall from my
+daredevil youth that I much preferred playing on a trampoline without a
+protective net. Though as an adult, I still struggle to ignore the siren
+song of the trampoline, I tend to be more careful than when I was a
+child. Stereotypes might lead some to believe that male children are
+more prone to taking trampoline-related risks, but I knew many a
+reckless young female when I was growing up, so I hypothesized a
+symmetric pyramid.&lt;/p&gt;
+&lt;p&gt;Indeed, this is what the plot shows – a &lt;em&gt;very&lt;/em&gt; heavy base, with a peak
+around 9-10 years old. Around the teenage years, these injuries drop off
+significantly, although not completely, perhaps in part due to some in
+the 25-40 year old age group having young children, and being tempted by
+their child’s trampoline. However, once we hit the mid-40’s, there are
+very few representatives from that cohort and older in this population.
+Additionally, the plot is quite &lt;em&gt;symmetric&lt;/em&gt; – males and females are
+more-or-less equally represented in this population. There doesn’t
+appear to be an interaction of age and sex, as there are no bulges or
+notches present on one side but not the other.&lt;/p&gt;
+&lt;h3 id=&#34;accidents-involving-alcohol&#34;&gt;Accidents Involving Alcohol&lt;/h3&gt;
+&lt;p&gt;A slightly more sobering (sorry!) analysis is on the right – a
+population pyramid showing the age/sex distribution amongst ER visits
+resulting from alcohol-related injuries. In this case, I did hypothesize
+a difference between sexes, with males making up a somewhat larger
+proportion of the population, though still a fair few females. I also
+predicted a pear-shaped pyramid, with very few representatives from the
+0-20 year old cohort, the bulk of patients in the 20-30 year old range,
+and a consistent taper down as age increased.&lt;/p&gt;
+&lt;p&gt;I was somewhat surprised by the shape of the resulting plot. Although
+I’d anticipated a plot that was &lt;em&gt;heavier on the male side than the
+female side&lt;/em&gt;, I hadn’t expected the difference to be so dramatic. Almost
+across the board, each male age cohort has about double (if not more)
+members than the corresponding female cohort. I was also surprised to
+see bimodal distributions on both sides, with a bulge from about the
+mid-teens through around 35, but then an even larger bulge in the older
+years, peaking around the early-to-mid sixties. Folks getting wild in
+their retirement years! Though females are represented less in the
+overall population distribution, these characteristics are still present
+in that sub-population’s distribution.&lt;/p&gt;
+&lt;p&gt;I could see analyses like these being useful for target specific groups
+to recieve safety training on a particular product, deciding who to
+design flyers for, which, say, encourage moderation and safety when
+consuming alcohol, or to determine suggested age ranges for certain play
+equipment.&lt;/p&gt;
+&lt;h2 id=&#34;presentation-tips&#34;&gt;Presentation Tips&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Color:&lt;/strong&gt; Typically, this type of visualization uses color in a simple
+fashion, either using a uniform color and annotating each side with the
+appropriate label, or selecting two distinct colors to distinguish
+between one side and the other. Since a population pyramid generally
+plots the distribution of males versus females, we often see plots that
+select pink for the female distribution and blue for the male
+distribution. However, this is a bit of an anachronism in today’s
+society, as these colors carry the weight of long-term stereotypical
+gender associations. Some argue that choosing these colors allows for
+speedy interpretation of the figure, however, if a reader has so little
+time or mental energy that scanning a legend is unmanagable, then, well,
+perhaps they should skip looking at the figure altogether.
+Interestingly, it has been suggested that simply flipping the colors
+around can be problematic, as it can lead to confusion due to the
+aforementioned speedy interpretation of those particular colors in a
+figure.&lt;/p&gt;
+&lt;p&gt;So, I chose to create a graph with different colors altogether, inspired
+by the color choices in the Telegraph; green for males, and purple for
+females. A discussion of the motivation behind this choice, as well as
+more detailed arguments against the selection of blue/pink to
+distinguish male/female populations can be found at the following link:
+&lt;a href=&#34;https://blog.datawrapper.de/gendercolor/&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://blog.datawrapper.de/gendercolor/&#34;&gt;https://blog.datawrapper.de/gendercolor/&lt;/a&gt;&lt;/a&gt;
+.&lt;/p&gt;
+&lt;p&gt;Although some may consider it an attractive or interesting design detail
+to apply a color gratient based on age, this is not a common choice. Not
+only is it unnecessary to code this using color, since the axis makes
+the age range quite clear, it could also distract readers.&lt;/p&gt;
+&lt;p&gt;Finally, avoid this color choice for this type of visualization at all
+costs! (But please do use this very attractive 70’s-inspired rainbow
+palette for your artistic projects!)&lt;/p&gt;
+&lt;a href=&#34;https://www.geo41.com/population-structure&#34;&gt; 
+&lt;img src=&#34;bad_color.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
 &lt;/a&gt;
-
-
+&lt;p&gt;&lt;strong&gt;Composition:&lt;/strong&gt; Since these plots are fairly straight-forward, there
+are only a few small details to keep in mind regarding composition. The
+first is that even if the most populous bin in on one side is less than
+the most populous bin on the other, the x-axis should range from [-n,
+n], with n corresponding to the most populous bin overall. Although
+this is a small detail, this places the line dividing the sex/two-factor
+distributions directly in the middle of the plot, which can aid in
+accurate comparison of one sub-population versus the other. Also, in my
+opinion, it is much more visually harmonious.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;CS530_ARoten_GraphBrief1_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Annotation:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The Population Pyramid is a useful visualization in no small part
+because of the rich possibilities of interpretation without the need for
+excessive labeling or annotation. However, if a particular feature of
+the shape of the plot corresponds to, say, a cultural event that is
+relevant to the context of the figure, it would be acceptable to add a
+small annotation to the plot, indicating the events related to the
+feature of the plot. As with all graph annotation, it is better to keep
+it minimal and clean. Below is an example of a well-annotated population
+pyramid (although perhaps with a bit much going on, I would personally
+keep it to one or two annotations):&lt;/p&gt;
+&lt;a href=&#34;http://japanjapan.blogspot.com/2010/06/japans-population-structure.html&#34;&gt; 
+&lt;img src=&#34;good_annotation.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
+&lt;/a&gt;
+&lt;p&gt;Although the annotations/labels add a fair bit of busyness to the
+figure, the story behind the plot is enriched with the additional
+details. Note that in addition to the annotations, the figure overlays
+the outline of a population pyramid from an earlier date on top of the
+more recent pyramid. This also allows additional temporal information to
+the figure’s story, which I find to be quite effective.&lt;/p&gt;
+&lt;p&gt;In contrast, here is a poorly annotated population pyramid:&lt;/p&gt;
+&lt;a href=&#34;https://pt.slideshare.net/JonathanHall66/analysing-populationpyramids/6?smtNoRedir=1&#34;&gt; 
+&lt;img src=&#34;bad_annotation.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
+&lt;/a&gt;
+&lt;p&gt;First of all…that font! But, that is not relevant to the discussion of
+the pyramid itself. In this case, although there is certainly
+information added through the annotations, the positioning and quantity
+of labels distracts from the overall impact of the figure. This quantity
+of information would be better suited to a narrative setting, alongside
+the figure, perhaps with numerical annotations indicating the feature of
+the plot that corresponds with the additional contextual information.
+However, the lines indicating the positions on the plat that correspond
+to each annotation are confusing, in that they point directly to one or
+the other side of the pyramid. This configuration could come across to
+the viewer as if only one of the sub-populations corresponds to the
+information in the annotation, e.g. the middle annotation on the
+right-hand side appears to be referring only to the female side of the
+pyramid, however, certainly females are not the only humans who will
+age!&lt;/p&gt;
+&lt;h2 id=&#34;methods&#34;&gt;Methods&lt;/h2&gt;
+&lt;p&gt;Below is the code used to create one of the population pyramids, broken
+up into a chunk that shows the data wrangling process, and then one
+showing the plot generation, including the &lt;code&gt;ggarrange()&lt;/code&gt; call that was
+used to combine the two plots.&lt;/p&gt;
+&lt;h3 id=&#34;data-wrangling&#34;&gt;Data Wrangling&lt;/h3&gt;
+&lt;p&gt;The data wrangling process was pretty straight-forward after downloading
+the data from the link provided in the data section, specifically
+downloading and working with the entire dataset from 2019. The .xlsx
+file consists of a row corresponding to each emergency room visit, and
+the columns to each piece of information related to that incident, so I
+simply had to narrow down the dataset to only include rows where the
+column &lt;code&gt;alcohol_involved&lt;/code&gt; was equal to one. I also filtered out rows
+with age values higher than 100, as there were some instances where the
+age column contained a code that was not the actual age in years. I also
+filtered out rows where the patient’s sex was unknown.&lt;/p&gt;
+&lt;p&gt;Since the dataset originally included column names with spaces, a
+configuration that does not play well with R code, I used the handy
+&lt;code&gt;janitor::clean_names()&lt;/code&gt; function to convert the column names into
+R-friendly strings. Finally, I replaced the 1/2 indicators with
+“Male”/“Female”, primarily as a hacky way of making the plot’s legend
+more attractive, although this could have been done directly during the
+plotting phase. Finally, I narrowed the dataset down to just the sex and
+age columns, which is all that was needed for the population pyramids.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;alcohol_data &amp;lt;- read_excel(&amp;quot;neiss2019.xlsx&amp;quot;) %&amp;gt;%
+                 janitor::clean_names() %&amp;gt;%
+                 filter(alcohol_involved == 1, sex != 0, age &amp;lt; 100) %&amp;gt;%
+                 mutate(sex = ifelse(sex == 1, &amp;quot;Male&amp;quot;, &amp;quot;Female&amp;quot;)) %&amp;gt;%
+                 select(sex, age)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;plotting&#34;&gt;Plotting&lt;/h3&gt;
+&lt;p&gt;The plots I created were adapted from code a couple of handy tutorials;
+the first two links in the citation section below. The two plots were
+then set up to display side-by-side using &lt;code&gt;ggarrange()&lt;/code&gt;. Each function
+call is annotated in the R chunk below:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;booze_pyramid &amp;lt;- ggplot(data = alcohol_data, aes(x = age, fill = sex)) +     # Basic ggplot call, 
+                                                                             # specifying age as the 
+                                                                             # x-values and the 
+                                                                             # fill value to be  
+                                                                             # selected based on the 
+                                                                             # sex value. 
   
+                 geom_histogram(data = subset(alcohol_data, sex == &amp;quot;Male&amp;quot;),  # Creating the histogram 
+                                     bins = 35, color = &amp;quot;lightgrey&amp;quot;) +       # for the male data.
   
-  &lt;figcaption&gt;
-    Academic is mobile first with a responsive design to ensure that your site looks stunning on every device.
-  &lt;/figcaption&gt;
+                 geom_histogram(data = subset(alcohol_data, sex == &amp;quot;Female&amp;quot;),# Creating the histogram for
+                               mapping = aes(y = - ..count.. ),              # the female data. Note that
+                               position = &amp;quot;identity&amp;quot;,                        # the count/y is mapped to
+                               bins = 35, color = &amp;quot;lightgrey&amp;quot;) +             # negative values, to flip
+                                                                             # the bars.
+  
+                 scale_y_continuous(limits = c(-350, 350), labels = abs) +   # Manually setting the axis
+                 scale_x_continuous(limits = c(0, 100)) +                    # ranges.
+  
+                 coord_flip() +                                              # Flipping the x/y axes.
+  
+                 ggtitle(&amp;quot;Involving Alcohol-Use&amp;quot;) +                          # Tweaking the title and 
+                 ylab(&amp;quot;Count&amp;quot;) +                                             # other details.
+                 theme_minimal() +
+                 theme(plot.title = element_text(size = 10, hjust = 0.5)) +
+                 scale_fill_manual(values = c(&amp;quot;#80337c&amp;quot;, &amp;quot;#338057&amp;quot;)) 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;ggarrange()&lt;/code&gt; call is included below, as this is a handy function to
+include several individual plots in a single overall figure.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pyramid_two &amp;lt;- ggarrange(trampoline_pyramid, booze_pyramid, heights = c(2, 2), # Call to ggarrange, 
+                    ncol = 2, nrow = 1, common.legend = TRUE, align = &#39;v&#39;,     # passing in both plot
+                                                                               # objects and setting
+                    legend = &amp;quot;right&amp;quot;) %&amp;gt;%                                      # display params.
+                                                                               
+                                                                               # Adding &amp;quot;overall&amp;quot; fig 
+                                                                               # title.
+               annotate_figure(top = text_grob(&amp;quot;Accidents Resulting in \nEmergency Room Visits in 2019\n &amp;quot;, 
+                                               face = &amp;quot;bold&amp;quot;, size = 16))
 
+## Warning: Removed 2 rows containing missing values (geom_bar).
 
-&lt;/figure&gt;
+## Warning: Removed 2 rows containing missing values (geom_bar).
 
-&lt;p&gt;&lt;strong&gt;Key features:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Page builder&lt;/strong&gt; - Create &lt;em&gt;anything&lt;/em&gt; with 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/page-builder/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;widgets&lt;/strong&gt;&lt;/a&gt; and 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;elements&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Edit any type of content&lt;/strong&gt; - Blog posts, publications, talks, slides, projects, and more!&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Create content&lt;/strong&gt; in 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;Markdown&lt;/strong&gt;&lt;/a&gt;, 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/jupyter/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;Jupyter&lt;/strong&gt;&lt;/a&gt;, or 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-rstudio&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;RStudio&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Plugin System&lt;/strong&gt; - Fully customizable 
-&lt;a href=&#34;https://sourcethemes.com/academic/themes/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;color&lt;/strong&gt; and &lt;strong&gt;font themes&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Display Code and Math&lt;/strong&gt; - Code highlighting and 
-&lt;a href=&#34;https://en.wikibooks.org/wiki/LaTeX/Mathematics&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LaTeX math&lt;/a&gt; supported&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Integrations&lt;/strong&gt; - 
-&lt;a href=&#34;https://analytics.google.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Google Analytics&lt;/a&gt;, 
-&lt;a href=&#34;https://disqus.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Disqus commenting&lt;/a&gt;, Maps, Contact Forms, and more!&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Beautiful Site&lt;/strong&gt; - Simple and refreshing one page design&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Industry-Leading SEO&lt;/strong&gt; - Help get your website found on search engines and social media&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Media Galleries&lt;/strong&gt; - Display your images and videos with captions in a customizable gallery&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Mobile Friendly&lt;/strong&gt; - Look amazing on every screen with a mobile friendly version of your site&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Multi-language&lt;/strong&gt; - 15+ language packs including English, 中文, and Português&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Multi-user&lt;/strong&gt; - Each author gets their own profile page&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Privacy Pack&lt;/strong&gt; - Assists with GDPR&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Stand Out&lt;/strong&gt; - Bring your site to life with animation, parallax backgrounds, and scroll effects&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;One-Click Deployment&lt;/strong&gt; - No servers. No databases. Only files.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;themes&#34;&gt;Themes&lt;/h2&gt;
-&lt;p&gt;Academic comes with &lt;strong&gt;automatic day (light) and night (dark) mode&lt;/strong&gt; built-in. Alternatively, visitors can  choose their preferred mode - click the sun/moon icon in the top right of the 
-&lt;a href=&#34;https://academic-demo.netlify.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Demo&lt;/a&gt; to see it in action! Day/night mode can also be disabled by the site admin in &lt;code&gt;params.toml&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://sourcethemes.com/academic/themes/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Choose a stunning &lt;strong&gt;theme&lt;/strong&gt; and &lt;strong&gt;font&lt;/strong&gt;&lt;/a&gt; for your site. Themes are fully 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/customization/#custom-theme&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;customizable&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;ecosystem&#34;&gt;Ecosystem&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;
-&lt;a href=&#34;https://github.com/sourcethemes/academic-admin&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Academic Admin&lt;/a&gt;:&lt;/strong&gt; An admin tool to import publications from BibTeX or import assets for an offline site&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;
-&lt;a href=&#34;https://github.com/sourcethemes/academic-scripts&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Academic Scripts&lt;/a&gt;:&lt;/strong&gt; Scripts to help migrate content to new versions of Academic&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
-&lt;p&gt;You can choose from one of the following four methods to install:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-web-browser&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;one-click install using your web browser (recommended)&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-git&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;install on your computer using &lt;strong&gt;Git&lt;/strong&gt; with the Command Prompt/Terminal app&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-zip&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;install on your computer by downloading the &lt;strong&gt;ZIP files&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-rstudio&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;install on your computer with &lt;strong&gt;RStudio&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Then 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/get-started/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;personalize and deploy your new site&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;updating&#34;&gt;Updating&lt;/h2&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/update/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;View the Update Guide&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Feel free to &lt;em&gt;star&lt;/em&gt; the project on 
-&lt;a href=&#34;https://github.com/gcushen/hugo-academic/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Github&lt;/a&gt; to help keep track of 
-&lt;a href=&#34;https://sourcethemes.com/academic/updates&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;updates&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;license&#34;&gt;License&lt;/h2&gt;
-&lt;p&gt;Copyright 2016-present 
-&lt;a href=&#34;https://georgecushen.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;George Cushen&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Released under the 
-&lt;a href=&#34;https://github.com/gcushen/hugo-academic/blob/master/LICENSE.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MIT&lt;/a&gt; license.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/post/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      <guid>/post/2015-07-23-r-rmarkdown/</guid>
-      <description>
+## Warning: Removed 2 rows containing missing values (geom_bar).
 
+## Warning: Removed 2 rows containing missing values (geom_bar).
 
-&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;R Markdown&lt;/h1&gt;
-&lt;p&gt;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can embed an R code chunk like this:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &amp;lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;including-plots&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Including Plots&lt;/h1&gt;
-&lt;p&gt;You can also embed plots. See Figure &lt;a href=&#34;#fig:pie&#34;&gt;1&lt;/a&gt; for example:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&amp;#39;Sky&amp;#39;, &amp;#39;Sunny side of pyramid&amp;#39;, &amp;#39;Shady side of pyramid&amp;#39;),
-  col = c(&amp;#39;#0292D8&amp;#39;, &amp;#39;#F7EA39&amp;#39;, &amp;#39;#C4B632&amp;#39;),
-  init.angle = -50, border = NA
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;/post/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;
-Figure 1: A fancy pie chart.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
+## Warning: Removed 2 rows containing missing values (geom_bar).
+
+## Warning: Removed 2 rows containing missing values (geom_bar).
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;additional-citations&#34;&gt;Additional Citations&lt;/h3&gt;
+&lt;p&gt;Staetsky, Daniel. (2015). Strictly Orthodox Rising: what the demography
+of British Jews tells us about the future of the community.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rpubs.com/walkerke/pyramids_ggplot2&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://rpubs.com/walkerke/pyramids_ggplot2&#34;&gt;https://rpubs.com/walkerke/pyramids_ggplot2&lt;/a&gt;&lt;/a&gt;
+&lt;a href=&#34;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&#34;&gt;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&lt;/a&gt;&lt;/a&gt;
+&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34;&gt;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&lt;/a&gt;&lt;/a&gt;
+&lt;a href=&#34;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&#34;&gt;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&lt;/a&gt;&lt;/a&gt;
+&lt;a href=&#34;https://populationeducation.org/what-are-different-types-population-pyramids/&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://populationeducation.org/what-are-different-types-population-pyramids/&#34;&gt;https://populationeducation.org/what-are-different-types-population-pyramids/&lt;/a&gt;&lt;/a&gt;
+&lt;a href=&#34;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&#34;&gt;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&lt;/a&gt;&lt;/a&gt;
+&lt;a href=&#34;https://datavizcatalogue.com&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://datavizcatalogue.com&#34;&gt;https://datavizcatalogue.com&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
