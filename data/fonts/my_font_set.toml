@@ -5,7 +5,7 @@ name = "Minimal"
 google_fonts = "Average:Average Sans"
 
 # Font families
-heading_font = "Average Sans"
-body_font = "Average"
-nav_font = "Average Sans"
+heading_font = "Average Sans Bold"
+body_font = "Average Sans "
+nav_font = "Average Sans Bold"
 mono_font = "Average Sans"
