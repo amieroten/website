@@ -638,11 +638,17 @@ titlePanel(&quot;Apple U.S. Mobility Dataset during COVID-19 Crisis&quot;),
 
 fluidRow(
    column(5, h3(&quot;Please begin by selecting your desired date range: &quot;)),
-   column(3, dateRangeInput(&#39;dateRange&#39;, label = &#39;&#39;, format=&#39;mm-dd-yyyy&#39;, separator=&#39; to &#39;,
-                            start = &#39;2020-01-13&#39;, end = &#39;2020-05-13&#39;, min = &#39;2020-01-13&#39;, max = &#39;2020-05-13&#39;)),
-   column(4, h5(&quot;Upper plot displays the daily increase in COVID-19 cases for selected location. 
-                Lower plot shows corresponding Apple Maps&#39; mobility data, in terms of trends in driving since mid-January 2020 (dark green
-                indicates a relative increase, yellow indicates a relative decrease). Did less driving correspond to \&quot;flattening the curve\&quot;? We can find out!&quot;))
+   column(3, dateRangeInput(&#39;dateRange&#39;, label = &#39;&#39;, format=&#39;mm-dd-yyyy&#39;, 
+                            separator=&#39; to &#39;, start = &#39;2020-01-13&#39;, 
+                            end = &#39;2020-05-13&#39;, min = &#39;2020-01-13&#39;, 
+                            max = &#39;2020-05-13&#39;)),
+   column(4, h5(&quot;Upper plot displays the daily increase in COVID-19 
+                 cases for selected location. Lower plot shows 
+                 corresponding Apple Maps&#39; mobility data, in terms 
+                 of trends in driving since mid-January 2020 (dark 
+                 green indicates a relative increase, yellow indicates 
+                 a relative decrease). Did less driving correspond to 
+                \&quot;flattening the curve\&quot;? We can find out!&quot;))
 ),
 
 hr(),
@@ -654,15 +660,19 @@ fluidRow(
 ),
 
 fluidRow(
-   column(3, offset = 1, selectInput(&quot;loc1&quot;, label=&quot;Location 1&quot;, multiple=FALSE,
-                                     locations, width=&#39;70%&#39;, size=5, selectize=FALSE)),
-   column(3, offset = 1, selectInput(&quot;loc2&quot;, label=&quot;Location 2&quot;, multiple=FALSE,
-                                     locations, width=&#39;70%&#39;, size=5, selectize=FALSE)),
-   column(3, offset = 1, selectInput(&quot;loc3&quot;, label=&quot;Location 3&quot;, multiple=FALSE, 
-                                     locations, width=&#39;70%&#39;, size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput(&quot;loc1&quot;, label=&quot;Location 1&quot;, 
+                                     multiple=FALSE, locations, 
+                                     width=&#39;70%&#39;, size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput(&quot;loc2&quot;, label=&quot;Location 2&quot;, 
+                                     multiple=FALSE, locations, 
+                                     width=&#39;70%&#39;, size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput(&quot;loc3&quot;, label=&quot;Location 3&quot;, 
+                                     multiple=FALSE, locations, 
+                                     width=&#39;70%&#39;, size=5, selectize=FALSE)),
 ),
 
-h5(&quot;Data from Kieran Healy&#39;s covdata package: https://kjhealy.github.io/covdata/. Bottom plots *very heavily* inspired by apple_mobility dataset vignette!&quot;)
+h5(&quot;Data from Kieran Healy&#39;s covdata package: https://kjhealy.github.io/covdata/. 
+   Bottom plots *very heavily* inspired by apple_mobility dataset vignette!&quot;)
 )</code></pre>
 <p>The second main component is the <code>server</code> section. This is where the dynamic outputs such as plots, text, and other elements, are created and updated, and then can be placed via the <code>ui</code> section. In this case, we have six plots (three sets of two) which use input from the selection widgets in the section above to dynamically change and reflect the subset of the data the user would like to see.</p>
 <pre class="r"><code>server &lt;- function(input, output, session) {

@@ -67,11 +67,17 @@ titlePanel("Apple U.S. Mobility Dataset during COVID-19 Crisis"),
 
 fluidRow(
    column(5, h3("Please begin by selecting your desired date range: ")),
-   column(3, dateRangeInput('dateRange', label = '', format='mm-dd-yyyy', separator=' to ',
-                            start = '2020-01-13', end = '2020-05-13', min = '2020-01-13', max = '2020-05-13')),
-   column(4, h5("Upper plot displays the daily increase in COVID-19 cases for selected location. 
-                Lower plot shows corresponding Apple Maps' mobility data, in terms of trends in driving since mid-January 2020 (dark green
-                indicates a relative increase, yellow indicates a relative decrease). Did less driving correspond to \"flattening the curve\"? We can find out!"))
+   column(3, dateRangeInput('dateRange', label = '', format='mm-dd-yyyy', 
+                            separator=' to ', start = '2020-01-13', 
+                            end = '2020-05-13', min = '2020-01-13', 
+                            max = '2020-05-13')),
+   column(4, h5("Upper plot displays the daily increase in COVID-19 
+                 cases for selected location. Lower plot shows 
+                 corresponding Apple Maps' mobility data, in terms 
+                 of trends in driving since mid-January 2020 (dark 
+                 green indicates a relative increase, yellow indicates 
+                 a relative decrease). Did less driving correspond to 
+                \"flattening the curve\"? We can find out!"))
 ),
 
 hr(),
@@ -83,15 +89,19 @@ fluidRow(
 ),
 
 fluidRow(
-   column(3, offset = 1, selectInput("loc1", label="Location 1", multiple=FALSE,
-                                     locations, width='70%', size=5, selectize=FALSE)),
-   column(3, offset = 1, selectInput("loc2", label="Location 2", multiple=FALSE,
-                                     locations, width='70%', size=5, selectize=FALSE)),
-   column(3, offset = 1, selectInput("loc3", label="Location 3", multiple=FALSE, 
-                                     locations, width='70%', size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput("loc1", label="Location 1", 
+                                     multiple=FALSE, locations, 
+                                     width='70%', size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput("loc2", label="Location 2", 
+                                     multiple=FALSE, locations, 
+                                     width='70%', size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput("loc3", label="Location 3", 
+                                     multiple=FALSE, locations, 
+                                     width='70%', size=5, selectize=FALSE)),
 ),
 
-h5("Data from Kieran Healy's covdata package: https://kjhealy.github.io/covdata/. Bottom plots *very heavily* inspired by apple_mobility dataset vignette!")
+h5("Data from Kieran Healy's covdata package: https://kjhealy.github.io/covdata/. 
+   Bottom plots *very heavily* inspired by apple_mobility dataset vignette!")
 )
 ```
 

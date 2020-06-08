@@ -1,5 +1,5 @@
 ---
-title: "All About the Population Pyramid!"
+title: "Investigating PDX Flights Data using Tables!"
 diagram: yes
 date: '2020-06-08'
 math: yes
@@ -10,4 +10,1432 @@ image:
 
 
 
+<p>This post is devoted to answering a couple of questions about flights in and out of PDX, in the form of custom R tables (primarily using the fantastic <code>gt</code> library!). Not only will the questions be answered and tables displayed, but the code for how to wrangle the data and build the tables is included, as well as some narration on what did and did not work. On we go!</p>
+<hr />
+<div id="analysis-1-most-traveled-destination-per-month" class="section level3">
+<h3>Analysis #1: Most Traveled Destination, per Month</h3>
+<p>I’d like to take a look at which destinations departing from PDX are the most frequently travelled, broken down by month, along with the flight count for each destination. It’s tricky to make predictions, but I’d think that a destination like Hawaii or Florida might be more popular in the cooler months, whereas more exotic, internations locations like London or Japan might be more popular in the warmer months, corresponding to the summertime where many tend to take longer trips. But, let’s take a look and find out!</p>
+<pre class="r"><code>pdx_flights_dest &lt;- flights %&gt;%
+               filter(origin == &quot;PDX&quot;) %&gt;%
+               group_by(month, dest) %&gt;%
+               summarise(n = n()) %&gt;%
+               group_by(month) %&gt;%
+               top_n(1, n)
+pdx_flights_dest</code></pre>
+<pre><code>## # A tibble: 12 x 3
+## # Groups:   month [12]
+##    month dest      n
+##    &lt;int&gt; &lt;chr&gt; &lt;int&gt;
+##  1     1 SFO     446
+##  2     2 SFO     389
+##  3     3 SFO     462
+##  4     4 SFO     450
+##  5     5 SFO     464
+##  6     6 SFO     440
+##  7     7 SFO     432
+##  8     8 SFO     437
+##  9     9 SFO     438
+## 10    10 SFO     442
+## 11    11 SFO     391
+## 12    12 SFO     388</code></pre>
+<p>Wow…what a terribly dull outcome, not particularly table-worthy. Let’s try excluding San Francisco and see what shakes out. We’ll take a chance and go ahead and print this information in an attractive table format, using the <code>gt</code> library:</p>
+<pre class="r"><code>pdx_flights_dest_noSF &lt;- flights %&gt;%
+               filter(origin == &quot;PDX&quot;) %&gt;%
+               arrange(month) %&gt;%
+               group_by(month, dest) %&gt;%
+               summarise(n = n()) %&gt;%
+               group_by(month) %&gt;%
+               filter(dest != &quot;SFO&quot;) %&gt;%
+               top_n(1, n) %&gt;%
+               ungroup() %&gt;%
+               mutate(month = month.name[month])
 
+pdx_flights_dest_noSF</code></pre>
+<pre><code>## # A tibble: 12 x 3
+##    month     dest      n
+##    &lt;chr&gt;     &lt;chr&gt; &lt;int&gt;
+##  1 January   DEN     323
+##  2 February  DEN     276
+##  3 March     LAX     346
+##  4 April     LAX     348
+##  5 May       LAX     387
+##  6 June      DEN     354
+##  7 July      DEN     359
+##  8 August    DEN     373
+##  9 September DEN     369
+## 10 October   DEN     366
+## 11 November  DEN     295
+## 12 December  PHX     286</code></pre>
+<pre class="r"><code>pdx_flights_dest_noSF_gt &lt;- pdx_flights_dest_noSF %&gt;% gt() %&gt;%
+                       tab_options(row.striping.background_color = &quot;#f9f9f9&quot;,
+                                   row.striping.include_table_body = TRUE,
+                                   row.striping.include_stub = TRUE) %&gt;%
+                       tab_header(title=&quot;Top Destinations out of PDX, By Month&quot;,
+                                  subtitle=&quot;(Excluding SFO)&quot;) %&gt;%
+                       cols_label(month = &quot;Month&quot;, 
+                                  dest = &quot;Destination&quot;, 
+                                  n = &quot;Number of Flights&quot;) %&gt;%
+                       cols_align(align = &quot;center&quot;,
+                                  columns = vars(dest))
+                       
+                       
+
+pdx_flights_dest_noSF_gt</code></pre>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#ehiupzwtgq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ehiupzwtgq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ehiupzwtgq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ehiupzwtgq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ehiupzwtgq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ehiupzwtgq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ehiupzwtgq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ehiupzwtgq .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ehiupzwtgq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ehiupzwtgq .gt_striped {
+  background-color: #f9f9f9;
+}
+
+#ehiupzwtgq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ehiupzwtgq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ehiupzwtgq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ehiupzwtgq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#ehiupzwtgq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ehiupzwtgq .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ehiupzwtgq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ehiupzwtgq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ehiupzwtgq .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ehiupzwtgq .gt_left {
+  text-align: left;
+}
+
+#ehiupzwtgq .gt_center {
+  text-align: center;
+}
+
+#ehiupzwtgq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ehiupzwtgq .gt_font_normal {
+  font-weight: normal;
+}
+
+#ehiupzwtgq .gt_font_bold {
+  font-weight: bold;
+}
+
+#ehiupzwtgq .gt_font_italic {
+  font-style: italic;
+}
+
+#ehiupzwtgq .gt_super {
+  font-size: 65%;
+}
+
+#ehiupzwtgq .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="ehiupzwtgq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="3" class="gt_heading gt_title gt_font_normal" style>Top Destinations out of PDX, By Month</th>
+    </tr>
+    <tr>
+      <th colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>(Excluding SFO)</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Month</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Destination</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Number of Flights</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">January</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">323</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">February</td>
+      <td class="gt_row gt_center gt_striped">DEN</td>
+      <td class="gt_row gt_center gt_striped">276</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">March</td>
+      <td class="gt_row gt_center">LAX</td>
+      <td class="gt_row gt_center">346</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">April</td>
+      <td class="gt_row gt_center gt_striped">LAX</td>
+      <td class="gt_row gt_center gt_striped">348</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">May</td>
+      <td class="gt_row gt_center">LAX</td>
+      <td class="gt_row gt_center">387</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">June</td>
+      <td class="gt_row gt_center gt_striped">DEN</td>
+      <td class="gt_row gt_center gt_striped">354</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">July</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">359</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">August</td>
+      <td class="gt_row gt_center gt_striped">DEN</td>
+      <td class="gt_row gt_center gt_striped">373</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">September</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">369</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">October</td>
+      <td class="gt_row gt_center gt_striped">DEN</td>
+      <td class="gt_row gt_center gt_striped">366</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">November</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">295</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">December</td>
+      <td class="gt_row gt_center gt_striped">PHX</td>
+      <td class="gt_row gt_center gt_striped">286</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<p>I suppose this is somewhat interesting in a couple of respects. First, we can see that, at least judging by the count for the top destination, the airport is busier during the warmer months, with November through February having markedly fewer flights than the other part of the year. We can see that Denver is a popular/common destination year-round (I think PDX-DEN is a big Frontier route, often on my way to visit family Illinois I end up with a layover there). But, during the cooler months, the destinations sway a bit warmer; Los Angeles and Phoenix.</p>
+<p>I chose to use <code>gt</code> since I really like the clean look and simplicity of the tables it generates, especially for a straightforward dataset like this one. I didn’t end up changing the defaults much, since I liked the column/row separations already. I did center the destination column, as it was left-aligned by default, and butted up against the months a bit too much. The destination and flight number columns make clean lines, and it is easy to read them up-and-down, and that really is the most important comparison here; how each column relates to the next sequentially/temporily, not necessarily how the destination relates to its’ associated number of flights.</p>
+</div>
+<div id="analysis-2-finding-busy-aircraft" class="section level3">
+<h3>Analysis #2: Finding Busy Aircraft</h3>
+<p>I am a nervous flyer, and definitely notice the wear and tear on a plane before I get on it…the longer it’s been in the air, the more reliable it has shown itself to be? So I tell myself…hah! But, I thought this was an interesting line of investigation. I’m going to make a table that displays the top five aircraft with the most flight time accumulated, and also include the associated airline, and the top two routes each aircraft flies.</p>
+<pre class="r"><code>pdx_flights_aircraft &lt;- flights %&gt;% 
+                        filter(origin == &quot;PDX&quot;, tailnum!=&quot;&quot;) %&gt;%
+                        select(tailnum, dest, air_time, carrier) %&gt;%
+                        group_by(tailnum, carrier, dest) %&gt;%
+                        summarize(airtime = sum(air_time)) %&gt;%
+                        add_count(name = &quot;total_airtime&quot;, wt=airtime) %&gt;%
+                        arrange(desc(total_airtime), desc(airtime)) 
+
+first_set = seq(1, 15, by=3)
+second_set = seq(2, 15, by=3)
+third_set = seq(3, 15, by=3)
+
+pdx_flights_aircraft_filtered &lt;- pdx_flights_aircraft %&gt;%
+                        filter(total_airtime %in% unique(pdx_flights_aircraft$total_airtime)[1:5]) %&gt;%
+                        group_by(tailnum) %&gt;%
+                        top_n(3, wt = airtime) %&gt;%
+                        select(-airtime) %&gt;%
+                        mutate(dest_rank = case_when(row_number() %in% first_set ~ &quot;dest_1&quot;,
+                                                     row_number() %in% second_set ~ &quot;dest_2&quot;, 
+                                                     row_number() %in% third_set ~ &quot;dest_3&quot;)) %&gt;%
+                        pivot_wider(names_from = dest_rank, values_from = dest) %&gt;%
+                        mutate(carrier = ifelse(carrier == &#39;OO&#39;, &quot;SkyWest&quot;, &quot;Alaska&quot;)) %&gt;%
+                        ungroup()
+                      
+pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
+                       tab_options(row.striping.background_color = &quot;#f9f9f9&quot;,
+                                   row.striping.include_table_body = TRUE,
+                                   row.striping.include_stub = TRUE) %&gt;%
+                       tab_header(title=&quot;Busiest Aircraft, by Total Airtime&quot;) %&gt;%
+                       tab_spanner(label = &quot;Aircraft Details&quot;,
+                                   columns = vars(tailnum, carrier, total_airtime)) %&gt;%
+                       tab_spanner(label = &quot;Busiest Routes&quot;,
+                                  columns = vars(dest_1, dest_2, dest_3)) %&gt;%
+                       cols_label(tailnum = &quot;Tail\nNumber&quot;,
+                                  carrier = &quot;Carrier&quot;,
+                                  total_airtime = &quot;Total Airtime \n (min)&quot;,
+                                  dest_1 = &quot;First&quot;,
+                                  dest_2 = &quot;Second&quot;,
+                                  dest_3 = &quot;Third&quot;) %&gt;%
+                       cols_align(align = &quot;center&quot;,
+                                  columns = vars(total_airtime, dest_1, dest_2))</code></pre>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#sytbmqweeh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#sytbmqweeh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#sytbmqweeh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#sytbmqweeh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#sytbmqweeh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#sytbmqweeh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#sytbmqweeh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#sytbmqweeh .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#sytbmqweeh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#sytbmqweeh .gt_striped {
+  background-color: #f9f9f9;
+}
+
+#sytbmqweeh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#sytbmqweeh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#sytbmqweeh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#sytbmqweeh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#sytbmqweeh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sytbmqweeh .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sytbmqweeh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#sytbmqweeh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sytbmqweeh .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#sytbmqweeh .gt_left {
+  text-align: left;
+}
+
+#sytbmqweeh .gt_center {
+  text-align: center;
+}
+
+#sytbmqweeh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#sytbmqweeh .gt_font_normal {
+  font-weight: normal;
+}
+
+#sytbmqweeh .gt_font_bold {
+  font-weight: bold;
+}
+
+#sytbmqweeh .gt_font_italic {
+  font-style: italic;
+}
+
+#sytbmqweeh .gt_super {
+  font-size: 65%;
+}
+
+#sytbmqweeh .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="sytbmqweeh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal" style>Busiest Aircraft, by Total Airtime</th>
+    </tr>
+    <tr>
+      <th colspan="6" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner">Aircraft Details</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner">Busiest Routes</span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Tail
+Number</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Carrier</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Total Airtime 
+ (min)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">First</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Second</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Third</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">N225AG</td>
+      <td class="gt_row gt_left">SkyWest</td>
+      <td class="gt_row gt_center">34805</td>
+      <td class="gt_row gt_center">ONT</td>
+      <td class="gt_row gt_center">BUR</td>
+      <td class="gt_row gt_left">TUS</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">N219AG</td>
+      <td class="gt_row gt_left gt_striped">SkyWest</td>
+      <td class="gt_row gt_center gt_striped">31167</td>
+      <td class="gt_row gt_center gt_striped">BUR</td>
+      <td class="gt_row gt_center gt_striped">TUS</td>
+      <td class="gt_row gt_left gt_striped">SBA</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">N614AS</td>
+      <td class="gt_row gt_left">Alaska</td>
+      <td class="gt_row gt_center">28931</td>
+      <td class="gt_row gt_center">SNA</td>
+      <td class="gt_row gt_center">LAS</td>
+      <td class="gt_row gt_left">SFO</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">N611AS</td>
+      <td class="gt_row gt_left gt_striped">Alaska</td>
+      <td class="gt_row gt_center gt_striped">27697</td>
+      <td class="gt_row gt_center gt_striped">SNA</td>
+      <td class="gt_row gt_center gt_striped">LAS</td>
+      <td class="gt_row gt_left gt_striped">ORD</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">N216AG</td>
+      <td class="gt_row gt_left">SkyWest</td>
+      <td class="gt_row gt_center">27471</td>
+      <td class="gt_row gt_center">BUR</td>
+      <td class="gt_row gt_center">ONT</td>
+      <td class="gt_row gt_left">SBA</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<p>This was a pretty fun, but involved task. I first played a bit with <code>kable</code> in an attempt to do something different, but it just didn’t make a very attractive table, so I switched back to <code>gt</code>. Since there are a number of different types of information included in this table, I decided to make use of the <code>tab_spanner</code> option to call attention to that fact and do a bit of grouping. Then, I added striping, since in this case, the important grouping is by row, not necessarily comparing each row to each other, so I decided to encourage horizontal scanning of the table using this method.</p>
+</div>
+<div id="analysis-3-time-of-day" class="section level3">
+<h3>Analysis #3 Time of Day</h3>
+<p>I’m curious to see whether certain destinations commonly correspond to morning, afternoon/evening, or red-eye flights, and also the relative representation of each type of flight. I’ll consider flights that leave between 5-11am morning flights, 11-8pm afternoon/evening flights, and the remainder red-eye flights (although these distinctions may not be perfect). I think this table is going to end up looking rather similar to the one above…we will see.</p>
+<pre class="r"><code>first_set = seq(1, 15, by=5)
+second_set = seq(2, 15, by=5)
+third_set = seq(3, 15, by=5)
+fourth_set = seq(4, 15, by=5)
+fifth_set = seq(5, 15, by=5)
+
+pdx_flights_timeofday &lt;- flights %&gt;% 
+                        filter(origin == &quot;PDX&quot;, !is.na(dep_time))%&gt;%
+                        select(dest, dep_time) %&gt;%
+                        mutate(time_of_day = case_when(dep_time &gt;= 500 &amp; dep_time &lt; 1100 ~ &quot;morning&quot;,
+                                                       dep_time &gt;= 1100 &amp; dep_time &lt; 1900 ~ &quot;evening&quot;,
+                                                       TRUE ~ &quot;redeye&quot;)) %&gt;%
+                        group_by(time_of_day, dest) %&gt;%
+                        count() %&gt;%
+                        group_by(time_of_day) %&gt;%
+                        arrange(desc(n)) %&gt;%
+                        top_n(5, n) %&gt;%
+                        mutate(dest_rank = case_when(row_number() %in% first_set ~ &quot;dest_1&quot;,
+                                                     row_number() %in% second_set ~ &quot;dest_2&quot;,
+                                                     row_number() %in% third_set ~ &quot;dest_3&quot;,
+                                                     row_number() %in% fourth_set ~ &quot;dest_4&quot;,
+                                                     row_number() %in% fifth_set ~ &quot;dest_5&quot;)) %&gt;%
+                        pivot_wider(names_from = c(time_of_day), 
+                                    values_from = c(dest, n)) %&gt;%
+                        mutate(dest_rank = NULL) 
+
+column_order &lt;- c(&quot;dest_morning&quot;, &quot;n_morning&quot;, 
+                  &quot;dest_evening&quot;, &quot;n_evening&quot;,
+                  &quot;dest_redeye&quot;, &quot;n_redeye&quot;)
+
+pdx_flights_timeofday &lt;- pdx_flights_timeofday[, column_order]
+  
+pdx_flights_timeofday %&gt;% gt() %&gt;%
+                       # tab_options(row.striping.background_color = &quot;#f9f9f9&quot;,
+                       #             row.striping.include_table_body = TRUE,
+                       #             row.striping.include_stub = TRUE) %&gt;%
+                       tab_header(title=&quot;Most Frequent Destinations from PDX&quot;,
+                                  subtitle = &quot;by Time of Day&quot;) %&gt;%
+                       tab_spanner(label = &quot;Morning&quot;,
+                                   columns = vars(dest_morning, n_morning)) %&gt;%
+                       tab_spanner(label = &quot;Afternoon&quot;,
+                                  columns = vars(dest_evening, n_evening)) %&gt;%
+                       tab_spanner(label = &quot;Redeye&quot;,
+                                  columns = vars(dest_redeye, n_redeye)) %&gt;%
+                       cols_label(dest_morning = &quot;Destination&quot;,
+                                  n_morning = &quot;Flights&quot;,
+                                  dest_evening = &quot;Destination&quot;,
+                                  n_evening = &quot;Flights&quot;,
+                                  dest_redeye = &quot;Destination&quot;,
+                                  n_redeye = &quot;Flights&quot;) %&gt;%
+                        cols_align(align = &quot;center&quot;,
+                                   columns = vars(dest_morning, dest_evening, dest_redeye)) %&gt;%
+                        summary_rows(columns = vars(n_morning, n_evening, n_redeye),
+                                     fns = list(Total = ~sum(.)),
+                                     formatter = fmt_number,
+                                     decimals = 0)</code></pre>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#mizmxnvkre .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mizmxnvkre .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mizmxnvkre .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mizmxnvkre .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mizmxnvkre .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mizmxnvkre .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mizmxnvkre .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mizmxnvkre .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mizmxnvkre .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mizmxnvkre .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mizmxnvkre .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mizmxnvkre .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mizmxnvkre .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mizmxnvkre .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#mizmxnvkre .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mizmxnvkre .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mizmxnvkre .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mizmxnvkre .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mizmxnvkre .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mizmxnvkre .gt_left {
+  text-align: left;
+}
+
+#mizmxnvkre .gt_center {
+  text-align: center;
+}
+
+#mizmxnvkre .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mizmxnvkre .gt_font_normal {
+  font-weight: normal;
+}
+
+#mizmxnvkre .gt_font_bold {
+  font-weight: bold;
+}
+
+#mizmxnvkre .gt_font_italic {
+  font-style: italic;
+}
+
+#mizmxnvkre .gt_super {
+  font-size: 65%;
+}
+
+#mizmxnvkre .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="mizmxnvkre" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="7" class="gt_heading gt_title gt_font_normal" style>Most Frequent Destinations from PDX</th>
+    </tr>
+    <tr>
+      <th colspan="7" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>by Time of Day</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1"></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2">
+        <span class="gt_column_spanner">Morning</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2">
+        <span class="gt_column_spanner">Afternoon</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2">
+        <span class="gt_column_spanner">Redeye</span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Destination</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Flights</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Destination</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Flights</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Destination</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Flights</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left gt_stub"></td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">1921</td>
+      <td class="gt_row gt_center">SFO</td>
+      <td class="gt_row gt_center">2495</td>
+      <td class="gt_row gt_center">SFO</td>
+      <td class="gt_row gt_center">836</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub"></td>
+      <td class="gt_row gt_center">SFO</td>
+      <td class="gt_row gt_center">1780</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">1643</td>
+      <td class="gt_row gt_center">PHX</td>
+      <td class="gt_row gt_center">587</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub"></td>
+      <td class="gt_row gt_center">PHX</td>
+      <td class="gt_row gt_center">1454</td>
+      <td class="gt_row gt_center">PHX</td>
+      <td class="gt_row gt_center">1504</td>
+      <td class="gt_row gt_center">SJC</td>
+      <td class="gt_row gt_center">572</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub"></td>
+      <td class="gt_row gt_center">ORD</td>
+      <td class="gt_row gt_center">1409</td>
+      <td class="gt_row gt_center">SLC</td>
+      <td class="gt_row gt_center">1389</td>
+      <td class="gt_row gt_center">ANC</td>
+      <td class="gt_row gt_center">517</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub"></td>
+      <td class="gt_row gt_center">LAX</td>
+      <td class="gt_row gt_center">1316</td>
+      <td class="gt_row gt_center">LAS</td>
+      <td class="gt_row gt_center">1308</td>
+      <td class="gt_row gt_center">LAX</td>
+      <td class="gt_row gt_center">426</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_stub gt_right gt_grand_summary_row gt_first_grand_summary_row">Total</td>
+      <td class="gt_row gt_center gt_grand_summary_row gt_first_grand_summary_row">&mdash;</td>
+      <td class="gt_row gt_center gt_grand_summary_row gt_first_grand_summary_row">7,880</td>
+      <td class="gt_row gt_center gt_grand_summary_row gt_first_grand_summary_row">&mdash;</td>
+      <td class="gt_row gt_center gt_grand_summary_row gt_first_grand_summary_row">8,339</td>
+      <td class="gt_row gt_center gt_grand_summary_row gt_first_grand_summary_row">&mdash;</td>
+      <td class="gt_row gt_center gt_grand_summary_row gt_first_grand_summary_row">2,938</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<p>For this table, as opposed to the table in the second section, I wanted to encourage vertical scanning, to encourage the viewer to note the sequential ordering of the rows, i.e., the first row corresponds to the top flight for each timeframe. Fortunately, I didn’t have to change much from the default <code>gt</code> settings, just tinker with a titles to get the columns arranged in a more harmonious way. I really wanted to find a way to visually separate each timeframe’s data, but had trouble finding how to add vertical bars to separate the groups…although that may have ended up a bit chaotic anyway. Spanning labels will have to do! I do feel like adding the row for the total flights helped a bit, as we can distinctively see three values, indicating three groups. I think this is a pretty cool analysis of the dataset, particularly because it shows rather in-depth information about the distribution of top flights for each time of day, but also the total flights. Redeyes are definitely less popular/frequent, unsurprisingly!</p>
+<p>As we can see, there are many interesting aspects of the <code>flights</code> dataset that can be explored using nothing more than the humble table. With <code>gt</code>, we can create elegant, easy-to-read tables even for rather complex data!</p>
+</div>

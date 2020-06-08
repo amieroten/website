@@ -1,5 +1,5 @@
 ---
-title: "All About the Population Pyramid!"
+title: "Investigating PDX Flights Data using Tables!"
 diagram: yes
 date: '2020-06-08'
 math: yes
@@ -7,3 +7,187 @@ image:
   caption: ''
   placement: 3
 ---
+
+This post is devoted to answering a couple of questions about flights in and out of PDX, in the form of custom R tables (primarily using the fantastic `gt` library!). Not only will the questions be answered and tables displayed, but the code for how to wrangle the data and build the tables is included, as well as some narration on what did and did not work. On we go!
+
+___
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(extrafont)
+library(gt)
+library(ggplot2)
+library(tidyverse)
+library(knitr)
+library(tidyr)
+#font_import()
+data("flights", package = "pnwflights14")
+```
+
+### Analysis #1: Most Traveled Destination, per Month
+
+I'd like to take a look at which destinations departing from PDX are the most frequently travelled, broken down by month, along with the flight count for each destination. It's tricky to make predictions, but I'd think that a destination like Hawaii or Florida might be more popular in the cooler months, whereas more exotic, internations locations like London or Japan might be more popular in the warmer months, corresponding to the summertime where many tend to take longer trips. But, let's take a look and find out!
+
+```{r}
+pdx_flights_dest <- flights %>%
+               filter(origin == "PDX") %>%
+               group_by(month, dest) %>%
+               summarise(n = n()) %>%
+               group_by(month) %>%
+               top_n(1, n)
+pdx_flights_dest
+```
+
+Wow...what a terribly dull outcome, not particularly table-worthy. Let's try excluding San Francisco and see what shakes out. We'll take a chance and go ahead and print this information in an attractive table format, using the `gt` library:
+
+```{r}
+pdx_flights_dest_noSF <- flights %>%
+               filter(origin == "PDX") %>%
+               arrange(month) %>%
+               group_by(month, dest) %>%
+               summarise(n = n()) %>%
+               group_by(month) %>%
+               filter(dest != "SFO") %>%
+               top_n(1, n) %>%
+               ungroup() %>%
+               mutate(month = month.name[month])
+
+pdx_flights_dest_noSF
+
+pdx_flights_dest_noSF_gt <- pdx_flights_dest_noSF %>% gt() %>%
+                       tab_options(row.striping.background_color = "#f9f9f9",
+                                   row.striping.include_table_body = TRUE,
+                                   row.striping.include_stub = TRUE) %>%
+                       tab_header(title="Top Destinations out of PDX, By Month",
+                                  subtitle="(Excluding SFO)") %>%
+                       cols_label(month = "Month", 
+                                  dest = "Destination", 
+                                  n = "Number of Flights") %>%
+                       cols_align(align = "center",
+                                  columns = vars(dest))
+                       
+                       
+
+pdx_flights_dest_noSF_gt
+```
+
+I suppose this is somewhat interesting in a couple of respects. First, we can see that, at least judging by the count for the top destination, the airport is busier during the warmer months, with November through February having markedly fewer flights than the other part of the year. We can see that Denver is a popular/common destination year-round (I think PDX-DEN is a big Frontier route, often on my way to visit family Illinois I end up with a layover there). But, during the cooler months, the destinations sway a bit warmer; Los Angeles and Phoenix. 
+
+I chose to use `gt` since I really like the clean look and simplicity of the tables it generates, especially for a straightforward dataset like this one. I didn't end up changing the defaults much, since I liked the column/row separations already. I did center the destination column, as it was left-aligned by default, and butted up against the months a bit too much. The destination and flight number columns make clean lines, and it is easy to read them up-and-down, and that really is the most important comparison here; how each column relates to the next sequentially/temporily, not necessarily how the destination relates to its' associated number of flights.
+
+### Analysis #2: Finding Busy Aircraft 
+
+I am a nervous flyer, and definitely notice the wear and tear on a plane before I get on it...the longer it's been in the air, the more reliable it has shown itself to be? So I tell myself...hah! But, I thought this was an interesting line of investigation. I'm going to make a table that displays the top five aircraft with the most flight time accumulated, and also include the associated airline, and the top two routes each aircraft flies.
+
+```{r}
+pdx_flights_aircraft <- flights %>% 
+                        filter(origin == "PDX", tailnum!="") %>%
+                        select(tailnum, dest, air_time, carrier) %>%
+                        group_by(tailnum, carrier, dest) %>%
+                        summarize(airtime = sum(air_time)) %>%
+                        add_count(name = "total_airtime", wt=airtime) %>%
+                        arrange(desc(total_airtime), desc(airtime)) 
+
+first_set = seq(1, 15, by=3)
+second_set = seq(2, 15, by=3)
+third_set = seq(3, 15, by=3)
+
+pdx_flights_aircraft_filtered <- pdx_flights_aircraft %>%
+                        filter(total_airtime %in% unique(pdx_flights_aircraft$total_airtime)[1:5]) %>%
+                        group_by(tailnum) %>%
+                        top_n(3, wt = airtime) %>%
+                        select(-airtime) %>%
+                        mutate(dest_rank = case_when(row_number() %in% first_set ~ "dest_1",
+                                                     row_number() %in% second_set ~ "dest_2", 
+                                                     row_number() %in% third_set ~ "dest_3")) %>%
+                        pivot_wider(names_from = dest_rank, values_from = dest) %>%
+                        mutate(carrier = ifelse(carrier == 'OO', "SkyWest", "Alaska")) %>%
+                        ungroup()
+                      
+pdx_flights_aircraft_filtered %>% gt() %>%
+                       tab_options(row.striping.background_color = "#f9f9f9",
+                                   row.striping.include_table_body = TRUE,
+                                   row.striping.include_stub = TRUE) %>%
+                       tab_header(title="Busiest Aircraft, by Total Airtime") %>%
+                       tab_spanner(label = "Aircraft Details",
+                                   columns = vars(tailnum, carrier, total_airtime)) %>%
+                       tab_spanner(label = "Busiest Routes",
+                                  columns = vars(dest_1, dest_2, dest_3)) %>%
+                       cols_label(tailnum = "Tail\nNumber",
+                                  carrier = "Carrier",
+                                  total_airtime = "Total Airtime \n (min)",
+                                  dest_1 = "First",
+                                  dest_2 = "Second",
+                                  dest_3 = "Third") %>%
+                       cols_align(align = "center",
+                                  columns = vars(total_airtime, dest_1, dest_2))
+```
+
+This was a pretty fun, but involved task. I first played a bit with `kable` in an attempt to do something different, but it just didn't make a very attractive table, so I switched back to `gt`. Since there are a number of different types of information included in this table, I decided to make use of the `tab_spanner` option to call attention to that fact and do a bit of grouping. Then, I added striping, since in this case, the important grouping is by row,  not necessarily comparing each row to each other, so I decided to encourage horizontal scanning of the table using this method.
+
+### Analysis #3 Time of Day
+
+I'm curious to see whether certain destinations commonly correspond to morning, afternoon/evening, or red-eye flights, and also the relative representation of each type of flight. I'll consider flights that leave between 5-11am morning flights, 11-8pm afternoon/evening flights, and the remainder red-eye flights (although these distinctions may not be perfect). I think this table is going to end up looking rather similar to the one above...we will see.
+
+```{r}
+first_set = seq(1, 15, by=5)
+second_set = seq(2, 15, by=5)
+third_set = seq(3, 15, by=5)
+fourth_set = seq(4, 15, by=5)
+fifth_set = seq(5, 15, by=5)
+
+pdx_flights_timeofday <- flights %>% 
+                        filter(origin == "PDX", !is.na(dep_time))%>%
+                        select(dest, dep_time) %>%
+                        mutate(time_of_day = case_when(dep_time >= 500 & dep_time < 1100 ~ "morning",
+                                                       dep_time >= 1100 & dep_time < 1900 ~ "evening",
+                                                       TRUE ~ "redeye")) %>%
+                        group_by(time_of_day, dest) %>%
+                        count() %>%
+                        group_by(time_of_day) %>%
+                        arrange(desc(n)) %>%
+                        top_n(5, n) %>%
+                        mutate(dest_rank = case_when(row_number() %in% first_set ~ "dest_1",
+                                                     row_number() %in% second_set ~ "dest_2",
+                                                     row_number() %in% third_set ~ "dest_3",
+                                                     row_number() %in% fourth_set ~ "dest_4",
+                                                     row_number() %in% fifth_set ~ "dest_5")) %>%
+                        pivot_wider(names_from = c(time_of_day), 
+                                    values_from = c(dest, n)) %>%
+                        mutate(dest_rank = NULL) 
+
+column_order <- c("dest_morning", "n_morning", 
+                  "dest_evening", "n_evening",
+                  "dest_redeye", "n_redeye")
+
+pdx_flights_timeofday <- pdx_flights_timeofday[, column_order]
+  
+pdx_flights_timeofday %>% gt() %>%
+                       # tab_options(row.striping.background_color = "#f9f9f9",
+                       #             row.striping.include_table_body = TRUE,
+                       #             row.striping.include_stub = TRUE) %>%
+                       tab_header(title="Most Frequent Destinations from PDX",
+                                  subtitle = "by Time of Day") %>%
+                       tab_spanner(label = "Morning",
+                                   columns = vars(dest_morning, n_morning)) %>%
+                       tab_spanner(label = "Afternoon",
+                                  columns = vars(dest_evening, n_evening)) %>%
+                       tab_spanner(label = "Redeye",
+                                  columns = vars(dest_redeye, n_redeye)) %>%
+                       cols_label(dest_morning = "Destination",
+                                  n_morning = "Flights",
+                                  dest_evening = "Destination",
+                                  n_evening = "Flights",
+                                  dest_redeye = "Destination",
+                                  n_redeye = "Flights") %>%
+                        cols_align(align = "center",
+                                   columns = vars(dest_morning, dest_evening, dest_redeye)) %>%
+                        summary_rows(columns = vars(n_morning, n_evening, n_redeye),
+                                     fns = list(Total = ~sum(.)),
+                                     formatter = fmt_number,
+                                     decimals = 0)
+```
+
+For this table, as opposed to the table in the second section, I wanted to encourage vertical scanning, to encourage the viewer to note the sequential ordering of the rows, i.e., the first row corresponds to the top flight for each timeframe. Fortunately, I didn't have to change much from the default `gt` settings, just tinker with a titles to get the columns arranged in a more harmonious way. I really wanted to find a way to visually separate each timeframe's data, but had trouble finding how to add vertical bars to separate the groups...although that may have ended up a bit chaotic anyway. Spanning labels will have to do! I do feel like adding the row for the total flights helped a bit, as we can distinctively see three values, indicating three groups. I think this is a pretty cool analysis of the dataset, particularly because it shows rather in-depth information about the distribution of top flights for each time of day, but also the total flights. Redeyes are definitely less popular/frequent, unsurprisingly!
+
+As we can see, there are many interesting aspects of the `flights` dataset that can be explored using nothing more than the humble table. With `gt`, we can create elegant, easy-to-read tables even for rather complex data!
