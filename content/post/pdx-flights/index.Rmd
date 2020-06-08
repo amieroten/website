@@ -105,9 +105,9 @@ pdx_flights_aircraft_filtered <- pdx_flights_aircraft %>%
                         ungroup()
                       
 pdx_flights_aircraft_filtered %>% gt() %>%
-                       tab_options(row.striping.background_color = "#f9f9f9",
-                                   row.striping.include_table_body = TRUE,
-                                   row.striping.include_stub = TRUE) %>%
+                       # tab_options(row.striping.background_color = "#f9f9f9",
+                       #             row.striping.include_table_body = TRUE,
+                       #             row.striping.include_stub = TRUE) %>%
                        tab_header(title="Busiest Aircraft, by Total Airtime") %>%
                        tab_spanner(label = "Aircraft Details",
                                    columns = vars(tailnum, carrier, total_airtime)) %>%
