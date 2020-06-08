@@ -13,6 +13,18 @@
     </image>
     
     <item>
+      <title>All About the Population Pyramid!</title>
+      <link>https://vigilant-golick-64a677.netlify.app/post/pdx-flights/</link>
+      <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
+      <guid>https://vigilant-golick-64a677.netlify.app/post/pdx-flights/</guid>
+      <description>
+
+
+
+</description>
+    </item>
+    
+    <item>
       <title>Exploring Color with Coronavirus and Toilet Paper Data!</title>
       <link>https://vigilant-golick-64a677.netlify.app/post/tp-panic/</link>
       <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
@@ -135,7 +147,186 @@ tp_plot_bad&lt;/code&gt;&lt;/pre&gt;
       <description>
 
 
+&lt;p&gt;For this post, I want to showcase my first interactive Shiny app, both the final product, and below it, the code used to generate the application. Although yes, this does use more COVID data, it was a very nice exploration of how to go about using Shiny, and I must say, after working with it, I think it’s a tool that I will start using often to explore large datasets!&lt;/p&gt;
+&lt;div id=&#34;the-application&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;The Application:&lt;/h3&gt;
+&lt;iframe src=&#34;https://amie-roten.shinyapps.io/lab7/&#34; width=&#34;960&#34; height=&#34;800px&#34;&gt;
+&lt;/iframe&gt;
+&lt;p&gt;This application uses Kieran Healy’s &lt;code&gt;covdata&lt;/code&gt; package, a comprehensive collection of data relating to the Coronavirus pandemic. I decided to use the Apple U.S. Mobility dataset, specifically the vehicular-travel data, to create the application above. The app includes three identical widgets that can be used to select three different states in order to compare and contrast the data. The widgets’ upper plots show the daily case increase, and the bottom plot shows the daily mobility index, that is how the day’s mobility data differs from the baseline taken in January. The yellow indicates a lower level of travel for that particular day, and the green indicates more travel. Please explore the application and see what interesting observations you can make!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-code&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;The Code:&lt;/h3&gt;
+&lt;p&gt;Below is the code used to generate the Shiny app&lt;/p&gt;
+&lt;p&gt;The first section is simply the data wrangling process, processing the raw data in the &lt;code&gt;covdata&lt;/code&gt; package in order to get it in the correct format for use in the plots. This is not an inherant piece of creating a Shiny application, but it useful to demonstrate the process of reshaping and winnowing down the dataset for this particular use!&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(shiny)
+library(gt)
+library(covdata)
+library(ggpubr)
+library(tidyverse)
 
+case_data &amp;lt;- nytcovstate
+locations &amp;lt;- sort(unique(case_data$state))
+mobility_data &amp;lt;- apple_mobility %&amp;gt;%
+                 filter(region %in% locations) %&amp;gt;%
+                 select(-alternative_name, -geo_type) %&amp;gt;%
+                 mutate(state = region,
+                        region = NULL)
+
+data &amp;lt;- full_join(mobility_data, case_data) %&amp;gt;%
+        mutate(fips = replace_na(fips, 0),
+               cases = replace_na(cases, 0),
+               deaths = replace_na(deaths, 0)) %&amp;gt;%
+        group_by(state) %&amp;gt;% 
+        arrange(date, .by_group = TRUE) %&amp;gt;%
+        mutate(daily_cases = (cases - (lag(cases)))) %&amp;gt;%
+        ungroup() %&amp;gt;%
+        mutate(daily_cases = replace_na(daily_cases, 0))
+
+transpo &amp;lt;- c(unique(data$transportation_type))
+vec_brks &amp;lt;- c(-50, 0, 50)
+vec_labs &amp;lt;- vec_brks + 100
+start_date &amp;lt;- sort(data$date)[1]
+end_date &amp;lt;- sort(desc(data$date))[1]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Creating a Shiny application requires two main components, the &lt;code&gt;ui&lt;/code&gt; componant, which is where the application creator can both tweak the layout of the application, as well as create interactive elements where the user can select from a number of options. For example, &lt;code&gt;dateRangeInput()&lt;/code&gt; creates a widget where the user can enter a range of dates. The creator can select what the possible range can be, eliminate possibility for invalid date selections. There are many different input functions, and the elements can be arranged in many configurations in order to get the app looking just right! It’s a wonderland (and/or a real time-sink) for people like me who get endless satisfaction from minor nudges and adjustments to get things looking just right. :D&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ui &amp;lt;- fluidPage(
+titlePanel(&amp;quot;Apple U.S. Mobility Dataset during COVID-19 Crisis&amp;quot;),
+
+fluidRow(
+   column(5, h3(&amp;quot;Please begin by selecting your desired date range: &amp;quot;)),
+   column(3, dateRangeInput(&amp;#39;dateRange&amp;#39;, label = &amp;#39;&amp;#39;, format=&amp;#39;mm-dd-yyyy&amp;#39;, separator=&amp;#39; to &amp;#39;,
+                            start = &amp;#39;2020-01-13&amp;#39;, end = &amp;#39;2020-05-13&amp;#39;, min = &amp;#39;2020-01-13&amp;#39;, max = &amp;#39;2020-05-13&amp;#39;)),
+   column(4, h5(&amp;quot;Upper plot displays the daily increase in COVID-19 cases for selected location. 
+                Lower plot shows corresponding Apple Maps&amp;#39; mobility data, in terms of trends in driving since mid-January 2020 (dark green
+                indicates a relative increase, yellow indicates a relative decrease). Did less driving correspond to \&amp;quot;flattening the curve\&amp;quot;? We can find out!&amp;quot;))
+),
+
+hr(),
+
+fluidRow(
+   column(4, plotOutput(&amp;quot;plot1&amp;quot;)),
+   column(4, plotOutput(&amp;quot;plot2&amp;quot;)),
+   column(4, plotOutput(&amp;quot;plot3&amp;quot;))
+),
+
+fluidRow(
+   column(3, offset = 1, selectInput(&amp;quot;loc1&amp;quot;, label=&amp;quot;Location 1&amp;quot;, multiple=FALSE,
+                                     locations, width=&amp;#39;70%&amp;#39;, size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput(&amp;quot;loc2&amp;quot;, label=&amp;quot;Location 2&amp;quot;, multiple=FALSE,
+                                     locations, width=&amp;#39;70%&amp;#39;, size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput(&amp;quot;loc3&amp;quot;, label=&amp;quot;Location 3&amp;quot;, multiple=FALSE, 
+                                     locations, width=&amp;#39;70%&amp;#39;, size=5, selectize=FALSE)),
+),
+
+h5(&amp;quot;Data from Kieran Healy&amp;#39;s covdata package: https://kjhealy.github.io/covdata/. Bottom plots *very heavily* inspired by apple_mobility dataset vignette!&amp;quot;)
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The second main component is the &lt;code&gt;server&lt;/code&gt; section. This is where the dynamic outputs such as plots, text, and other elements, are created and updated, and then can be placed via the &lt;code&gt;ui&lt;/code&gt; section. In this case, we have six plots (three sets of two) which use input from the selection widgets in the section above to dynamically change and reflect the subset of the data the user would like to see.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;server &amp;lt;- function(input, output, session) {
+   
+output$plot1 &amp;lt;- renderPlot({
+   case_plot1 &amp;lt;- data %&amp;gt;%
+      filter(state == input$loc1,
+             #transportation_type %in% transpo_filter(),
+             date &amp;gt;= input$dateRange[1] &amp;amp; date &amp;lt;= input$dateRange[2]) %&amp;gt;%
+      ggplot(mapping=aes(x=date, y=daily_cases)) +
+      geom_line() +
+      scale_y_log10(limits=c(1, 3000)) +
+      theme(legend.position = &amp;quot;none&amp;quot;) +
+      xlab(&amp;quot;&amp;quot;) +
+      ylab(&amp;quot;Daily Case\nIncrease&amp;quot;)
+   
+     mobi_plot1 &amp;lt;- data %&amp;gt;% 
+     filter(state == input$loc1,
+            #transportation_type %in% transpo_filter(),
+            date &amp;gt;= input$dateRange[1] &amp;amp; date &amp;lt;= input$dateRange[2]) %&amp;gt;% 
+     mutate(over_under = index &amp;lt; 100,
+              index = index - 100) %&amp;gt;%
+     ggplot(mapping=aes(x=date, y=index, fill=over_under, col=over_under)) +
+     geom_col() +
+     scale_color_manual(values = c(&amp;#39;#004D40&amp;#39;, &amp;#39;#FFC107&amp;#39;)) +
+     scale_fill_manual(values = c(&amp;#39;#004D40&amp;#39;, &amp;#39;#FFC107&amp;#39;)) +
+     theme(legend.position = &amp;quot;none&amp;quot;) +
+     scale_y_continuous(limits = c(-150, 150)) +
+     geom_hline(yintercept = 0, color = &amp;quot;gray40&amp;quot;) +
+     xlab(&amp;quot;Date&amp;quot;) +
+     ylab(&amp;quot;Mobility Index&amp;quot;)
+     
+     ggarrange(case_plot1, mobi_plot1, heights = c(0.8, 2),
+               ncol = 1, nrow = 2, align = &amp;#39;v&amp;#39;,
+               legend = NULL) 
+ })
+ 
+output$plot2 &amp;lt;- renderPlot({
+   case_plot2 &amp;lt;- data %&amp;gt;%
+      filter(state == input$loc2,
+             #transportation_type %in% transpo_filter(),
+             date &amp;gt;= input$dateRange[1] &amp;amp; date &amp;lt;= input$dateRange[2]) %&amp;gt;%
+      ggplot(mapping=aes(x=date, y=daily_cases)) +
+      geom_line() +
+      scale_y_log10(limits=c(1, 3000)) +
+      theme(legend.position = &amp;quot;none&amp;quot;) +
+      xlab(&amp;quot;&amp;quot;) +
+      ylab(&amp;quot;Daily Case\nIncrease&amp;quot;)
+   
+   mobi_plot2 &amp;lt;- data %&amp;gt;% 
+      filter(state == input$loc2,
+             #transportation_type %in% transpo_filter(),
+             date &amp;gt;= input$dateRange[1] &amp;amp; date &amp;lt;= input$dateRange[2]) %&amp;gt;% 
+      mutate(over_under = index &amp;lt; 100,
+             index = index - 100) %&amp;gt;%
+      ggplot(mapping=aes(x=date, y=index, fill=over_under, col=over_under)) +
+      geom_col() +
+      theme(legend.position = &amp;quot;none&amp;quot;) +
+      scale_y_continuous(limits = c(-150, 150)) +
+      scale_color_manual(values = c(&amp;#39;#004D40&amp;#39;, &amp;#39;#FFC107&amp;#39;)) +
+      scale_fill_manual(values = c(&amp;#39;#004D40&amp;#39;, &amp;#39;#FFC107&amp;#39;)) +
+      geom_hline(yintercept = 0, color = &amp;quot;gray40&amp;quot;) +
+      xlab(&amp;quot;Date&amp;quot;) +
+      ylab(&amp;quot;Mobility Index&amp;quot;)
+   
+   ggarrange(case_plot2, mobi_plot2, heights = c(0.8, 2),
+             ncol = 1, nrow = 2, align = &amp;#39;v&amp;#39;,
+             legend = NULL) 
+})
+
+
+output$plot3 &amp;lt;- renderPlot({
+   case_plot3 &amp;lt;- data %&amp;gt;%
+      filter(state == input$loc3,
+             #transportation_type %in% transpo_filter(),
+             date &amp;gt;= input$dateRange[1] &amp;amp; date &amp;lt;= input$dateRange[2]) %&amp;gt;%
+      ggplot(mapping=aes(x=date, y=daily_cases)) +
+      theme(legend.position = &amp;quot;none&amp;quot;) +
+      scale_y_log10(limits=c(1, 3000)) +
+      geom_line() +
+      xlab(&amp;quot;&amp;quot;) +
+      ylab(&amp;quot;Daily Case\nIncrease&amp;quot;)
+   
+   mobi_plot3 &amp;lt;- data %&amp;gt;% 
+      filter(state == input$loc3,
+             #transportation_type %in% transpo_filter(),
+             date &amp;gt;= input$dateRange[1] &amp;amp; date &amp;lt;= input$dateRange[2]) %&amp;gt;% 
+      mutate(over_under = index &amp;lt; 100,
+             index = index - 100) %&amp;gt;%
+      ggplot(mapping=aes(x=date, y=index, fill=over_under, col=over_under)) +
+      geom_col() +
+      theme(legend.position = &amp;quot;none&amp;quot;) +
+      scale_color_manual(values = c(&amp;#39;#004D40&amp;#39;, &amp;#39;#FFC107&amp;#39;)) +
+      scale_fill_manual(values = c(&amp;#39;#004D40&amp;#39;, &amp;#39;#FFC107&amp;#39;)) +
+      scale_y_continuous(limits = c(-150, 150)) +
+      geom_hline(yintercept = 0, color = &amp;quot;gray40&amp;quot;) +
+      xlab(&amp;quot;Date&amp;quot;) +
+      ylab(&amp;quot;Mobility Index&amp;quot;)
+   
+   ggarrange(case_plot3, mobi_plot3, heights = c(0.8, 2),
+             ncol = 1, nrow = 2, align = &amp;#39;v&amp;#39;,
+                             legend = NULL) 
+})
+
+}
+
+shinyApp(ui = ui, server = server)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I did not go into much depth explaining the ins-and-outs of creating a Shiny app, but hopefully this gives a quick taste of what can be done with the library, and inspires you to make a Shiny app of your own! More information on how to use Shiny can be found here: &lt;a href=&#34;https://shiny.rstudio.com/tutorial/&#34; class=&#34;uri&#34;&gt;https://shiny.rstudio.com/tutorial/&lt;/a&gt;, and in many places on the web.&lt;/p&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -144,350 +335,6 @@ tp_plot_bad&lt;/code&gt;&lt;/pre&gt;
       <link>https://vigilant-golick-64a677.netlify.app/post/final-viz/</link>
       <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
       <guid>https://vigilant-golick-64a677.netlify.app/post/final-viz/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;CS530_ARoten_GraphBrief1_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;A Population Pyramid, also known as an Age and Sex Pyramid is a
-histogram-like visualization often used to provide a succinct, elegant
-summary of differences in distribution of groups within a population.
-The population is broken up by a two-level factor variable, with one on
-each side of the visualization, and then the data is binned based on a
-continuous variable. Although population pyramids typically use a factor
-variable of sex (male and female), and a continuous variable of age, and
-are often used to convey such information as a country’s fertility rate,
-the visualization can be generalized to other situations, in which it
-may be referred to as simply a “dual-sided histogram”. The type of
-visualization is a handy way to enhance a typical histogram by splitting
-it into two factor variables in order to facilitate comparison across
-groups within a population, while still being able to make observations
-about the population as a whole.&lt;/p&gt;
-&lt;h2 id=&#34;how-to-read-a-population-pyramid-visualization&#34;&gt;How to Read a Population Pyramid Visualization&lt;/h2&gt;
-&lt;p&gt;There are several useful takeaways that can be gleaned quickly and
-easily using a population pyramid:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;How the overall distribution changes on the basis of &lt;em&gt;age&lt;/em&gt;&lt;/strong&gt;: To
-get a sense of the age distribution for the overall population, one
-can simply examine the shape of the plot/pyramid, focusing on how
-&lt;em&gt;width changes from top to bottom&lt;/em&gt;. The wider the plot at any
-particular height, the more individuals in the age group
-corresponding to that position on the y-axis contribute to the
-overall population. So, if the “base”/bottom is wide compared to the
-rest of the plot, giving it a “pyramid”-like shape, the population
-is comprised of mostly younger individuals. However, if the overall
-“pyramid” is more rectangular, the age distribution is balanced. An
-upside-down pyramid would indicate a generally older population, and
-a “bulge” could indicate something like a baby boom around that
-particular age bracket’s birth years.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;How the overall distribution differs based on &lt;em&gt;sex&lt;/em&gt;&lt;/strong&gt;: This is a
-fairly simple piece of information to glean from this type of plot –
-if the pyramid is &lt;em&gt;heavier on one side than the other&lt;/em&gt;, then the
-population is skewed more heavily toward one particular sex than the
-other.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;How the &lt;em&gt;sex&lt;/em&gt; distribution changes as a &lt;em&gt;function of age&lt;/em&gt;&lt;/strong&gt;: We
-also can take into account both of the variables above and determine
-whether the sex distribution differs based on the age of that
-segment of the population. It’s difficult to think of an example
-that is not tragic, but, say, a plot of the demographics of the U.S.
-shortly after World War II may have more females than males in the
-age bracket 18-25 years old, but would likely be balanced in age
-brackets younger and older. In this case, the pyramid would be
-&lt;em&gt;vertically asymmetric&lt;/em&gt;, with a &lt;em&gt;“notch”&lt;/em&gt; on the male side at that
-age bracket. Examining the plot for these &lt;em&gt;notches&lt;/em&gt; is a quick,
-simple way to determine whether the sex distribution differs for a
-particular age group.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Finally, in traditional population pyramids which depict age/sex
-distribution in a particular region, there are three shapes so commonly
-seen that they are given specific labels: expanding, contracting, and
-stationary, as shown below (graphic, as well as paraphrased information
-on each shape from a paper by Daniel Staetsky, full citation can be
-found in final section):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;pyramid_types.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;A very triangular shape, with many more young representatives than
-older, as in the &lt;strong&gt;expanding&lt;/strong&gt; pyramid, is indicative of a population
-that is growing, along with high fertility/mortality rates. The
-&lt;strong&gt;contracting&lt;/strong&gt; shape, where the pyramid is pinched at the base is
-indicative of low fertility/mortality rates, corresponding to a
-population with few young people, relative to the rest of the group.
-Finally, the &lt;strong&gt;stationary&lt;/strong&gt; pyramid, which has a columnal shape, tends
-to correspond to stable populations, with balanced, low fertility and
-mortality rates.&lt;/p&gt;
-&lt;p&gt;Disclosure: Given the wide spectrum of gender identities present in
-modern society, I can absolutely understand how some may object to the
-binary nature of the population pyramid. Although I, and most who employ
-this type of visualization, specify the binary factor as biological
-“sex”, not gender, issues still remain. After a quick search, it doesn’t
-look like many have addressed this issue currently, but I would not be
-surprised to see multi-way analyses in the future (population stars??)!&lt;/p&gt;
-&lt;h2 id=&#34;data&#34;&gt;Data&lt;/h2&gt;
-&lt;p&gt;The data used to generate the examples at the top of this page comes
-from the United States Consumer Product Safety Commission’s National
-Electronic Injury Surveillance System dataset, which can be found at the
-following link:
-&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34;&gt;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&lt;/a&gt;&lt;/a&gt;
-. This dataset is quite rich, containing data gathered from a large
-number of emergency departments in the US. The overall dataset contains
-demographic information, including sex, age, and ethnicity, as well as a
-number of other interesting pieces of information including whether a
-particular product was involved in the injury (as in the left plot
-above, which includes all ER visits in the dataset from 2019 which
-involved a trampoline), and whether drugs or alcohol were involved in
-the injury. The dataset also includes for each datapoint/injury, a brief
-narrative outlining the loose details of the incident. The website
-contains a neat query system where the user can narrow down the dataset
-by filtering for year, product involved, and other data characteristics.&lt;/p&gt;
-&lt;h2 id=&#34;figure-specific-details&#34;&gt;Figure-Specific Details&lt;/h2&gt;
-&lt;p&gt;I opted to use a population pyramid for a slighly atypical analysis in
-the , that is, to examine the demographics of patients who visited a
-number of U.S. emergency rooms in 2019, using the dataset described
-above. I chose to narrow the dataset to two types of emergency room
-incidents, to depict two very different-looking population pyramids: the
-left plot shows the distribution of patients who visited the ER due to
-trampoline-related accidents, and the right plot shows the same of
-patients who visited the ER due to incidents involving the use of
-alcohol.&lt;/p&gt;
-&lt;p&gt;I’ll use the general framework for interpreting a population pyramid
-described above to discuss the information I gleaned from these plots,
-first analyzing the plot on the left, then the plot on the right.&lt;/p&gt;
-&lt;h3 id=&#34;trampoline-based-injuries&#34;&gt;Trampoline-Based Injuries&lt;/h3&gt;
-&lt;p&gt;As stated, this plot shows a breakdown of the age and sex
-characteristics of the group of individuals who visited the emergency
-room due to trampoline accidents in 2019. Prior to generating the plot,
-I hypothesized that the shape would be heavy at the base, and thinner on
-the top, as children are typical trampoline users, and I recall from my
-daredevil youth that I much preferred playing on a trampoline without a
-protective net. Though as an adult, I still struggle to ignore the siren
-song of the trampoline, I tend to be more careful than when I was a
-child. Stereotypes might lead some to believe that male children are
-more prone to taking trampoline-related risks, but I knew many a
-reckless young female when I was growing up, so I hypothesized a
-symmetric pyramid.&lt;/p&gt;
-&lt;p&gt;Indeed, this is what the plot shows – a &lt;em&gt;very&lt;/em&gt; heavy base, with a peak
-around 9-10 years old. Around the teenage years, these injuries drop off
-significantly, although not completely, perhaps in part due to some in
-the 25-40 year old age group having young children, and being tempted by
-their child’s trampoline. However, once we hit the mid-40’s, there are
-very few representatives from that cohort and older in this population.
-Additionally, the plot is quite &lt;em&gt;symmetric&lt;/em&gt; – males and females are
-more-or-less equally represented in this population. There doesn’t
-appear to be an interaction of age and sex, as there are no bulges or
-notches present on one side but not the other.&lt;/p&gt;
-&lt;h3 id=&#34;accidents-involving-alcohol&#34;&gt;Accidents Involving Alcohol&lt;/h3&gt;
-&lt;p&gt;A slightly more sobering (sorry!) analysis is on the right – a
-population pyramid showing the age/sex distribution amongst ER visits
-resulting from alcohol-related injuries. In this case, I did hypothesize
-a difference between sexes, with males making up a somewhat larger
-proportion of the population, though still a fair few females. I also
-predicted a pear-shaped pyramid, with very few representatives from the
-0-20 year old cohort, the bulk of patients in the 20-30 year old range,
-and a consistent taper down as age increased.&lt;/p&gt;
-&lt;p&gt;I was somewhat surprised by the shape of the resulting plot. Although
-I’d anticipated a plot that was &lt;em&gt;heavier on the male side than the
-female side&lt;/em&gt;, I hadn’t expected the difference to be so dramatic. Almost
-across the board, each male age cohort has about double (if not more)
-members than the corresponding female cohort. I was also surprised to
-see bimodal distributions on both sides, with a bulge from about the
-mid-teens through around 35, but then an even larger bulge in the older
-years, peaking around the early-to-mid sixties. Folks getting wild in
-their retirement years! Though females are represented less in the
-overall population distribution, these characteristics are still present
-in that sub-population’s distribution.&lt;/p&gt;
-&lt;p&gt;I could see analyses like these being useful for target specific groups
-to recieve safety training on a particular product, deciding who to
-design flyers for, which, say, encourage moderation and safety when
-consuming alcohol, or to determine suggested age ranges for certain play
-equipment.&lt;/p&gt;
-&lt;h2 id=&#34;presentation-tips&#34;&gt;Presentation Tips&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Color:&lt;/strong&gt; Typically, this type of visualization uses color in a simple
-fashion, either using a uniform color and annotating each side with the
-appropriate label, or selecting two distinct colors to distinguish
-between one side and the other. Since a population pyramid generally
-plots the distribution of males versus females, we often see plots that
-select pink for the female distribution and blue for the male
-distribution. However, this is a bit of an anachronism in today’s
-society, as these colors carry the weight of long-term stereotypical
-gender associations. Some argue that choosing these colors allows for
-speedy interpretation of the figure, however, if a reader has so little
-time or mental energy that scanning a legend is unmanagable, then, well,
-perhaps they should skip looking at the figure altogether.
-Interestingly, it has been suggested that simply flipping the colors
-around can be problematic, as it can lead to confusion due to the
-aforementioned speedy interpretation of those particular colors in a
-figure.&lt;/p&gt;
-&lt;p&gt;So, I chose to create a graph with different colors altogether, inspired
-by the color choices in the Telegraph; green for males, and purple for
-females. A discussion of the motivation behind this choice, as well as
-more detailed arguments against the selection of blue/pink to
-distinguish male/female populations can be found at the following link:
-&lt;a href=&#34;https://blog.datawrapper.de/gendercolor/&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://blog.datawrapper.de/gendercolor/&#34;&gt;https://blog.datawrapper.de/gendercolor/&lt;/a&gt;&lt;/a&gt;
-.&lt;/p&gt;
-&lt;p&gt;Although some may consider it an attractive or interesting design detail
-to apply a color gratient based on age, this is not a common choice. Not
-only is it unnecessary to code this using color, since the axis makes
-the age range quite clear, it could also distract readers.&lt;/p&gt;
-&lt;p&gt;Finally, avoid this color choice for this type of visualization at all
-costs! (But please do use this very attractive 70’s-inspired rainbow
-palette for your artistic projects!)&lt;/p&gt;
-&lt;a href=&#34;https://www.geo41.com/population-structure&#34;&gt; 
-&lt;img src=&#34;bad_color.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
-&lt;/a&gt;
-&lt;p&gt;&lt;strong&gt;Composition:&lt;/strong&gt; Since these plots are fairly straight-forward, there
-are only a few small details to keep in mind regarding composition. The
-first is that even if the most populous bin in on one side is less than
-the most populous bin on the other, the x-axis should range from [-n,
-n], with n corresponding to the most populous bin overall. Although
-this is a small detail, this places the line dividing the sex/two-factor
-distributions directly in the middle of the plot, which can aid in
-accurate comparison of one sub-population versus the other. Also, in my
-opinion, it is much more visually harmonious.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;CS530_ARoten_GraphBrief1_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Annotation:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The Population Pyramid is a useful visualization in no small part
-because of the rich possibilities of interpretation without the need for
-excessive labeling or annotation. However, if a particular feature of
-the shape of the plot corresponds to, say, a cultural event that is
-relevant to the context of the figure, it would be acceptable to add a
-small annotation to the plot, indicating the events related to the
-feature of the plot. As with all graph annotation, it is better to keep
-it minimal and clean. Below is an example of a well-annotated population
-pyramid (although perhaps with a bit much going on, I would personally
-keep it to one or two annotations):&lt;/p&gt;
-&lt;a href=&#34;http://japanjapan.blogspot.com/2010/06/japans-population-structure.html&#34;&gt; 
-&lt;img src=&#34;good_annotation.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
-&lt;/a&gt;
-&lt;p&gt;Although the annotations/labels add a fair bit of busyness to the
-figure, the story behind the plot is enriched with the additional
-details. Note that in addition to the annotations, the figure overlays
-the outline of a population pyramid from an earlier date on top of the
-more recent pyramid. This also allows additional temporal information to
-the figure’s story, which I find to be quite effective.&lt;/p&gt;
-&lt;p&gt;In contrast, here is a poorly annotated population pyramid:&lt;/p&gt;
-&lt;a href=&#34;https://pt.slideshare.net/JonathanHall66/analysing-populationpyramids/6?smtNoRedir=1&#34;&gt; 
-&lt;img src=&#34;bad_annotation.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
-&lt;/a&gt;
-&lt;p&gt;First of all…that font! But, that is not relevant to the discussion of
-the pyramid itself. In this case, although there is certainly
-information added through the annotations, the positioning and quantity
-of labels distracts from the overall impact of the figure. This quantity
-of information would be better suited to a narrative setting, alongside
-the figure, perhaps with numerical annotations indicating the feature of
-the plot that corresponds with the additional contextual information.
-However, the lines indicating the positions on the plat that correspond
-to each annotation are confusing, in that they point directly to one or
-the other side of the pyramid. This configuration could come across to
-the viewer as if only one of the sub-populations corresponds to the
-information in the annotation, e.g. the middle annotation on the
-right-hand side appears to be referring only to the female side of the
-pyramid, however, certainly females are not the only humans who will
-age!&lt;/p&gt;
-&lt;h2 id=&#34;methods&#34;&gt;Methods&lt;/h2&gt;
-&lt;p&gt;Below is the code used to create one of the population pyramids, broken
-up into a chunk that shows the data wrangling process, and then one
-showing the plot generation, including the &lt;code&gt;ggarrange()&lt;/code&gt; call that was
-used to combine the two plots.&lt;/p&gt;
-&lt;h3 id=&#34;data-wrangling&#34;&gt;Data Wrangling&lt;/h3&gt;
-&lt;p&gt;The data wrangling process was pretty straight-forward after downloading
-the data from the link provided in the data section, specifically
-downloading and working with the entire dataset from 2019. The .xlsx
-file consists of a row corresponding to each emergency room visit, and
-the columns to each piece of information related to that incident, so I
-simply had to narrow down the dataset to only include rows where the
-column &lt;code&gt;alcohol_involved&lt;/code&gt; was equal to one. I also filtered out rows
-with age values higher than 100, as there were some instances where the
-age column contained a code that was not the actual age in years. I also
-filtered out rows where the patient’s sex was unknown.&lt;/p&gt;
-&lt;p&gt;Since the dataset originally included column names with spaces, a
-configuration that does not play well with R code, I used the handy
-&lt;code&gt;janitor::clean_names()&lt;/code&gt; function to convert the column names into
-R-friendly strings. Finally, I replaced the 1/2 indicators with
-“Male”/“Female”, primarily as a hacky way of making the plot’s legend
-more attractive, although this could have been done directly during the
-plotting phase. Finally, I narrowed the dataset down to just the sex and
-age columns, which is all that was needed for the population pyramids.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;alcohol_data &amp;lt;- read_excel(&amp;quot;neiss2019.xlsx&amp;quot;) %&amp;gt;%
-                 janitor::clean_names() %&amp;gt;%
-                 filter(alcohol_involved == 1, sex != 0, age &amp;lt; 100) %&amp;gt;%
-                 mutate(sex = ifelse(sex == 1, &amp;quot;Male&amp;quot;, &amp;quot;Female&amp;quot;)) %&amp;gt;%
-                 select(sex, age)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;plotting&#34;&gt;Plotting&lt;/h3&gt;
-&lt;p&gt;The plots I created were adapted from code a couple of handy tutorials;
-the first two links in the citation section below. The two plots were
-then set up to display side-by-side using &lt;code&gt;ggarrange()&lt;/code&gt;. Each function
-call is annotated in the R chunk below:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;booze_pyramid &amp;lt;- ggplot(data = alcohol_data, aes(x = age, fill = sex)) +     # Basic ggplot call, 
-                                                                             # specifying age as the 
-                                                                             # x-values and the 
-                                                                             # fill value to be  
-                                                                             # selected based on the 
-                                                                             # sex value. 
-  
-                 geom_histogram(data = subset(alcohol_data, sex == &amp;quot;Male&amp;quot;),  # Creating the histogram 
-                                     bins = 35, color = &amp;quot;lightgrey&amp;quot;) +       # for the male data.
-  
-                 geom_histogram(data = subset(alcohol_data, sex == &amp;quot;Female&amp;quot;),# Creating the histogram for
-                               mapping = aes(y = - ..count.. ),              # the female data. Note that
-                               position = &amp;quot;identity&amp;quot;,                        # the count/y is mapped to
-                               bins = 35, color = &amp;quot;lightgrey&amp;quot;) +             # negative values, to flip
-                                                                             # the bars.
-  
-                 scale_y_continuous(limits = c(-350, 350), labels = abs) +   # Manually setting the axis
-                 scale_x_continuous(limits = c(0, 100)) +                    # ranges.
-  
-                 coord_flip() +                                              # Flipping the x/y axes.
-  
-                 ggtitle(&amp;quot;Involving Alcohol-Use&amp;quot;) +                          # Tweaking the title and 
-                 ylab(&amp;quot;Count&amp;quot;) +                                             # other details.
-                 theme_minimal() +
-                 theme(plot.title = element_text(size = 10, hjust = 0.5)) +
-                 scale_fill_manual(values = c(&amp;quot;#80337c&amp;quot;, &amp;quot;#338057&amp;quot;)) 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The &lt;code&gt;ggarrange()&lt;/code&gt; call is included below, as this is a handy function to
-include several individual plots in a single overall figure.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;pyramid_two &amp;lt;- ggarrange(trampoline_pyramid, booze_pyramid, heights = c(2, 2), # Call to ggarrange, 
-                    ncol = 2, nrow = 1, common.legend = TRUE, align = &#39;v&#39;,     # passing in both plot
-                                                                               # objects and setting
-                    legend = &amp;quot;right&amp;quot;) %&amp;gt;%                                      # display params.
-                                                                               
-                                                                               # Adding &amp;quot;overall&amp;quot; fig 
-                                                                               # title.
-               annotate_figure(top = text_grob(&amp;quot;Accidents Resulting in \nEmergency Room Visits in 2019\n &amp;quot;, 
-                                               face = &amp;quot;bold&amp;quot;, size = 16))
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;additional-citations&#34;&gt;Additional Citations&lt;/h3&gt;
-&lt;p&gt;Staetsky, Daniel. (2015). Strictly Orthodox Rising: what the demography
-of British Jews tells us about the future of the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://rpubs.com/walkerke/pyramids_ggplot2&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://rpubs.com/walkerke/pyramids_ggplot2&#34;&gt;https://rpubs.com/walkerke/pyramids_ggplot2&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&#34;&gt;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34;&gt;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&#34;&gt;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://populationeducation.org/what-are-different-types-population-pyramids/&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://populationeducation.org/what-are-different-types-population-pyramids/&#34;&gt;https://populationeducation.org/what-are-different-types-population-pyramids/&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&#34;&gt;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://datavizcatalogue.com&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://datavizcatalogue.com&#34;&gt;https://datavizcatalogue.com&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>All About the Population Pyramid!</title>
-      <link>https://vigilant-golick-64a677.netlify.app/post/pdx-flights/</link>
-      <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
-      <guid>https://vigilant-golick-64a677.netlify.app/post/pdx-flights/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;CS530_ARoten_GraphBrief1_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;A Population Pyramid, also known as an Age and Sex Pyramid is a
 histogram-like visualization often used to provide a succinct, elegant
