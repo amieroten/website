@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Authors | Amie Roten</title>
-    <link>/authors/</link>
-      <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://vigilant-golick-64a677.netlify.app/authors/</link>
+      <atom:link href="https://vigilant-golick-64a677.netlify.app/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Authors</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
     <image>
-      <url>/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png</url>
+      <url>https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png</url>
       <title>Authors</title>
-      <link>/authors/</link>
+      <link>https://vigilant-golick-64a677.netlify.app/authors/</link>
     </image>
     
   </channel>

@@ -27,7 +27,7 @@
   
     
   
-  <meta name="description" content="library(tidyverse) library(readr) library(wordbankr) library(here) library(RColorBrewer) library(wesanderson) library(ggthemes) library(viridis) library(forcats) library(ggrepel) I know, I know, we’ve probably all seen enough coronavirus visualizations to last a lifetime, but here is one more!">
+  <meta name="description" content="This post is an excerpt from a data visualization lab in which we experimented with use of colors in plots, both with positive and not-so-positive outcomes. In this post, I explore some good, bad, and greyscale color options, and briefly discuss the merits or faults of each.">
 
   
   <link rel="alternate" hreflang="en-us" href="https://vigilant-golick-64a677.netlify.app/post/tp-panic/">
@@ -238,11 +238,13 @@
   <meta property="og:site_name" content="Amie Roten">
   <meta property="og:url" content="https://vigilant-golick-64a677.netlify.app/post/tp-panic/">
   <meta property="og:title" content="Exploring Color with Coronavirus and Toilet Paper Data! | Amie Roten">
-  <meta property="og:description" content="library(tidyverse) library(readr) library(wordbankr) library(here) library(RColorBrewer) library(wesanderson) library(ggthemes) library(viridis) library(forcats) library(ggrepel) I know, I know, we’ve probably all seen enough coronavirus visualizations to last a lifetime, but here is one more!"><meta property="og:image" content="https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="This post is an excerpt from a data visualization lab in which we experimented with use of colors in plots, both with positive and not-so-positive outcomes. In this post, I explore some good, bad, and greyscale color options, and briefly discuss the merits or faults of each."><meta property="og:image" content="https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
+      <meta property="article:published_time" content="2020-06-08T00:00:00&#43;00:00">
     
+    <meta property="article:modified_time" content="2020-06-08T00:00:00&#43;00:00">
   
 
   
@@ -270,8 +272,8 @@
   },
   "headline": "Exploring Color with Coronavirus and Toilet Paper Data!",
   
-  "datePublished": "0001-01-01T00:00:00Z",
-  "dateModified": "0001-01-01T00:00:00Z",
+  "datePublished": "2020-06-08T00:00:00Z",
+  "dateModified": "2020-06-08T00:00:00Z",
   
   "author": {
     "@type": "Person",
@@ -286,7 +288,7 @@
       "url": "https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "library(tidyverse) library(readr) library(wordbankr) library(here) library(RColorBrewer) library(wesanderson) library(ggthemes) library(viridis) library(forcats) library(ggrepel) I know, I know, we’ve probably all seen enough coronavirus visualizations to last a lifetime, but here is one more!"
+  "description": "This post is an excerpt from a data visualization lab in which we experimented with use of colors in plots, both with positive and not-so-positive outcomes. In this post, I explore some good, bad, and greyscale color options, and briefly discuss the merits or faults of each."
 }
 </script>
 
@@ -542,7 +544,7 @@
     
       
     
-    Jan 1, 0001
+    Jun 8, 2020
   </span>
   
 
@@ -551,7 +553,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 min read
+    7 min read
   </span>
   
 
@@ -590,45 +592,110 @@
       
 
 
-<pre class="r"><code>library(tidyverse)
-library(readr)
-library(wordbankr)
-library(here)
-library(RColorBrewer)
-library(wesanderson)
-library(ggthemes)
-library(viridis)
-library(forcats)
-library(ggrepel)</code></pre>
+<p>This post is an excerpt from a data visualization lab in which we experimented with use of colors in plots, both with positive and not-so-positive outcomes. In this post, I explore some good, bad, and greyscale color options, and briefly discuss the merits or faults of each. So, lets dive in!</p>
+<hr />
 <p>I know, I know, we’ve probably all seen enough coronavirus visualizations to last a lifetime, but here is one more! I was curious if the great toilet paper panic was a particularly American phenomenon, or if this was an anxiety that struck in the time of coronavirus regardless of nationality. To take a peek into this question, I used Google Trends (<a href="https://trends.google.com/" class="uri">https://trends.google.com/</a>) to gather data on search interest for coronavirus and toilet paper across three countries: China, Italy, and the United States, over the past 90 days. I figured this would make for an interesting color choice challenge, since we have three country variables, but each country has information on two different items, so we need to make a two-dimensional distinction.</p>
 <pre class="r"><code># Getting data. Note, the data came in as three separate .csv&#39;s, 
 # I did some preliminary coalescing outside of R to get one single dataset.
-tp_data &lt;- read_csv(&#39;data/tp_panic.csv&#39;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Day = col_character(),
-##   Country = col_character(),
-##   toilet_paper = col_character(),
-##   coronavirus = col_character()
-## )</code></pre>
-<pre class="r"><code># Adjusting the data types from simple character/string types.
+tp_data &lt;- read_csv(&#39;data/tp_panic.csv&#39;)
+
+# Adjusting the data types from simple character/string types.
 tp_data &lt;- tp_data %&gt;% 
   mutate(Country = as.factor(Country)) %&gt;%
   mutate(Day = as.Date(Day, &quot;%m/%d/%y&quot;)) %&gt;%
   mutate(coronavirus = case_when(coronavirus == &#39;&lt;1&#39; ~ 0.5,
                               coronavirus != &#39;&lt;1&#39; ~ as.numeric(coronavirus))) %&gt;%
   mutate(toilet_paper = case_when(toilet_paper == &#39;&lt;1&#39; ~ 0.5,
-                              toilet_paper != &#39;&lt;1&#39; ~ as.numeric(toilet_paper)))</code></pre>
-<pre><code>## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by coercion
+                              toilet_paper != &#39;&lt;1&#39; ~ as.numeric(toilet_paper)))
 
-## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by coercion</code></pre>
-<pre class="r"><code>glimpse(tp_data)</code></pre>
+
+glimpse(tp_data)</code></pre>
 <pre><code>## Rows: 270
 ## Columns: 4
 ## $ Day          &lt;date&gt; 2020-01-17, 2020-01-18, 2020-01-19, 2020-01-20, 2020-01…
 ## $ Country      &lt;fct&gt; Italy, Italy, Italy, Italy, Italy, Italy, Italy, Italy, …
 ## $ toilet_paper &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.0, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0…
 ## $ coronavirus  &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 2.0, 2.0, 3.0, 4.0, 4.0, 8…</code></pre>
+<div id="version-with-good-color" class="section level2">
+<h2>Version with <em>good</em> color</h2>
+<p>Now, for the plotting, starting with a good color scheme!</p>
+<pre class="r"><code>library(cowplot)
+library(ggpubr)
+
+tp_plot_corona &lt;- tp_data %&gt;% ggplot(aes(Day, coronavirus, color = Country)) +
+                       geom_line() +
+                       scale_color_manual(values = c(&#39;#FFC107&#39;, &#39;#C50049&#39;, &#39;#4897DC&#39;)) +
+                       ylab(&quot;Coronavirus\nInterest&quot;) +
+                       xlab(&quot;&quot;) +
+                       labs(title = &quot;&#39;Coronavirus&#39; and &#39;Toilet Paper&#39;\nGoogle Search Interest Levels in Early 2020&quot;) +
+                       theme_minimal() 
+  
+tp_plot_tp &lt;- tp_data %&gt;% ggplot(aes(Day, toilet_paper, color = Country)) +
+                       geom_line(alpha = 0.5) +
+                       scale_color_manual(values = c(&#39;#FFC107&#39;, &#39;#C50049&#39;, &#39;#4897DC&#39;)) +
+                       ylab(&quot;Toilet Paper\nInterest&quot;) +
+                       xlab(&quot;Date&quot;) +
+                       theme_minimal()
+
+tp_plot_full &lt;- ggarrange(tp_plot_corona, tp_plot_tp, heights = c(2, 0.8),
+                    ncol = 1, nrow = 2, common.legend = TRUE, align = &#39;v&#39;,
+                    legend = &quot;right&quot;) 
+
+tp_plot_full</code></pre>
+<p><img src="/post/tp-panic/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>The function below will check to see how these color selections will be percieved by folks with various types of colorblindness:</p>
+<pre class="r"><code># Seems to work ok for CVD!
+cvd_grid(tp_plot_full)</code></pre>
+<p><img src="/post/tp-panic/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Alright, that took way longer than it should have! This dataset ended up being really tricky to work with, but I think it was a good exercise in both how to use color to improve interpretation of a plot, but also how color can make a plot much more confusing (as will be demonstrated in the third plot). Although the plot is relatively simple, just six plotted lines, as mentioned above the relationships between the data/lines is a bit more complex than just six discrete/qualitative variables. Therefore, selecting six discrete colors would not make sense, as it would likely obfuscate the fact that each country had two sets of information/two lines, one for their interest/search frequency in/of coronavirus, and one for toilet paper. Connecting the two sets by country by means of color felt like a successful choice, because you can easily look at the two sets of lines and realize that the blue lines (indicating data belonging to the U.S.) show peaks occuring around the same time frame, which was the whole point of the plot. I opted to make the lines for the two different opacities, in order to still make it clear that they were indeed measuring two different things, despite being connected, although this felt like a secondary point, since I opted to create a subplot for the toilet paper data. I didn’t just choose that to offset the toilet paper data, however, I do think that the two different sets of dependent variables could have shared a common y-axis and been distinguished from each other using color, however, since the values for toilet paper interest were so much lower than for coronavirus, and the point was not to compare absolute values of one search term to the other (instead to see if they peaked at the same time), creating subplots in order to emphazise the peaks in the T.P. data made more sense to me. So, my overall take away from the visualization is that, yes, it does look like there was some coronavirus-related toilet paper panic in the United States, but not so much for China or Italy. Priorities!</p>
+<p>Full disclosure, I don’t <em>love</em> the colors used in the plot above. I think they’re starting to veer into ugly territory, a little too saturated for my tastes. But, this blue/yellow/magenta palette seems to work best for colorblind viewers. I’ll need to keep playing around to find a color palette that I like that still works well for those with colorblindness.</p>
+</div>
+<div id="version-with-greyscale" class="section level2">
+<h2>Version with greyscale</h2>
+<pre class="r"><code>tp_plot_corona &lt;- tp_data %&gt;% ggplot(aes(Day, coronavirus, color = Country)) +
+                       geom_line(linetype=&quot;longdash&quot;) +
+                       scale_color_manual(values = c(&#39;#000000&#39;, &#39;#808080&#39;, &#39;#D3D3D3&#39;)) +
+                       ylab(&quot;Coronavirus\nInterest&quot;) +
+                       xlab(&quot;&quot;) +
+                       labs(title = &quot;&#39;Coronavirus&#39; and &#39;Toilet Paper&#39;\nGoogle Search Interest Levels in Early 2020&quot;) +
+                       theme_minimal() 
+  
+tp_plot_tp &lt;- tp_data %&gt;% ggplot(aes(Day, toilet_paper, color = Country)) +
+                       geom_line(alpha = 1) +
+                       scale_color_manual(values = c(&#39;#000000&#39;, &#39;#808080&#39;, &#39;#D3D3D3&#39;)) +
+                       ylab(&quot;Toilet Paper\nInterest&quot;) +
+                       xlab(&quot;Date&quot;) +
+                       theme_minimal()
+
+tp_plot_full &lt;- ggarrange(tp_plot_corona, tp_plot_tp, heights = c(2, 0.8),
+                    ncol = 1, nrow = 2, common.legend = TRUE, align = &#39;v&#39;,
+                    legend = &quot;right&quot;) 
+
+tp_plot_full</code></pre>
+<p><img src="/post/tp-panic/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Hmm, I’m not as psyched about this one as I was the colored version. Since there are only three “hues” in the original, to distinguish the countries, it was pretty straightforward to translate those into greyscale in a way that ensures they are distinguishable (although I suppose the lightest value is a bit light, I think it is acceptable at least on a screen…I’d have to do some print tests to make sure it was ok in other mediums). Increasing the alpha for the T.P. subplot no longer worked well to set it off, since that made the greys less distinguishable…the increased overlap in the data also didn’t help. I still wanted an easy way for the eye to differentiate the lines in the top plot versus the bottom, and although, in my opinion, complexity in a plot works best when it increases top-to-bottom, making the lines in the bottom plot dashed was just as difficult to visually parse as when they were made more transparent…so I opted to make the top plot lines dashed. I think the greyscale setup works, but it’s not terribly groundbreaking or beautiful.</p>
+</div>
+<div id="version-with-dreadful-color" class="section level2">
+<h2>Version with <em>dreadful</em> color</h2>
+<pre class="r"><code>tp_long &lt;- tp_data %&gt;%pivot_longer(c(coronavirus, toilet_paper), names_to = &quot;searchterms&quot;, values_to = &quot;interest&quot;) %&gt;%
+                      mutate(Country_SearchTerm = paste(Country, searchterms, sep = &quot;: &quot;),
+                             Country = NULL,
+                             searchterms = NULL)
+
+tp_plot_bad &lt;- tp_long %&gt;% ggplot(aes(Day, interest, color = Country_SearchTerm)) +
+                       geom_line() +
+                       scale_color_manual(values = c(&#39;#800000&#39;, &#39;#FF9999&#39;, &#39;#000075&#39;, 
+                                                     &#39;#6666DB&#39;, &#39;#469990&#39;, &#39;#ACFFF6&#39;)) +
+                       ylab(&quot;Search Interest&quot;) +
+                       xlab(&quot;&quot;) +
+                       labs(title = &quot;&#39;Coronavirus&#39; and &#39;Toilet Paper&#39;\nGoogle Search Interest Levels in Early 2020&quot;) +
+                       theme_minimal()
+
+tp_plot_bad</code></pre>
+<p><img src="/post/tp-panic/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Above was my original attempt at this plot…I had good intentions – my goal was still wanted to link the data together by country, but I ended up separating the coronavirus data from the T.P. data by lightening the colors 40% (according to <a href="https://www.hexcolortool.com/#479a90" class="uri">https://www.hexcolortool.com/#479a90</a>). Wow, this resulted in some ugly colors, and really difficult to see not only due to color, but also due to the relative values/heights of the datasets. Additionally, simply lightening the colors does not guarantee that the darker and lighter versions will feel intuitively cohesive, in fact, Italy and the U.S.’s colors begin to look like a spectrum when they are broken down into a light and dark version each (this can be observed best in the legend)…which is definitely not something that makes sense with this data. Also, this would not work well for a colorblind viewer…overall, this is a much less effective plot than the original, in my opinion!</p>
+<p>There we have it, a short exploration of color choice in at least one type of line plot. Happy plotting!</p>
+</div>
 
     </div>
 

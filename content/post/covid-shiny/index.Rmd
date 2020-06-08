@@ -1,11 +1,11 @@
 ---
-date: "2020-06-08"
-diagram: true
+title: "Exploring COVID-19 Data with Shiny!"
+diagram: yes
+date: '2020-06-08'
+math: yes
 image:
   caption: ''
   placement: 2
-math: true
-title: Exploring COVID-19 Data with Shiny!
 ---
 
 
