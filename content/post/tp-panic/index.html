@@ -1,0 +1,51 @@
+---
+date: "2020-0-11"
+diagram: true
+image:
+  caption: ''
+  placement: 3
+math: true
+title: Exploring Color with Coronavirus and Toilet Paper Data!
+---
+
+
+
+<pre class="r"><code>library(tidyverse)
+library(readr)
+library(wordbankr)
+library(here)
+library(RColorBrewer)
+library(wesanderson)
+library(ggthemes)
+library(viridis)
+library(forcats)
+library(ggrepel)</code></pre>
+<p>I know, I know, we’ve probably all seen enough coronavirus visualizations to last a lifetime, but here is one more! I was curious if the great toilet paper panic was a particularly American phenomenon, or if this was an anxiety that struck in the time of coronavirus regardless of nationality. To take a peek into this question, I used Google Trends (<a href="https://trends.google.com/" class="uri">https://trends.google.com/</a>) to gather data on search interest for coronavirus and toilet paper across three countries: China, Italy, and the United States, over the past 90 days. I figured this would make for an interesting color choice challenge, since we have three country variables, but each country has information on two different items, so we need to make a two-dimensional distinction.</p>
+<pre class="r"><code># Getting data. Note, the data came in as three separate .csv&#39;s, 
+# I did some preliminary coalescing outside of R to get one single dataset.
+tp_data &lt;- read_csv(&#39;data/tp_panic.csv&#39;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Day = col_character(),
+##   Country = col_character(),
+##   toilet_paper = col_character(),
+##   coronavirus = col_character()
+## )</code></pre>
+<pre class="r"><code># Adjusting the data types from simple character/string types.
+tp_data &lt;- tp_data %&gt;% 
+  mutate(Country = as.factor(Country)) %&gt;%
+  mutate(Day = as.Date(Day, &quot;%m/%d/%y&quot;)) %&gt;%
+  mutate(coronavirus = case_when(coronavirus == &#39;&lt;1&#39; ~ 0.5,
+                              coronavirus != &#39;&lt;1&#39; ~ as.numeric(coronavirus))) %&gt;%
+  mutate(toilet_paper = case_when(toilet_paper == &#39;&lt;1&#39; ~ 0.5,
+                              toilet_paper != &#39;&lt;1&#39; ~ as.numeric(toilet_paper)))</code></pre>
+<pre><code>## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by coercion
+
+## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by coercion</code></pre>
+<pre class="r"><code>glimpse(tp_data)</code></pre>
+<pre><code>## Rows: 270
+## Columns: 4
+## $ Day          &lt;date&gt; 2020-01-17, 2020-01-18, 2020-01-19, 2020-01-20, 2020-01…
+## $ Country      &lt;fct&gt; Italy, Italy, Italy, Italy, Italy, Italy, Italy, Italy, …
+## $ toilet_paper &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.0, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0…
+## $ coronavirus  &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 2.0, 2.0, 3.0, 4.0, 4.0, 8…</code></pre>

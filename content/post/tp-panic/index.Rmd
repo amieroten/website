@@ -1,0 +1,44 @@
+---
+date: "2020-0-11"
+diagram: true
+image:
+  caption: ''
+  placement: 3
+math: true
+title: Exploring Color with Coronavirus and Toilet Paper Data!
+---
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(tidyverse)
+library(readr)
+library(wordbankr)
+library(here)
+library(RColorBrewer)
+library(wesanderson)
+library(ggthemes)
+library(viridis)
+library(forcats)
+library(ggrepel)
+```
+
+
+I know, I know, we've probably all seen enough coronavirus visualizations to last a lifetime, but here is one more! I was curious if the great toilet paper panic was a particularly American phenomenon, or if this was an anxiety that struck in the time of coronavirus regardless of nationality. To take a peek into this question, I used Google Trends (https://trends.google.com/) to gather data on search interest for coronavirus and toilet paper across three countries: China, Italy, and the United States, over the past 90 days. I figured this would make for an interesting color choice challenge, since we have three country variables, but each country has information on two different items, so we need to make a two-dimensional distinction.
+
+```{r}
+# Getting data. Note, the data came in as three separate .csv's, 
+# I did some preliminary coalescing outside of R to get one single dataset.
+tp_data <- read_csv('data/tp_panic.csv')
+
+# Adjusting the data types from simple character/string types.
+tp_data <- tp_data %>% 
+  mutate(Country = as.factor(Country)) %>%
+  mutate(Day = as.Date(Day, "%m/%d/%y")) %>%
+  mutate(coronavirus = case_when(coronavirus == '<1' ~ 0.5,
+                              coronavirus != '<1' ~ as.numeric(coronavirus))) %>%
+  mutate(toilet_paper = case_when(toilet_paper == '<1' ~ 0.5,
+                              toilet_paper != '<1' ~ as.numeric(toilet_paper)))
+
+
+glimpse(tp_data)
+```
+
