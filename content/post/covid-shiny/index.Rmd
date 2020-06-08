@@ -1,0 +1,11 @@
+---
+date: "2020-06-08"
+diagram: true
+image:
+  caption: ''
+  placement: 2
+math: true
+title: Exploring COVID-19 Data with Shiny!
+---
+
+
