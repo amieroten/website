@@ -1,0 +1,9 @@
+---
+title: "All About the Population Pyramid!"
+diagram: yes
+date: '2020-05-11'
+math: yes
+image:
+  caption: ''
+  placement: 3
+---

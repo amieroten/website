@@ -368,7 +368,186 @@ summary {
 </div>
 
 
+<p>For this post, I want to showcase my first interactive Shiny app, both the final product, and below it, the code used to generate the application. Although yes, this does use more COVID data, it was a very nice exploration of how to go about using Shiny, and I must say, after working with it, I think it’s a tool that I will start using often to explore large datasets!</p>
+<div id="the-application" class="section level3">
+<h3>The Application:</h3>
+<iframe src="https://amie-roten.shinyapps.io/lab7/" width="960" height="800px">
+</iframe>
+<p>This application uses Kieran Healy’s <code>covdata</code> package, a comprehensive collection of data relating to the Coronavirus pandemic. I decided to use the Apple U.S. Mobility dataset, specifically the vehicular-travel data, to create the application above. The app includes three identical widgets that can be used to select three different states in order to compare and contrast the data. The widgets’ upper plots show the daily case increase, and the bottom plot shows the daily mobility index, that is how the day’s mobility data differs from the baseline taken in January. The yellow indicates a lower level of travel for that particular day, and the green indicates more travel. Please explore the application and see what interesting observations you can make!</p>
+</div>
+<div id="the-code" class="section level3">
+<h3>The Code:</h3>
+<p>Below is the code used to generate the Shiny app</p>
+<p>The first section is simply the data wrangling process, processing the raw data in the <code>covdata</code> package in order to get it in the correct format for use in the plots. This is not an inherant piece of creating a Shiny application, but it useful to demonstrate the process of reshaping and winnowing down the dataset for this particular use!</p>
+<pre class="r"><code>library(shiny)
+library(gt)
+library(covdata)
+library(ggpubr)
+library(tidyverse)
 
+case_data &lt;- nytcovstate
+locations &lt;- sort(unique(case_data$state))
+mobility_data &lt;- apple_mobility %&gt;%
+                 filter(region %in% locations) %&gt;%
+                 select(-alternative_name, -geo_type) %&gt;%
+                 mutate(state = region,
+                        region = NULL)
+
+data &lt;- full_join(mobility_data, case_data) %&gt;%
+        mutate(fips = replace_na(fips, 0),
+               cases = replace_na(cases, 0),
+               deaths = replace_na(deaths, 0)) %&gt;%
+        group_by(state) %&gt;% 
+        arrange(date, .by_group = TRUE) %&gt;%
+        mutate(daily_cases = (cases - (lag(cases)))) %&gt;%
+        ungroup() %&gt;%
+        mutate(daily_cases = replace_na(daily_cases, 0))
+
+transpo &lt;- c(unique(data$transportation_type))
+vec_brks &lt;- c(-50, 0, 50)
+vec_labs &lt;- vec_brks + 100
+start_date &lt;- sort(data$date)[1]
+end_date &lt;- sort(desc(data$date))[1]</code></pre>
+<p>Creating a Shiny application requires two main components, the <code>ui</code> componant, which is where the application creator can both tweak the layout of the application, as well as create interactive elements where the user can select from a number of options. For example, <code>dateRangeInput()</code> creates a widget where the user can enter a range of dates. The creator can select what the possible range can be, eliminate possibility for invalid date selections. There are many different input functions, and the elements can be arranged in many configurations in order to get the app looking just right! It’s a wonderland (and/or a real time-sink) for people like me who get endless satisfaction from minor nudges and adjustments to get things looking just right. :D</p>
+<pre class="r"><code>ui &lt;- fluidPage(
+titlePanel(&quot;Apple U.S. Mobility Dataset during COVID-19 Crisis&quot;),
+
+fluidRow(
+   column(5, h3(&quot;Please begin by selecting your desired date range: &quot;)),
+   column(3, dateRangeInput('dateRange', label = '', format='mm-dd-yyyy', separator=' to ',
+                            start = '2020-01-13', end = '2020-05-13', min = '2020-01-13', max = '2020-05-13')),
+   column(4, h5(&quot;Upper plot displays the daily increase in COVID-19 cases for selected location. 
+                Lower plot shows corresponding Apple Maps' mobility data, in terms of trends in driving since mid-January 2020 (dark green
+                indicates a relative increase, yellow indicates a relative decrease). Did less driving correspond to \&quot;flattening the curve\&quot;? We can find out!&quot;))
+),
+
+hr(),
+
+fluidRow(
+   column(4, plotOutput(&quot;plot1&quot;)),
+   column(4, plotOutput(&quot;plot2&quot;)),
+   column(4, plotOutput(&quot;plot3&quot;))
+),
+
+fluidRow(
+   column(3, offset = 1, selectInput(&quot;loc1&quot;, label=&quot;Location 1&quot;, multiple=FALSE,
+                                     locations, width='70%', size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput(&quot;loc2&quot;, label=&quot;Location 2&quot;, multiple=FALSE,
+                                     locations, width='70%', size=5, selectize=FALSE)),
+   column(3, offset = 1, selectInput(&quot;loc3&quot;, label=&quot;Location 3&quot;, multiple=FALSE, 
+                                     locations, width='70%', size=5, selectize=FALSE)),
+),
+
+h5(&quot;Data from Kieran Healy's covdata package: https://kjhealy.github.io/covdata/. Bottom plots *very heavily* inspired by apple_mobility dataset vignette!&quot;)
+)</code></pre>
+<p>The second main component is the <code>server</code> section. This is where the dynamic outputs such as plots, text, and other elements, are created and updated, and then can be placed via the <code>ui</code> section. In this case, we have six plots (three sets of two) which use input from the selection widgets in the section above to dynamically change and reflect the subset of the data the user would like to see.</p>
+<pre class="r"><code>server &lt;- function(input, output, session) {
+   
+output$plot1 &lt;- renderPlot({
+   case_plot1 &lt;- data %&gt;%
+      filter(state == input$loc1,
+             #transportation_type %in% transpo_filter(),
+             date &gt;= input$dateRange[1] &amp; date &lt;= input$dateRange[2]) %&gt;%
+      ggplot(mapping=aes(x=date, y=daily_cases)) +
+      geom_line() +
+      scale_y_log10(limits=c(1, 3000)) +
+      theme(legend.position = &quot;none&quot;) +
+      xlab(&quot;&quot;) +
+      ylab(&quot;Daily Case\nIncrease&quot;)
+   
+     mobi_plot1 &lt;- data %&gt;% 
+     filter(state == input$loc1,
+            #transportation_type %in% transpo_filter(),
+            date &gt;= input$dateRange[1] &amp; date &lt;= input$dateRange[2]) %&gt;% 
+     mutate(over_under = index &lt; 100,
+              index = index - 100) %&gt;%
+     ggplot(mapping=aes(x=date, y=index, fill=over_under, col=over_under)) +
+     geom_col() +
+     scale_color_manual(values = c('#004D40', '#FFC107')) +
+     scale_fill_manual(values = c('#004D40', '#FFC107')) +
+     theme(legend.position = &quot;none&quot;) +
+     scale_y_continuous(limits = c(-150, 150)) +
+     geom_hline(yintercept = 0, color = &quot;gray40&quot;) +
+     xlab(&quot;Date&quot;) +
+     ylab(&quot;Mobility Index&quot;)
+     
+     ggarrange(case_plot1, mobi_plot1, heights = c(0.8, 2),
+               ncol = 1, nrow = 2, align = 'v',
+               legend = NULL) 
+ })
+ 
+output$plot2 &lt;- renderPlot({
+   case_plot2 &lt;- data %&gt;%
+      filter(state == input$loc2,
+             #transportation_type %in% transpo_filter(),
+             date &gt;= input$dateRange[1] &amp; date &lt;= input$dateRange[2]) %&gt;%
+      ggplot(mapping=aes(x=date, y=daily_cases)) +
+      geom_line() +
+      scale_y_log10(limits=c(1, 3000)) +
+      theme(legend.position = &quot;none&quot;) +
+      xlab(&quot;&quot;) +
+      ylab(&quot;Daily Case\nIncrease&quot;)
+   
+   mobi_plot2 &lt;- data %&gt;% 
+      filter(state == input$loc2,
+             #transportation_type %in% transpo_filter(),
+             date &gt;= input$dateRange[1] &amp; date &lt;= input$dateRange[2]) %&gt;% 
+      mutate(over_under = index &lt; 100,
+             index = index - 100) %&gt;%
+      ggplot(mapping=aes(x=date, y=index, fill=over_under, col=over_under)) +
+      geom_col() +
+      theme(legend.position = &quot;none&quot;) +
+      scale_y_continuous(limits = c(-150, 150)) +
+      scale_color_manual(values = c('#004D40', '#FFC107')) +
+      scale_fill_manual(values = c('#004D40', '#FFC107')) +
+      geom_hline(yintercept = 0, color = &quot;gray40&quot;) +
+      xlab(&quot;Date&quot;) +
+      ylab(&quot;Mobility Index&quot;)
+   
+   ggarrange(case_plot2, mobi_plot2, heights = c(0.8, 2),
+             ncol = 1, nrow = 2, align = 'v',
+             legend = NULL) 
+})
+
+
+output$plot3 &lt;- renderPlot({
+   case_plot3 &lt;- data %&gt;%
+      filter(state == input$loc3,
+             #transportation_type %in% transpo_filter(),
+             date &gt;= input$dateRange[1] &amp; date &lt;= input$dateRange[2]) %&gt;%
+      ggplot(mapping=aes(x=date, y=daily_cases)) +
+      theme(legend.position = &quot;none&quot;) +
+      scale_y_log10(limits=c(1, 3000)) +
+      geom_line() +
+      xlab(&quot;&quot;) +
+      ylab(&quot;Daily Case\nIncrease&quot;)
+   
+   mobi_plot3 &lt;- data %&gt;% 
+      filter(state == input$loc3,
+             #transportation_type %in% transpo_filter(),
+             date &gt;= input$dateRange[1] &amp; date &lt;= input$dateRange[2]) %&gt;% 
+      mutate(over_under = index &lt; 100,
+             index = index - 100) %&gt;%
+      ggplot(mapping=aes(x=date, y=index, fill=over_under, col=over_under)) +
+      geom_col() +
+      theme(legend.position = &quot;none&quot;) +
+      scale_color_manual(values = c('#004D40', '#FFC107')) +
+      scale_fill_manual(values = c('#004D40', '#FFC107')) +
+      scale_y_continuous(limits = c(-150, 150)) +
+      geom_hline(yintercept = 0, color = &quot;gray40&quot;) +
+      xlab(&quot;Date&quot;) +
+      ylab(&quot;Mobility Index&quot;)
+   
+   ggarrange(case_plot3, mobi_plot3, heights = c(0.8, 2),
+             ncol = 1, nrow = 2, align = 'v',
+                             legend = NULL) 
+})
+
+}
+
+shinyApp(ui = ui, server = server)</code></pre>
+<p>I did not go into much depth explaining the ins-and-outs of creating a Shiny app, but hopefully this gives a quick taste of what can be done with the library, and inspires you to make a Shiny app of your own! More information on how to use Shiny can be found here: <a href="https://shiny.rstudio.com/tutorial/" class="uri">https://shiny.rstudio.com/tutorial/</a>, and in many places on the web.</p>
+</div>
 
 
 
