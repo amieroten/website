@@ -1,0 +1,15 @@
+---
+title: "Comprehensive Exploratory Data Analysis using Shiny!"
+diagram: yes
+date: '2020-06-08'
+math: yes
+image:
+  caption: ''
+  placement: 1
+---
+
+```{r, echo = FALSE, fig.width=12}
+knitr::include_url('https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/', height = '800px')
+```
+
+testing testing
