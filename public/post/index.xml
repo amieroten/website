@@ -13,6 +13,20 @@
     </image>
     
     <item>
+      <title>Comprehensive Exploratory Data Analysis using Shiny!</title>
+      <link>https://vigilant-golick-64a677.netlify.app/post/final-viz/</link>
+      <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
+      <guid>https://vigilant-golick-64a677.netlify.app/post/final-viz/</guid>
+      <description>
+
+
+&lt;iframe src=&#34;https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/&#34; width=&#34;1152&#34; height=&#34;800px&#34;&gt;
+&lt;/iframe&gt;
+&lt;p&gt;testing testing&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Exploring Color with Coronavirus and Toilet Paper Data!</title>
       <link>https://vigilant-golick-64a677.netlify.app/post/tp-panic/</link>
       <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
@@ -393,9 +407,13 @@ pdx_flights_dest_noSF&lt;/code&gt;&lt;/pre&gt;
 ## 11 November  DEN     295
 ## 12 December  PHX     286&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pdx_flights_dest_noSF_gt &amp;lt;- pdx_flights_dest_noSF %&amp;gt;% gt() %&amp;gt;%
-                       tab_options(row.striping.background_color = &amp;quot;#f9f9f9&amp;quot;,
-                                   row.striping.include_table_body = TRUE,
-                                   row.striping.include_stub = TRUE) %&amp;gt;%
+                       # NOTE: While these options add striping when the 
+                       # .Rmd file is rendered locally, the striping is not
+                       # present when deployed. Oddly, removing this option
+                       # *adds* striping to deployed file. The more you know!
+                       # tab_options(row.striping.background_color = &amp;quot;#f9f9f9&amp;quot;,
+                       #             row.striping.include_table_body = TRUE,
+                       #             row.striping.include_stub = TRUE) %&amp;gt;%
                        tab_header(title=&amp;quot;Top Destinations out of PDX, By Month&amp;quot;,
                                   subtitle=&amp;quot;(Excluding SFO)&amp;quot;) %&amp;gt;%
                        cols_label(month = &amp;quot;Month&amp;quot;, 
@@ -411,7 +429,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
 }
 
-#jcwlvvpsyb .gt_table {
+#xwlszlipox .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -434,7 +452,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-left-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_heading {
+#xwlszlipox .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -446,7 +464,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_title {
+#xwlszlipox .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -456,7 +474,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-bottom-width: 0;
 }
 
-#jcwlvvpsyb .gt_subtitle {
+#xwlszlipox .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -466,13 +484,13 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-top-width: 0;
 }
 
-#jcwlvvpsyb .gt_bottom_border {
+#xwlszlipox .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_col_headings {
+#xwlszlipox .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -487,7 +505,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_col_heading {
+#xwlszlipox .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -507,7 +525,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   overflow-x: hidden;
 }
 
-#jcwlvvpsyb .gt_column_spanner_outer {
+#xwlszlipox .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -519,15 +537,15 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   padding-right: 4px;
 }
 
-#jcwlvvpsyb .gt_column_spanner_outer:first-child {
+#xwlszlipox .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jcwlvvpsyb .gt_column_spanner_outer:last-child {
+#xwlszlipox .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jcwlvvpsyb .gt_column_spanner {
+#xwlszlipox .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -539,7 +557,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   width: 100%;
 }
 
-#jcwlvvpsyb .gt_group_heading {
+#xwlszlipox .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -561,7 +579,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   vertical-align: middle;
 }
 
-#jcwlvvpsyb .gt_empty_group_heading {
+#xwlszlipox .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -576,19 +594,19 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   vertical-align: middle;
 }
 
-#jcwlvvpsyb .gt_striped {
-  background-color: #f9f9f9;
+#xwlszlipox .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jcwlvvpsyb .gt_from_md &gt; :first-child {
+#xwlszlipox .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#jcwlvvpsyb .gt_from_md &gt; :last-child {
+#xwlszlipox .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#jcwlvvpsyb .gt_row {
+#xwlszlipox .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -607,7 +625,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   overflow-x: hidden;
 }
 
-#jcwlvvpsyb .gt_stub {
+#xwlszlipox .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -619,7 +637,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   padding-left: 12px;
 }
 
-#jcwlvvpsyb .gt_summary_row {
+#xwlszlipox .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -629,7 +647,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#jcwlvvpsyb .gt_first_summary_row {
+#xwlszlipox .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -639,7 +657,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-top-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_grand_summary_row {
+#xwlszlipox .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -649,7 +667,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#jcwlvvpsyb .gt_first_grand_summary_row {
+#xwlszlipox .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -659,7 +677,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-top-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_table_body {
+#xwlszlipox .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -668,7 +686,7 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-bottom-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_footnotes {
+#xwlszlipox .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -682,13 +700,13 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_footnote {
+#xwlszlipox .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#jcwlvvpsyb .gt_sourcenotes {
+#xwlszlipox .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -702,46 +720,46 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_sourcenote {
+#xwlszlipox .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#jcwlvvpsyb .gt_left {
+#xwlszlipox .gt_left {
   text-align: left;
 }
 
-#jcwlvvpsyb .gt_center {
+#xwlszlipox .gt_center {
   text-align: center;
 }
 
-#jcwlvvpsyb .gt_right {
+#xwlszlipox .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jcwlvvpsyb .gt_font_normal {
+#xwlszlipox .gt_font_normal {
   font-weight: normal;
 }
 
-#jcwlvvpsyb .gt_font_bold {
+#xwlszlipox .gt_font_bold {
   font-weight: bold;
 }
 
-#jcwlvvpsyb .gt_font_italic {
+#xwlszlipox .gt_font_italic {
   font-style: italic;
 }
 
-#jcwlvvpsyb .gt_super {
+#xwlszlipox .gt_super {
   font-size: 65%;
 }
 
-#jcwlvvpsyb .gt_footnote_marks {
+#xwlszlipox .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 &lt;/style&gt;
-&lt;div id=&#34;jcwlvvpsyb&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;&lt;table class=&#34;gt_table&#34;&gt;
+&lt;div id=&#34;xwlszlipox&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;&lt;table class=&#34;gt_table&#34;&gt;
   &lt;thead class=&#34;gt_header&#34;&gt;
     &lt;tr&gt;
       &lt;th colspan=&#34;3&#34; class=&#34;gt_heading gt_title gt_font_normal&#34; style&gt;Top Destinations out of PDX, By Month&lt;/th&gt;
@@ -764,9 +782,9 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
       &lt;td class=&#34;gt_row gt_center&#34;&gt;323&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;February&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;DEN&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;276&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_left&#34;&gt;February&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;DEN&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;276&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class=&#34;gt_row gt_left&#34;&gt;March&lt;/td&gt;
@@ -774,9 +792,9 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
       &lt;td class=&#34;gt_row gt_center&#34;&gt;346&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;April&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;LAX&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;348&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_left&#34;&gt;April&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;LAX&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;348&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class=&#34;gt_row gt_left&#34;&gt;May&lt;/td&gt;
@@ -784,9 +802,9 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
       &lt;td class=&#34;gt_row gt_center&#34;&gt;387&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;June&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;DEN&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;354&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_left&#34;&gt;June&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;DEN&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;354&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class=&#34;gt_row gt_left&#34;&gt;July&lt;/td&gt;
@@ -794,9 +812,9 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
       &lt;td class=&#34;gt_row gt_center&#34;&gt;359&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;August&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;DEN&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;373&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_left&#34;&gt;August&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;DEN&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;373&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class=&#34;gt_row gt_left&#34;&gt;September&lt;/td&gt;
@@ -804,9 +822,9 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
       &lt;td class=&#34;gt_row gt_center&#34;&gt;369&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;October&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;DEN&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;366&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_left&#34;&gt;October&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;DEN&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;366&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class=&#34;gt_row gt_left&#34;&gt;November&lt;/td&gt;
@@ -814,9 +832,9 @@ pdx_flights_dest_noSF_gt&lt;/code&gt;&lt;/pre&gt;
       &lt;td class=&#34;gt_row gt_center&#34;&gt;295&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;December&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;PHX&lt;/td&gt;
-      &lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;286&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_left&#34;&gt;December&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;PHX&lt;/td&gt;
+      &lt;td class=&#34;gt_row gt_center&#34;&gt;286&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
   
@@ -873,7 +891,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
 }
 
-#jqtiaqvllc .gt_table {
+#kexwdqpzer .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -896,7 +914,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-left-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_heading {
+#kexwdqpzer .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -908,7 +926,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_title {
+#kexwdqpzer .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -918,7 +936,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-bottom-width: 0;
 }
 
-#jqtiaqvllc .gt_subtitle {
+#kexwdqpzer .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -928,13 +946,13 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-top-width: 0;
 }
 
-#jqtiaqvllc .gt_bottom_border {
+#kexwdqpzer .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_col_headings {
+#kexwdqpzer .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -949,7 +967,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_col_heading {
+#kexwdqpzer .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -969,7 +987,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   overflow-x: hidden;
 }
 
-#jqtiaqvllc .gt_column_spanner_outer {
+#kexwdqpzer .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -981,15 +999,15 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   padding-right: 4px;
 }
 
-#jqtiaqvllc .gt_column_spanner_outer:first-child {
+#kexwdqpzer .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jqtiaqvllc .gt_column_spanner_outer:last-child {
+#kexwdqpzer .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jqtiaqvllc .gt_column_spanner {
+#kexwdqpzer .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1001,7 +1019,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   width: 100%;
 }
 
-#jqtiaqvllc .gt_group_heading {
+#kexwdqpzer .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1023,7 +1041,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   vertical-align: middle;
 }
 
-#jqtiaqvllc .gt_empty_group_heading {
+#kexwdqpzer .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1038,19 +1056,19 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   vertical-align: middle;
 }
 
-#jqtiaqvllc .gt_striped {
+#kexwdqpzer .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jqtiaqvllc .gt_from_md &gt; :first-child {
+#kexwdqpzer .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#jqtiaqvllc .gt_from_md &gt; :last-child {
+#kexwdqpzer .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#jqtiaqvllc .gt_row {
+#kexwdqpzer .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1069,7 +1087,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   overflow-x: hidden;
 }
 
-#jqtiaqvllc .gt_stub {
+#kexwdqpzer .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1081,7 +1099,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   padding-left: 12px;
 }
 
-#jqtiaqvllc .gt_summary_row {
+#kexwdqpzer .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1091,7 +1109,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   padding-right: 5px;
 }
 
-#jqtiaqvllc .gt_first_summary_row {
+#kexwdqpzer .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1101,7 +1119,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-top-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_grand_summary_row {
+#kexwdqpzer .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1111,7 +1129,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   padding-right: 5px;
 }
 
-#jqtiaqvllc .gt_first_grand_summary_row {
+#kexwdqpzer .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1121,7 +1139,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-top-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_table_body {
+#kexwdqpzer .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1130,7 +1148,7 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_footnotes {
+#kexwdqpzer .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1144,13 +1162,13 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_footnote {
+#kexwdqpzer .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#jqtiaqvllc .gt_sourcenotes {
+#kexwdqpzer .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1164,46 +1182,46 @@ pdx_flights_aircraft_filtered %&amp;gt;% gt() %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_sourcenote {
+#kexwdqpzer .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#jqtiaqvllc .gt_left {
+#kexwdqpzer .gt_left {
   text-align: left;
 }
 
-#jqtiaqvllc .gt_center {
+#kexwdqpzer .gt_center {
   text-align: center;
 }
 
-#jqtiaqvllc .gt_right {
+#kexwdqpzer .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jqtiaqvllc .gt_font_normal {
+#kexwdqpzer .gt_font_normal {
   font-weight: normal;
 }
 
-#jqtiaqvllc .gt_font_bold {
+#kexwdqpzer .gt_font_bold {
   font-weight: bold;
 }
 
-#jqtiaqvllc .gt_font_italic {
+#kexwdqpzer .gt_font_italic {
   font-style: italic;
 }
 
-#jqtiaqvllc .gt_super {
+#kexwdqpzer .gt_super {
   font-size: 65%;
 }
 
-#jqtiaqvllc .gt_footnote_marks {
+#kexwdqpzer .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 &lt;/style&gt;
-&lt;div id=&#34;jqtiaqvllc&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;&lt;table class=&#34;gt_table&#34;&gt;
+&lt;div id=&#34;kexwdqpzer&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;&lt;table class=&#34;gt_table&#34;&gt;
   &lt;thead class=&#34;gt_header&#34;&gt;
     &lt;tr&gt;
       &lt;th colspan=&#34;6&#34; class=&#34;gt_heading gt_title gt_font_normal&#34; style&gt;Busiest Aircraft, by Total Airtime&lt;/th&gt;
@@ -1342,7 +1360,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
 }
 
-#yduicborgj .gt_table {
+#nmdxvtysql .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1365,7 +1383,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-left-color: #D3D3D3;
 }
 
-#yduicborgj .gt_heading {
+#nmdxvtysql .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1377,7 +1395,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#yduicborgj .gt_title {
+#nmdxvtysql .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1387,7 +1405,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-bottom-width: 0;
 }
 
-#yduicborgj .gt_subtitle {
+#nmdxvtysql .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1397,13 +1415,13 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-top-width: 0;
 }
 
-#yduicborgj .gt_bottom_border {
+#nmdxvtysql .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yduicborgj .gt_col_headings {
+#nmdxvtysql .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1418,7 +1436,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#yduicborgj .gt_col_heading {
+#nmdxvtysql .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1438,7 +1456,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   overflow-x: hidden;
 }
 
-#yduicborgj .gt_column_spanner_outer {
+#nmdxvtysql .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1450,15 +1468,15 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   padding-right: 4px;
 }
 
-#yduicborgj .gt_column_spanner_outer:first-child {
+#nmdxvtysql .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yduicborgj .gt_column_spanner_outer:last-child {
+#nmdxvtysql .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yduicborgj .gt_column_spanner {
+#nmdxvtysql .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1470,7 +1488,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   width: 100%;
 }
 
-#yduicborgj .gt_group_heading {
+#nmdxvtysql .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1492,7 +1510,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   vertical-align: middle;
 }
 
-#yduicborgj .gt_empty_group_heading {
+#nmdxvtysql .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1507,19 +1525,19 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   vertical-align: middle;
 }
 
-#yduicborgj .gt_striped {
+#nmdxvtysql .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yduicborgj .gt_from_md &gt; :first-child {
+#nmdxvtysql .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#yduicborgj .gt_from_md &gt; :last-child {
+#nmdxvtysql .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#yduicborgj .gt_row {
+#nmdxvtysql .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1538,7 +1556,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   overflow-x: hidden;
 }
 
-#yduicborgj .gt_stub {
+#nmdxvtysql .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1550,7 +1568,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   padding-left: 12px;
 }
 
-#yduicborgj .gt_summary_row {
+#nmdxvtysql .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1560,7 +1578,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   padding-right: 5px;
 }
 
-#yduicborgj .gt_first_summary_row {
+#nmdxvtysql .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1570,7 +1588,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-top-color: #D3D3D3;
 }
 
-#yduicborgj .gt_grand_summary_row {
+#nmdxvtysql .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1580,7 +1598,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   padding-right: 5px;
 }
 
-#yduicborgj .gt_first_grand_summary_row {
+#nmdxvtysql .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1590,7 +1608,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-top-color: #D3D3D3;
 }
 
-#yduicborgj .gt_table_body {
+#nmdxvtysql .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1599,7 +1617,7 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#yduicborgj .gt_footnotes {
+#nmdxvtysql .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1613,13 +1631,13 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#yduicborgj .gt_footnote {
+#nmdxvtysql .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#yduicborgj .gt_sourcenotes {
+#nmdxvtysql .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1633,46 +1651,46 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#yduicborgj .gt_sourcenote {
+#nmdxvtysql .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#yduicborgj .gt_left {
+#nmdxvtysql .gt_left {
   text-align: left;
 }
 
-#yduicborgj .gt_center {
+#nmdxvtysql .gt_center {
   text-align: center;
 }
 
-#yduicborgj .gt_right {
+#nmdxvtysql .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yduicborgj .gt_font_normal {
+#nmdxvtysql .gt_font_normal {
   font-weight: normal;
 }
 
-#yduicborgj .gt_font_bold {
+#nmdxvtysql .gt_font_bold {
   font-weight: bold;
 }
 
-#yduicborgj .gt_font_italic {
+#nmdxvtysql .gt_font_italic {
   font-style: italic;
 }
 
-#yduicborgj .gt_super {
+#nmdxvtysql .gt_super {
   font-size: 65%;
 }
 
-#yduicborgj .gt_footnote_marks {
+#nmdxvtysql .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 &lt;/style&gt;
-&lt;div id=&#34;yduicborgj&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;&lt;table class=&#34;gt_table&#34;&gt;
+&lt;div id=&#34;nmdxvtysql&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;&lt;table class=&#34;gt_table&#34;&gt;
   &lt;thead class=&#34;gt_header&#34;&gt;
     &lt;tr&gt;
       &lt;th colspan=&#34;7&#34; class=&#34;gt_heading gt_title gt_font_normal&#34; style&gt;Most Frequent Destinations from PDX&lt;/th&gt;
@@ -1765,350 +1783,6 @@ pdx_flights_timeofday %&amp;gt;% gt() %&amp;gt;%
 &lt;p&gt;For this table, as opposed to the table in the second section, I wanted to encourage vertical scanning, to encourage the viewer to note the sequential ordering of the rows, i.e., the first row corresponds to the top flight for each timeframe. Fortunately, I didn’t have to change much from the default &lt;code&gt;gt&lt;/code&gt; settings, just tinker with a titles to get the columns arranged in a more harmonious way. I really wanted to find a way to visually separate each timeframe’s data, but had trouble finding how to add vertical bars to separate the groups…although that may have ended up a bit chaotic anyway. Spanning labels will have to do! I do feel like adding the row for the total flights helped a bit, as we can distinctively see three values, indicating three groups. I think this is a pretty cool analysis of the dataset, particularly because it shows rather in-depth information about the distribution of top flights for each time of day, but also the total flights. Redeyes are definitely less popular/frequent, unsurprisingly!&lt;/p&gt;
 &lt;p&gt;As we can see, there are many interesting aspects of the &lt;code&gt;flights&lt;/code&gt; dataset that can be explored using nothing more than the humble table. With &lt;code&gt;gt&lt;/code&gt;, we can create elegant, easy-to-read tables even for rather complex data!&lt;/p&gt;
 &lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>All About the Population Pyramid!</title>
-      <link>https://vigilant-golick-64a677.netlify.app/post/final-viz/</link>
-      <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
-      <guid>https://vigilant-golick-64a677.netlify.app/post/final-viz/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;CS530_ARoten_GraphBrief1_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;A Population Pyramid, also known as an Age and Sex Pyramid is a
-histogram-like visualization often used to provide a succinct, elegant
-summary of differences in distribution of groups within a population.
-The population is broken up by a two-level factor variable, with one on
-each side of the visualization, and then the data is binned based on a
-continuous variable. Although population pyramids typically use a factor
-variable of sex (male and female), and a continuous variable of age, and
-are often used to convey such information as a country’s fertility rate,
-the visualization can be generalized to other situations, in which it
-may be referred to as simply a “dual-sided histogram”. The type of
-visualization is a handy way to enhance a typical histogram by splitting
-it into two factor variables in order to facilitate comparison across
-groups within a population, while still being able to make observations
-about the population as a whole.&lt;/p&gt;
-&lt;h2 id=&#34;how-to-read-a-population-pyramid-visualization&#34;&gt;How to Read a Population Pyramid Visualization&lt;/h2&gt;
-&lt;p&gt;There are several useful takeaways that can be gleaned quickly and
-easily using a population pyramid:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;How the overall distribution changes on the basis of &lt;em&gt;age&lt;/em&gt;&lt;/strong&gt;: To
-get a sense of the age distribution for the overall population, one
-can simply examine the shape of the plot/pyramid, focusing on how
-&lt;em&gt;width changes from top to bottom&lt;/em&gt;. The wider the plot at any
-particular height, the more individuals in the age group
-corresponding to that position on the y-axis contribute to the
-overall population. So, if the “base”/bottom is wide compared to the
-rest of the plot, giving it a “pyramid”-like shape, the population
-is comprised of mostly younger individuals. However, if the overall
-“pyramid” is more rectangular, the age distribution is balanced. An
-upside-down pyramid would indicate a generally older population, and
-a “bulge” could indicate something like a baby boom around that
-particular age bracket’s birth years.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;How the overall distribution differs based on &lt;em&gt;sex&lt;/em&gt;&lt;/strong&gt;: This is a
-fairly simple piece of information to glean from this type of plot –
-if the pyramid is &lt;em&gt;heavier on one side than the other&lt;/em&gt;, then the
-population is skewed more heavily toward one particular sex than the
-other.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;How the &lt;em&gt;sex&lt;/em&gt; distribution changes as a &lt;em&gt;function of age&lt;/em&gt;&lt;/strong&gt;: We
-also can take into account both of the variables above and determine
-whether the sex distribution differs based on the age of that
-segment of the population. It’s difficult to think of an example
-that is not tragic, but, say, a plot of the demographics of the U.S.
-shortly after World War II may have more females than males in the
-age bracket 18-25 years old, but would likely be balanced in age
-brackets younger and older. In this case, the pyramid would be
-&lt;em&gt;vertically asymmetric&lt;/em&gt;, with a &lt;em&gt;“notch”&lt;/em&gt; on the male side at that
-age bracket. Examining the plot for these &lt;em&gt;notches&lt;/em&gt; is a quick,
-simple way to determine whether the sex distribution differs for a
-particular age group.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Finally, in traditional population pyramids which depict age/sex
-distribution in a particular region, there are three shapes so commonly
-seen that they are given specific labels: expanding, contracting, and
-stationary, as shown below (graphic, as well as paraphrased information
-on each shape from a paper by Daniel Staetsky, full citation can be
-found in final section):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;pyramid_types.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;A very triangular shape, with many more young representatives than
-older, as in the &lt;strong&gt;expanding&lt;/strong&gt; pyramid, is indicative of a population
-that is growing, along with high fertility/mortality rates. The
-&lt;strong&gt;contracting&lt;/strong&gt; shape, where the pyramid is pinched at the base is
-indicative of low fertility/mortality rates, corresponding to a
-population with few young people, relative to the rest of the group.
-Finally, the &lt;strong&gt;stationary&lt;/strong&gt; pyramid, which has a columnal shape, tends
-to correspond to stable populations, with balanced, low fertility and
-mortality rates.&lt;/p&gt;
-&lt;p&gt;Disclosure: Given the wide spectrum of gender identities present in
-modern society, I can absolutely understand how some may object to the
-binary nature of the population pyramid. Although I, and most who employ
-this type of visualization, specify the binary factor as biological
-“sex”, not gender, issues still remain. After a quick search, it doesn’t
-look like many have addressed this issue currently, but I would not be
-surprised to see multi-way analyses in the future (population stars??)!&lt;/p&gt;
-&lt;h2 id=&#34;data&#34;&gt;Data&lt;/h2&gt;
-&lt;p&gt;The data used to generate the examples at the top of this page comes
-from the United States Consumer Product Safety Commission’s National
-Electronic Injury Surveillance System dataset, which can be found at the
-following link:
-&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34;&gt;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&lt;/a&gt;&lt;/a&gt;
-. This dataset is quite rich, containing data gathered from a large
-number of emergency departments in the US. The overall dataset contains
-demographic information, including sex, age, and ethnicity, as well as a
-number of other interesting pieces of information including whether a
-particular product was involved in the injury (as in the left plot
-above, which includes all ER visits in the dataset from 2019 which
-involved a trampoline), and whether drugs or alcohol were involved in
-the injury. The dataset also includes for each datapoint/injury, a brief
-narrative outlining the loose details of the incident. The website
-contains a neat query system where the user can narrow down the dataset
-by filtering for year, product involved, and other data characteristics.&lt;/p&gt;
-&lt;h2 id=&#34;figure-specific-details&#34;&gt;Figure-Specific Details&lt;/h2&gt;
-&lt;p&gt;I opted to use a population pyramid for a slighly atypical analysis in
-the , that is, to examine the demographics of patients who visited a
-number of U.S. emergency rooms in 2019, using the dataset described
-above. I chose to narrow the dataset to two types of emergency room
-incidents, to depict two very different-looking population pyramids: the
-left plot shows the distribution of patients who visited the ER due to
-trampoline-related accidents, and the right plot shows the same of
-patients who visited the ER due to incidents involving the use of
-alcohol.&lt;/p&gt;
-&lt;p&gt;I’ll use the general framework for interpreting a population pyramid
-described above to discuss the information I gleaned from these plots,
-first analyzing the plot on the left, then the plot on the right.&lt;/p&gt;
-&lt;h3 id=&#34;trampoline-based-injuries&#34;&gt;Trampoline-Based Injuries&lt;/h3&gt;
-&lt;p&gt;As stated, this plot shows a breakdown of the age and sex
-characteristics of the group of individuals who visited the emergency
-room due to trampoline accidents in 2019. Prior to generating the plot,
-I hypothesized that the shape would be heavy at the base, and thinner on
-the top, as children are typical trampoline users, and I recall from my
-daredevil youth that I much preferred playing on a trampoline without a
-protective net. Though as an adult, I still struggle to ignore the siren
-song of the trampoline, I tend to be more careful than when I was a
-child. Stereotypes might lead some to believe that male children are
-more prone to taking trampoline-related risks, but I knew many a
-reckless young female when I was growing up, so I hypothesized a
-symmetric pyramid.&lt;/p&gt;
-&lt;p&gt;Indeed, this is what the plot shows – a &lt;em&gt;very&lt;/em&gt; heavy base, with a peak
-around 9-10 years old. Around the teenage years, these injuries drop off
-significantly, although not completely, perhaps in part due to some in
-the 25-40 year old age group having young children, and being tempted by
-their child’s trampoline. However, once we hit the mid-40’s, there are
-very few representatives from that cohort and older in this population.
-Additionally, the plot is quite &lt;em&gt;symmetric&lt;/em&gt; – males and females are
-more-or-less equally represented in this population. There doesn’t
-appear to be an interaction of age and sex, as there are no bulges or
-notches present on one side but not the other.&lt;/p&gt;
-&lt;h3 id=&#34;accidents-involving-alcohol&#34;&gt;Accidents Involving Alcohol&lt;/h3&gt;
-&lt;p&gt;A slightly more sobering (sorry!) analysis is on the right – a
-population pyramid showing the age/sex distribution amongst ER visits
-resulting from alcohol-related injuries. In this case, I did hypothesize
-a difference between sexes, with males making up a somewhat larger
-proportion of the population, though still a fair few females. I also
-predicted a pear-shaped pyramid, with very few representatives from the
-0-20 year old cohort, the bulk of patients in the 20-30 year old range,
-and a consistent taper down as age increased.&lt;/p&gt;
-&lt;p&gt;I was somewhat surprised by the shape of the resulting plot. Although
-I’d anticipated a plot that was &lt;em&gt;heavier on the male side than the
-female side&lt;/em&gt;, I hadn’t expected the difference to be so dramatic. Almost
-across the board, each male age cohort has about double (if not more)
-members than the corresponding female cohort. I was also surprised to
-see bimodal distributions on both sides, with a bulge from about the
-mid-teens through around 35, but then an even larger bulge in the older
-years, peaking around the early-to-mid sixties. Folks getting wild in
-their retirement years! Though females are represented less in the
-overall population distribution, these characteristics are still present
-in that sub-population’s distribution.&lt;/p&gt;
-&lt;p&gt;I could see analyses like these being useful for target specific groups
-to recieve safety training on a particular product, deciding who to
-design flyers for, which, say, encourage moderation and safety when
-consuming alcohol, or to determine suggested age ranges for certain play
-equipment.&lt;/p&gt;
-&lt;h2 id=&#34;presentation-tips&#34;&gt;Presentation Tips&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Color:&lt;/strong&gt; Typically, this type of visualization uses color in a simple
-fashion, either using a uniform color and annotating each side with the
-appropriate label, or selecting two distinct colors to distinguish
-between one side and the other. Since a population pyramid generally
-plots the distribution of males versus females, we often see plots that
-select pink for the female distribution and blue for the male
-distribution. However, this is a bit of an anachronism in today’s
-society, as these colors carry the weight of long-term stereotypical
-gender associations. Some argue that choosing these colors allows for
-speedy interpretation of the figure, however, if a reader has so little
-time or mental energy that scanning a legend is unmanagable, then, well,
-perhaps they should skip looking at the figure altogether.
-Interestingly, it has been suggested that simply flipping the colors
-around can be problematic, as it can lead to confusion due to the
-aforementioned speedy interpretation of those particular colors in a
-figure.&lt;/p&gt;
-&lt;p&gt;So, I chose to create a graph with different colors altogether, inspired
-by the color choices in the Telegraph; green for males, and purple for
-females. A discussion of the motivation behind this choice, as well as
-more detailed arguments against the selection of blue/pink to
-distinguish male/female populations can be found at the following link:
-&lt;a href=&#34;https://blog.datawrapper.de/gendercolor/&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://blog.datawrapper.de/gendercolor/&#34;&gt;https://blog.datawrapper.de/gendercolor/&lt;/a&gt;&lt;/a&gt;
-.&lt;/p&gt;
-&lt;p&gt;Although some may consider it an attractive or interesting design detail
-to apply a color gratient based on age, this is not a common choice. Not
-only is it unnecessary to code this using color, since the axis makes
-the age range quite clear, it could also distract readers.&lt;/p&gt;
-&lt;p&gt;Finally, avoid this color choice for this type of visualization at all
-costs! (But please do use this very attractive 70’s-inspired rainbow
-palette for your artistic projects!)&lt;/p&gt;
-&lt;a href=&#34;https://www.geo41.com/population-structure&#34;&gt; 
-&lt;img src=&#34;bad_color.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
-&lt;/a&gt;
-&lt;p&gt;&lt;strong&gt;Composition:&lt;/strong&gt; Since these plots are fairly straight-forward, there
-are only a few small details to keep in mind regarding composition. The
-first is that even if the most populous bin in on one side is less than
-the most populous bin on the other, the x-axis should range from [-n,
-n], with n corresponding to the most populous bin overall. Although
-this is a small detail, this places the line dividing the sex/two-factor
-distributions directly in the middle of the plot, which can aid in
-accurate comparison of one sub-population versus the other. Also, in my
-opinion, it is much more visually harmonious.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;CS530_ARoten_GraphBrief1_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Annotation:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The Population Pyramid is a useful visualization in no small part
-because of the rich possibilities of interpretation without the need for
-excessive labeling or annotation. However, if a particular feature of
-the shape of the plot corresponds to, say, a cultural event that is
-relevant to the context of the figure, it would be acceptable to add a
-small annotation to the plot, indicating the events related to the
-feature of the plot. As with all graph annotation, it is better to keep
-it minimal and clean. Below is an example of a well-annotated population
-pyramid (although perhaps with a bit much going on, I would personally
-keep it to one or two annotations):&lt;/p&gt;
-&lt;a href=&#34;http://japanjapan.blogspot.com/2010/06/japans-population-structure.html&#34;&gt; 
-&lt;img src=&#34;good_annotation.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
-&lt;/a&gt;
-&lt;p&gt;Although the annotations/labels add a fair bit of busyness to the
-figure, the story behind the plot is enriched with the additional
-details. Note that in addition to the annotations, the figure overlays
-the outline of a population pyramid from an earlier date on top of the
-more recent pyramid. This also allows additional temporal information to
-the figure’s story, which I find to be quite effective.&lt;/p&gt;
-&lt;p&gt;In contrast, here is a poorly annotated population pyramid:&lt;/p&gt;
-&lt;a href=&#34;https://pt.slideshare.net/JonathanHall66/analysing-populationpyramids/6?smtNoRedir=1&#34;&gt; 
-&lt;img src=&#34;bad_annotation.png&#34; style=&#34;display: block; margin: auto;&#34;/&gt;
-&lt;/a&gt;
-&lt;p&gt;First of all…that font! But, that is not relevant to the discussion of
-the pyramid itself. In this case, although there is certainly
-information added through the annotations, the positioning and quantity
-of labels distracts from the overall impact of the figure. This quantity
-of information would be better suited to a narrative setting, alongside
-the figure, perhaps with numerical annotations indicating the feature of
-the plot that corresponds with the additional contextual information.
-However, the lines indicating the positions on the plat that correspond
-to each annotation are confusing, in that they point directly to one or
-the other side of the pyramid. This configuration could come across to
-the viewer as if only one of the sub-populations corresponds to the
-information in the annotation, e.g. the middle annotation on the
-right-hand side appears to be referring only to the female side of the
-pyramid, however, certainly females are not the only humans who will
-age!&lt;/p&gt;
-&lt;h2 id=&#34;methods&#34;&gt;Methods&lt;/h2&gt;
-&lt;p&gt;Below is the code used to create one of the population pyramids, broken
-up into a chunk that shows the data wrangling process, and then one
-showing the plot generation, including the &lt;code&gt;ggarrange()&lt;/code&gt; call that was
-used to combine the two plots.&lt;/p&gt;
-&lt;h3 id=&#34;data-wrangling&#34;&gt;Data Wrangling&lt;/h3&gt;
-&lt;p&gt;The data wrangling process was pretty straight-forward after downloading
-the data from the link provided in the data section, specifically
-downloading and working with the entire dataset from 2019. The .xlsx
-file consists of a row corresponding to each emergency room visit, and
-the columns to each piece of information related to that incident, so I
-simply had to narrow down the dataset to only include rows where the
-column &lt;code&gt;alcohol_involved&lt;/code&gt; was equal to one. I also filtered out rows
-with age values higher than 100, as there were some instances where the
-age column contained a code that was not the actual age in years. I also
-filtered out rows where the patient’s sex was unknown.&lt;/p&gt;
-&lt;p&gt;Since the dataset originally included column names with spaces, a
-configuration that does not play well with R code, I used the handy
-&lt;code&gt;janitor::clean_names()&lt;/code&gt; function to convert the column names into
-R-friendly strings. Finally, I replaced the 1/2 indicators with
-“Male”/“Female”, primarily as a hacky way of making the plot’s legend
-more attractive, although this could have been done directly during the
-plotting phase. Finally, I narrowed the dataset down to just the sex and
-age columns, which is all that was needed for the population pyramids.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;alcohol_data &amp;lt;- read_excel(&amp;quot;neiss2019.xlsx&amp;quot;) %&amp;gt;%
-                 janitor::clean_names() %&amp;gt;%
-                 filter(alcohol_involved == 1, sex != 0, age &amp;lt; 100) %&amp;gt;%
-                 mutate(sex = ifelse(sex == 1, &amp;quot;Male&amp;quot;, &amp;quot;Female&amp;quot;)) %&amp;gt;%
-                 select(sex, age)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;plotting&#34;&gt;Plotting&lt;/h3&gt;
-&lt;p&gt;The plots I created were adapted from code a couple of handy tutorials;
-the first two links in the citation section below. The two plots were
-then set up to display side-by-side using &lt;code&gt;ggarrange()&lt;/code&gt;. Each function
-call is annotated in the R chunk below:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;booze_pyramid &amp;lt;- ggplot(data = alcohol_data, aes(x = age, fill = sex)) +     # Basic ggplot call, 
-                                                                             # specifying age as the 
-                                                                             # x-values and the 
-                                                                             # fill value to be  
-                                                                             # selected based on the 
-                                                                             # sex value. 
-  
-                 geom_histogram(data = subset(alcohol_data, sex == &amp;quot;Male&amp;quot;),  # Creating the histogram 
-                                     bins = 35, color = &amp;quot;lightgrey&amp;quot;) +       # for the male data.
-  
-                 geom_histogram(data = subset(alcohol_data, sex == &amp;quot;Female&amp;quot;),# Creating the histogram for
-                               mapping = aes(y = - ..count.. ),              # the female data. Note that
-                               position = &amp;quot;identity&amp;quot;,                        # the count/y is mapped to
-                               bins = 35, color = &amp;quot;lightgrey&amp;quot;) +             # negative values, to flip
-                                                                             # the bars.
-  
-                 scale_y_continuous(limits = c(-350, 350), labels = abs) +   # Manually setting the axis
-                 scale_x_continuous(limits = c(0, 100)) +                    # ranges.
-  
-                 coord_flip() +                                              # Flipping the x/y axes.
-  
-                 ggtitle(&amp;quot;Involving Alcohol-Use&amp;quot;) +                          # Tweaking the title and 
-                 ylab(&amp;quot;Count&amp;quot;) +                                             # other details.
-                 theme_minimal() +
-                 theme(plot.title = element_text(size = 10, hjust = 0.5)) +
-                 scale_fill_manual(values = c(&amp;quot;#80337c&amp;quot;, &amp;quot;#338057&amp;quot;)) 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The &lt;code&gt;ggarrange()&lt;/code&gt; call is included below, as this is a handy function to
-include several individual plots in a single overall figure.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;pyramid_two &amp;lt;- ggarrange(trampoline_pyramid, booze_pyramid, heights = c(2, 2), # Call to ggarrange, 
-                    ncol = 2, nrow = 1, common.legend = TRUE, align = &#39;v&#39;,     # passing in both plot
-                                                                               # objects and setting
-                    legend = &amp;quot;right&amp;quot;) %&amp;gt;%                                      # display params.
-                                                                               
-                                                                               # Adding &amp;quot;overall&amp;quot; fig 
-                                                                               # title.
-               annotate_figure(top = text_grob(&amp;quot;Accidents Resulting in \nEmergency Room Visits in 2019\n &amp;quot;, 
-                                               face = &amp;quot;bold&amp;quot;, size = 16))
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-
-## Warning: Removed 2 rows containing missing values (geom_bar).
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;additional-citations&#34;&gt;Additional Citations&lt;/h3&gt;
-&lt;p&gt;Staetsky, Daniel. (2015). Strictly Orthodox Rising: what the demography
-of British Jews tells us about the future of the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://rpubs.com/walkerke/pyramids_ggplot2&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://rpubs.com/walkerke/pyramids_ggplot2&#34;&gt;https://rpubs.com/walkerke/pyramids_ggplot2&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&#34;&gt;https://stackoverflow.com/questions/14680075/simpler-population-pyramid-in-ggplot2&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&#34;&gt;https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&#34;&gt;https://www.whiteplainspublicschools.org/cms/lib/NY01000029/Centricity/Domain/353/Population%20Pyramids%20Geography.pdf&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://populationeducation.org/what-are-different-types-population-pyramids/&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://populationeducation.org/what-are-different-types-population-pyramids/&#34;&gt;https://populationeducation.org/what-are-different-types-population-pyramids/&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&#34;&gt;https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0&lt;/a&gt;&lt;/a&gt;
-&lt;a href=&#34;https://datavizcatalogue.com&#34; class=&#34;uri&#34;&gt;&lt;a href=&#34;https://datavizcatalogue.com&#34;&gt;https://datavizcatalogue.com&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

@@ -55,9 +55,13 @@ pdx_flights_dest_noSF <- flights %>%
 pdx_flights_dest_noSF
 
 pdx_flights_dest_noSF_gt <- pdx_flights_dest_noSF %>% gt() %>%
-                       tab_options(row.striping.background_color = "#f9f9f9",
-                                   row.striping.include_table_body = TRUE,
-                                   row.striping.include_stub = TRUE) %>%
+                       # NOTE: While these options add striping when the 
+                       # .Rmd file is rendered locally, the striping is not
+                       # present when deployed. Oddly, removing this option
+                       # *adds* striping to deployed file. The more you know!
+                       # tab_options(row.striping.background_color = "#f9f9f9",
+                       #             row.striping.include_table_body = TRUE,
+                       #             row.striping.include_stub = TRUE) %>%
                        tab_header(title="Top Destinations out of PDX, By Month",
                                   subtitle="(Excluding SFO)") %>%
                        cols_label(month = "Month", 

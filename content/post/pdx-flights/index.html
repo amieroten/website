@@ -67,9 +67,13 @@ pdx_flights_dest_noSF</code></pre>
 ## 11 November  DEN     295
 ## 12 December  PHX     286</code></pre>
 <pre class="r"><code>pdx_flights_dest_noSF_gt &lt;- pdx_flights_dest_noSF %&gt;% gt() %&gt;%
-                       tab_options(row.striping.background_color = &quot;#f9f9f9&quot;,
-                                   row.striping.include_table_body = TRUE,
-                                   row.striping.include_stub = TRUE) %&gt;%
+                       # NOTE: While these options add striping when the 
+                       # .Rmd file is rendered locally, the striping is not
+                       # present when deployed. Oddly, removing this option
+                       # *adds* striping to deployed file. The more you know!
+                       # tab_options(row.striping.background_color = &quot;#f9f9f9&quot;,
+                       #             row.striping.include_table_body = TRUE,
+                       #             row.striping.include_stub = TRUE) %&gt;%
                        tab_header(title=&quot;Top Destinations out of PDX, By Month&quot;,
                                   subtitle=&quot;(Excluding SFO)&quot;) %&gt;%
                        cols_label(month = &quot;Month&quot;, 
@@ -85,7 +89,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#jcwlvvpsyb .gt_table {
+#xwlszlipox .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -108,7 +112,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_heading {
+#xwlszlipox .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -120,7 +124,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_title {
+#xwlszlipox .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -130,7 +134,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-bottom-width: 0;
 }
 
-#jcwlvvpsyb .gt_subtitle {
+#xwlszlipox .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -140,13 +144,13 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-top-width: 0;
 }
 
-#jcwlvvpsyb .gt_bottom_border {
+#xwlszlipox .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_col_headings {
+#xwlszlipox .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -161,7 +165,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_col_heading {
+#xwlszlipox .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -181,7 +185,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   overflow-x: hidden;
 }
 
-#jcwlvvpsyb .gt_column_spanner_outer {
+#xwlszlipox .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -193,15 +197,15 @@ pdx_flights_dest_noSF_gt</code></pre>
   padding-right: 4px;
 }
 
-#jcwlvvpsyb .gt_column_spanner_outer:first-child {
+#xwlszlipox .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jcwlvvpsyb .gt_column_spanner_outer:last-child {
+#xwlszlipox .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jcwlvvpsyb .gt_column_spanner {
+#xwlszlipox .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -213,7 +217,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   width: 100%;
 }
 
-#jcwlvvpsyb .gt_group_heading {
+#xwlszlipox .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -235,7 +239,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   vertical-align: middle;
 }
 
-#jcwlvvpsyb .gt_empty_group_heading {
+#xwlszlipox .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -250,19 +254,19 @@ pdx_flights_dest_noSF_gt</code></pre>
   vertical-align: middle;
 }
 
-#jcwlvvpsyb .gt_striped {
-  background-color: #f9f9f9;
+#xwlszlipox .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jcwlvvpsyb .gt_from_md > :first-child {
+#xwlszlipox .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jcwlvvpsyb .gt_from_md > :last-child {
+#xwlszlipox .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jcwlvvpsyb .gt_row {
+#xwlszlipox .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -281,7 +285,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   overflow-x: hidden;
 }
 
-#jcwlvvpsyb .gt_stub {
+#xwlszlipox .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -293,7 +297,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   padding-left: 12px;
 }
 
-#jcwlvvpsyb .gt_summary_row {
+#xwlszlipox .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -303,7 +307,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   padding-right: 5px;
 }
 
-#jcwlvvpsyb .gt_first_summary_row {
+#xwlszlipox .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -313,7 +317,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_grand_summary_row {
+#xwlszlipox .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -323,7 +327,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   padding-right: 5px;
 }
 
-#jcwlvvpsyb .gt_first_grand_summary_row {
+#xwlszlipox .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -333,7 +337,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_table_body {
+#xwlszlipox .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -342,7 +346,7 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_footnotes {
+#xwlszlipox .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -356,13 +360,13 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_footnote {
+#xwlszlipox .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#jcwlvvpsyb .gt_sourcenotes {
+#xwlszlipox .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -376,46 +380,46 @@ pdx_flights_dest_noSF_gt</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#jcwlvvpsyb .gt_sourcenote {
+#xwlszlipox .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#jcwlvvpsyb .gt_left {
+#xwlszlipox .gt_left {
   text-align: left;
 }
 
-#jcwlvvpsyb .gt_center {
+#xwlszlipox .gt_center {
   text-align: center;
 }
 
-#jcwlvvpsyb .gt_right {
+#xwlszlipox .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jcwlvvpsyb .gt_font_normal {
+#xwlszlipox .gt_font_normal {
   font-weight: normal;
 }
 
-#jcwlvvpsyb .gt_font_bold {
+#xwlszlipox .gt_font_bold {
   font-weight: bold;
 }
 
-#jcwlvvpsyb .gt_font_italic {
+#xwlszlipox .gt_font_italic {
   font-style: italic;
 }
 
-#jcwlvvpsyb .gt_super {
+#xwlszlipox .gt_super {
   font-size: 65%;
 }
 
-#jcwlvvpsyb .gt_footnote_marks {
+#xwlszlipox .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="jcwlvvpsyb" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="xwlszlipox" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="3" class="gt_heading gt_title gt_font_normal" style>Top Destinations out of PDX, By Month</th>
@@ -438,9 +442,9 @@ pdx_flights_dest_noSF_gt</code></pre>
       <td class="gt_row gt_center">323</td>
     </tr>
     <tr>
-      <td class="gt_row gt_left gt_striped">February</td>
-      <td class="gt_row gt_center gt_striped">DEN</td>
-      <td class="gt_row gt_center gt_striped">276</td>
+      <td class="gt_row gt_left">February</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">276</td>
     </tr>
     <tr>
       <td class="gt_row gt_left">March</td>
@@ -448,9 +452,9 @@ pdx_flights_dest_noSF_gt</code></pre>
       <td class="gt_row gt_center">346</td>
     </tr>
     <tr>
-      <td class="gt_row gt_left gt_striped">April</td>
-      <td class="gt_row gt_center gt_striped">LAX</td>
-      <td class="gt_row gt_center gt_striped">348</td>
+      <td class="gt_row gt_left">April</td>
+      <td class="gt_row gt_center">LAX</td>
+      <td class="gt_row gt_center">348</td>
     </tr>
     <tr>
       <td class="gt_row gt_left">May</td>
@@ -458,9 +462,9 @@ pdx_flights_dest_noSF_gt</code></pre>
       <td class="gt_row gt_center">387</td>
     </tr>
     <tr>
-      <td class="gt_row gt_left gt_striped">June</td>
-      <td class="gt_row gt_center gt_striped">DEN</td>
-      <td class="gt_row gt_center gt_striped">354</td>
+      <td class="gt_row gt_left">June</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">354</td>
     </tr>
     <tr>
       <td class="gt_row gt_left">July</td>
@@ -468,9 +472,9 @@ pdx_flights_dest_noSF_gt</code></pre>
       <td class="gt_row gt_center">359</td>
     </tr>
     <tr>
-      <td class="gt_row gt_left gt_striped">August</td>
-      <td class="gt_row gt_center gt_striped">DEN</td>
-      <td class="gt_row gt_center gt_striped">373</td>
+      <td class="gt_row gt_left">August</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">373</td>
     </tr>
     <tr>
       <td class="gt_row gt_left">September</td>
@@ -478,9 +482,9 @@ pdx_flights_dest_noSF_gt</code></pre>
       <td class="gt_row gt_center">369</td>
     </tr>
     <tr>
-      <td class="gt_row gt_left gt_striped">October</td>
-      <td class="gt_row gt_center gt_striped">DEN</td>
-      <td class="gt_row gt_center gt_striped">366</td>
+      <td class="gt_row gt_left">October</td>
+      <td class="gt_row gt_center">DEN</td>
+      <td class="gt_row gt_center">366</td>
     </tr>
     <tr>
       <td class="gt_row gt_left">November</td>
@@ -488,9 +492,9 @@ pdx_flights_dest_noSF_gt</code></pre>
       <td class="gt_row gt_center">295</td>
     </tr>
     <tr>
-      <td class="gt_row gt_left gt_striped">December</td>
-      <td class="gt_row gt_center gt_striped">PHX</td>
-      <td class="gt_row gt_center gt_striped">286</td>
+      <td class="gt_row gt_left">December</td>
+      <td class="gt_row gt_center">PHX</td>
+      <td class="gt_row gt_center">286</td>
     </tr>
   </tbody>
   
@@ -547,7 +551,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#jqtiaqvllc .gt_table {
+#kexwdqpzer .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -570,7 +574,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_heading {
+#kexwdqpzer .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -582,7 +586,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_title {
+#kexwdqpzer .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -592,7 +596,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-bottom-width: 0;
 }
 
-#jqtiaqvllc .gt_subtitle {
+#kexwdqpzer .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -602,13 +606,13 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-top-width: 0;
 }
 
-#jqtiaqvllc .gt_bottom_border {
+#kexwdqpzer .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_col_headings {
+#kexwdqpzer .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -623,7 +627,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_col_heading {
+#kexwdqpzer .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -643,7 +647,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   overflow-x: hidden;
 }
 
-#jqtiaqvllc .gt_column_spanner_outer {
+#kexwdqpzer .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -655,15 +659,15 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   padding-right: 4px;
 }
 
-#jqtiaqvllc .gt_column_spanner_outer:first-child {
+#kexwdqpzer .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jqtiaqvllc .gt_column_spanner_outer:last-child {
+#kexwdqpzer .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jqtiaqvllc .gt_column_spanner {
+#kexwdqpzer .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -675,7 +679,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   width: 100%;
 }
 
-#jqtiaqvllc .gt_group_heading {
+#kexwdqpzer .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -697,7 +701,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   vertical-align: middle;
 }
 
-#jqtiaqvllc .gt_empty_group_heading {
+#kexwdqpzer .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -712,19 +716,19 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   vertical-align: middle;
 }
 
-#jqtiaqvllc .gt_striped {
+#kexwdqpzer .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jqtiaqvllc .gt_from_md > :first-child {
+#kexwdqpzer .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jqtiaqvllc .gt_from_md > :last-child {
+#kexwdqpzer .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jqtiaqvllc .gt_row {
+#kexwdqpzer .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -743,7 +747,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   overflow-x: hidden;
 }
 
-#jqtiaqvllc .gt_stub {
+#kexwdqpzer .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -755,7 +759,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   padding-left: 12px;
 }
 
-#jqtiaqvllc .gt_summary_row {
+#kexwdqpzer .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -765,7 +769,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   padding-right: 5px;
 }
 
-#jqtiaqvllc .gt_first_summary_row {
+#kexwdqpzer .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -775,7 +779,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_grand_summary_row {
+#kexwdqpzer .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -785,7 +789,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   padding-right: 5px;
 }
 
-#jqtiaqvllc .gt_first_grand_summary_row {
+#kexwdqpzer .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -795,7 +799,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_table_body {
+#kexwdqpzer .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -804,7 +808,7 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_footnotes {
+#kexwdqpzer .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -818,13 +822,13 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_footnote {
+#kexwdqpzer .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#jqtiaqvllc .gt_sourcenotes {
+#kexwdqpzer .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -838,46 +842,46 @@ pdx_flights_aircraft_filtered %&gt;% gt() %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#jqtiaqvllc .gt_sourcenote {
+#kexwdqpzer .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#jqtiaqvllc .gt_left {
+#kexwdqpzer .gt_left {
   text-align: left;
 }
 
-#jqtiaqvllc .gt_center {
+#kexwdqpzer .gt_center {
   text-align: center;
 }
 
-#jqtiaqvllc .gt_right {
+#kexwdqpzer .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jqtiaqvllc .gt_font_normal {
+#kexwdqpzer .gt_font_normal {
   font-weight: normal;
 }
 
-#jqtiaqvllc .gt_font_bold {
+#kexwdqpzer .gt_font_bold {
   font-weight: bold;
 }
 
-#jqtiaqvllc .gt_font_italic {
+#kexwdqpzer .gt_font_italic {
   font-style: italic;
 }
 
-#jqtiaqvllc .gt_super {
+#kexwdqpzer .gt_super {
   font-size: 65%;
 }
 
-#jqtiaqvllc .gt_footnote_marks {
+#kexwdqpzer .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="jqtiaqvllc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="kexwdqpzer" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="6" class="gt_heading gt_title gt_font_normal" style>Busiest Aircraft, by Total Airtime</th>
@@ -1016,7 +1020,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#yduicborgj .gt_table {
+#nmdxvtysql .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1039,7 +1043,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#yduicborgj .gt_heading {
+#nmdxvtysql .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1051,7 +1055,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#yduicborgj .gt_title {
+#nmdxvtysql .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1061,7 +1065,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-bottom-width: 0;
 }
 
-#yduicborgj .gt_subtitle {
+#nmdxvtysql .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1071,13 +1075,13 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-top-width: 0;
 }
 
-#yduicborgj .gt_bottom_border {
+#nmdxvtysql .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yduicborgj .gt_col_headings {
+#nmdxvtysql .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1092,7 +1096,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#yduicborgj .gt_col_heading {
+#nmdxvtysql .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1112,7 +1116,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   overflow-x: hidden;
 }
 
-#yduicborgj .gt_column_spanner_outer {
+#nmdxvtysql .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1124,15 +1128,15 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   padding-right: 4px;
 }
 
-#yduicborgj .gt_column_spanner_outer:first-child {
+#nmdxvtysql .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yduicborgj .gt_column_spanner_outer:last-child {
+#nmdxvtysql .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yduicborgj .gt_column_spanner {
+#nmdxvtysql .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1144,7 +1148,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   width: 100%;
 }
 
-#yduicborgj .gt_group_heading {
+#nmdxvtysql .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1166,7 +1170,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   vertical-align: middle;
 }
 
-#yduicborgj .gt_empty_group_heading {
+#nmdxvtysql .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1181,19 +1185,19 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   vertical-align: middle;
 }
 
-#yduicborgj .gt_striped {
+#nmdxvtysql .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yduicborgj .gt_from_md > :first-child {
+#nmdxvtysql .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yduicborgj .gt_from_md > :last-child {
+#nmdxvtysql .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yduicborgj .gt_row {
+#nmdxvtysql .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1212,7 +1216,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   overflow-x: hidden;
 }
 
-#yduicborgj .gt_stub {
+#nmdxvtysql .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1224,7 +1228,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   padding-left: 12px;
 }
 
-#yduicborgj .gt_summary_row {
+#nmdxvtysql .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1234,7 +1238,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   padding-right: 5px;
 }
 
-#yduicborgj .gt_first_summary_row {
+#nmdxvtysql .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1244,7 +1248,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#yduicborgj .gt_grand_summary_row {
+#nmdxvtysql .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1254,7 +1258,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   padding-right: 5px;
 }
 
-#yduicborgj .gt_first_grand_summary_row {
+#nmdxvtysql .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1264,7 +1268,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#yduicborgj .gt_table_body {
+#nmdxvtysql .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1273,7 +1277,7 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#yduicborgj .gt_footnotes {
+#nmdxvtysql .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1287,13 +1291,13 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#yduicborgj .gt_footnote {
+#nmdxvtysql .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#yduicborgj .gt_sourcenotes {
+#nmdxvtysql .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1307,46 +1311,46 @@ pdx_flights_timeofday %&gt;% gt() %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#yduicborgj .gt_sourcenote {
+#nmdxvtysql .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#yduicborgj .gt_left {
+#nmdxvtysql .gt_left {
   text-align: left;
 }
 
-#yduicborgj .gt_center {
+#nmdxvtysql .gt_center {
   text-align: center;
 }
 
-#yduicborgj .gt_right {
+#nmdxvtysql .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yduicborgj .gt_font_normal {
+#nmdxvtysql .gt_font_normal {
   font-weight: normal;
 }
 
-#yduicborgj .gt_font_bold {
+#nmdxvtysql .gt_font_bold {
   font-weight: bold;
 }
 
-#yduicborgj .gt_font_italic {
+#nmdxvtysql .gt_font_italic {
   font-style: italic;
 }
 
-#yduicborgj .gt_super {
+#nmdxvtysql .gt_super {
   font-size: 65%;
 }
 
-#yduicborgj .gt_footnote_marks {
+#nmdxvtysql .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="yduicborgj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="nmdxvtysql" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="7" class="gt_heading gt_title gt_font_normal" style>Most Frequent Destinations from PDX</th>
