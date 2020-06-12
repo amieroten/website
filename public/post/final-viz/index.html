@@ -27,7 +27,8 @@
   
     
   
-  <meta name="description" content="testing testing">
+  <meta name="description" content="A preliminary note: If the visualization above does not render well on your machine, please visit the application directly, at https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/ !
+Overview The interactive visualization above was created primarily as a final project submission for OHSU’s Data Visualization course, but also as a tool to guide investigation of data from a research project I’ve been working on during my time at OHSU.">
 
   
   <link rel="alternate" hreflang="en-us" href="https://vigilant-golick-64a677.netlify.app/post/final-viz/">
@@ -238,7 +239,8 @@
   <meta property="og:site_name" content="Amie Roten">
   <meta property="og:url" content="https://vigilant-golick-64a677.netlify.app/post/final-viz/">
   <meta property="og:title" content="Comprehensive Exploratory Data Analysis using Shiny! | Amie Roten">
-  <meta property="og:description" content="testing testing"><meta property="og:image" content="https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="A preliminary note: If the visualization above does not render well on your machine, please visit the application directly, at https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/ !
+Overview The interactive visualization above was created primarily as a final project submission for OHSU’s Data Visualization course, but also as a tool to guide investigation of data from a research project I’ve been working on during my time at OHSU."><meta property="og:image" content="https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -288,7 +290,7 @@
       "url": "https://vigilant-golick-64a677.netlify.app/images/icon_hu346136ade45dcbd12e910f9894b3a60b_235897_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "testing testing"
+  "description": "A preliminary note: If the visualization above does not render well on your machine, please visit the application directly, at https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/ !\nOverview The interactive visualization above was created primarily as a final project submission for OHSU’s Data Visualization course, but also as a tool to guide investigation of data from a research project I’ve been working on during my time at OHSU."
 }
 </script>
 
@@ -553,7 +555,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    1 min read
+    22 min read
   </span>
   
 
@@ -594,7 +596,444 @@
 
 <iframe src="https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/" width="1152" height="800px">
 </iframe>
-<p>testing testing</p>
+<p>A preliminary note: If the visualization above does not render well on your machine, please visit the application directly, at <a href="https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/" class="uri">https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/</a> !</p>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The interactive visualization above was created primarily as a final project submission for OHSU’s Data Visualization course, but also as a tool to guide investigation of data from a research project I’ve been working on during my time at OHSU. So, in that sense, this is a bit of a version 1.0, and I plan to keep modifying and updating it as different analyses are required, or certain analyses are found to be more or less usful than others! In addition to building the visualization for these purposes, I also wanted an excuse to play around more with R’s Shiny package, as I think it’s a very cool tool for building interesting, dynamic visualizations!</p>
+<p>For a brief overview, please to check out a short presentation about the visualization below:</p>
+<p>&lt; video here &gt;</p>
+<p>If you’d like more specific, in-depth details, including how I went about building this visualization, read on!</p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>As mentioned, the data used to build this visualization comes from a research project I’ve been a part of for the last academic year, in which we’ve built a prototype automatic pronunciation assessment system designed for children with speech sound disorders. The system takes in speech as an audio signal, maps each individual frame to a phoneme (aka speech sound, such as ‘sh’/ʃ) as well as a set of phonological features, for example, “voiced”, “coronal”, etc. Then, the mapped phonological features are passed through an additional model, which predicts whether the uttered phoneme from which the feature predictions came was correctly or incorrectly pronounced. In addition to the binary pronunciation judgement, the model also predicts the most-likely phonological feature error contributing to a phoneme being deemed mispronounced, to ultimately be used as corrective feedback for the user of the system, e.g. “this phoneme was unvoiced!”.</p>
+<p>Additionally, for both overall mispronounciation detection and feedback, the user can select a threshold used to determine whether to pass judgement on a particular phoneme. That is, while the system can provide a binary judgement in the form of a zero (mispronounced) or one (correctly pronounced) on whether the phoneme was mispronounced for all input, the raw data output by the model is in the form of a probability of whether the phoneme was correctly pronounced, which we refer to as a “confidence level”. The higher the threshold chosen, the more selective we can be about which phonemes we deliver feedback on. For example, the system may report a phoneme as mispronounced, but if it is only 20% confident, we may not want to deliver feedback to the user, as users can be discouraged and confused if they are told that they have mispronounced a sound when they have not. The confidence level for the feedback assigned can also be adjusted.</p>
+<p>As you can tell, this model generates <em>quite</em> a lot of data during various phases, and metrics to evaluate the performance of the model, such as accuracy, can differ based on how the data is thresholded. In addition, we evaluated the model using both typically-developing (TD) and speech-disordered (SD) children’s speech, so it would be handy to be able to quickly take a look at how the model performance may differ depending on group. Finally, we assessed the model’s performance using data that has been manually segmented into phonemes, as well as data that was force-aligned. We expect that performance would differ based on the segmentation method as well.</p>
+<p>With all of these ways to drill down into the data, I wanted to create a dashboard where the user could ask a question about the dataset, quickly select the subset of interest, and get a report of the model’s performance for that particular subset. After learning about R’s Shiny library in OHSU’s Data Visualization class, I figured this would be an excellent tool for creating a dashboard to explore this dataset! Spoiler alert – it is!</p>
+<p>I’ve included a glimpse of the dataframe generated by the model below, demonstrating just how much information we were dealing with:</p>
+<pre class="r"><code>data &lt;- read_csv(&quot;data/phono_data_FA.csv&quot;) %&gt;%
+        mutate(X1 = NULL)
+glimpse(data)</code></pre>
+<pre><code>## Rows: 17,099
+## Columns: 11
+## $ actual_phn                   &lt;chr&gt; &quot;d&quot;, &quot;ʌ&quot;, &quot;k&quot;, &quot;k&quot;, &quot;-&quot;, &quot;æ&quot;, &quot;k&quot;, &quot;sʲ&quot;,…
+## $ expected_phn                 &lt;chr&gt; &quot;d&quot;, &quot;ʌ&quot;, &quot;k&quot;, &quot;k&quot;, &quot;w&quot;, &quot;æ&quot;, &quot;k&quot;, &quot;s&quot;, …
+## $ actual_score                 &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0…
+## $ predicted_score              &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1…
+## $ predicted_score_conf         &lt;dbl&gt; 0.06636703, 0.33367300, 0.33663034, 0.29…
+## $ actual_top_error             &lt;chr&gt; &quot;delrel&quot;, &quot;back&quot;, &quot;cor&quot;, &quot;cor&quot;, &quot;round&quot;,…
+## $ predicted_top_error          &lt;chr&gt; &quot;delrel&quot;, &quot;back&quot;, &quot;pause&quot;, &quot;delrel&quot;, &quot;ro…
+## $ predicted_top_error_conf     &lt;dbl&gt; 0.9450728, 0.7203612, 0.2179701, 0.19645…
+## $ predicted_top_error_validity &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, TRUE, FALSE,…
+## $ word                         &lt;chr&gt; &quot;duck&quot;, &quot;duck&quot;, &quot;duck&quot;, &quot;quack&quot;, &quot;quack&quot;…
+## $ dx                           &lt;chr&gt; &quot;SD&quot;, &quot;SD&quot;, &quot;SD&quot;, &quot;SD&quot;, &quot;SD&quot;, &quot;SD&quot;, &quot;SD&quot;…</code></pre>
+<p>As you can see, each row corresponds to an actual, uttered phoneme, and includes attributes such as what phoneme was expected to be produced, what the human-assigned score was, what the machine predicted score was, and so on.</p>
+</div>
+<div id="audience" class="section level2">
+<h2>Audience</h2>
+<p>My goal was to create a way for a user to dig deeper into this dataset than what a single, static visualization could allow. At this point, the model is still in prototype mode, and there are many questions to be answered and knobs to tweak before unleashing this system on the world. So, I designed the dashboard specifically with members of the lab in mind, as well as potentially outside researchers who have dealt with this type of system and data before. Admittedly, this is a visualization with a lot more information on it than most not associated with this project would need, or even want. However, given the stage of the project, including as much information as possible was my goal, in order to uncover any potential problems or nuances of the system to continue to tweak during development.</p>
+<p>I would like to rethink the visualization at some point to be more digestable for a general audience, as I’m pretty proud of this project and would love to share it with a wider set of people. However, at this point, a highly-detailed dashboard with as much information as possible (while still being as aesthetically-pleasing and non-chaotic as could be) was my goal!</p>
+</div>
+<div id="type" class="section level2">
+<h2>Type</h2>
+<p>As far as categorizing this visualization, it’s a bit difficult to narrow it down to one, particular type of graph/chart. If forced, I’d say it’s a “data dashboard”, of the like often seen these days to share information about the ongoing pandemic, or which might be used by a company to monitor various aspects of their business. These are often created so that a user can explore a large dataset, or multiple datasets, and find specific answers to targeted questions.</p>
+<p>The overall dashboard contains a number of different types of visualizations, including confusion matrices, tables, and a bar chart. I aimed to keep the individual visualizations simple and straightforward to take in, considering there are multiple on the same page. While tables and bar charts are relatively common, straightforward methods of plotting data, confusion matrices may be a bit less well-known. While these visualizations are used in a number of research/academic settings, they are perhaps most often used to describe the performance of a classification algorithm, as in the case of this visualization. Although we can describe performance of a system in terms of overall accuracy, a confusion matrix allows the reader to assess system performance for each particular group/class. For example, we may want to know how well this system accurately identifies incorrectly pronounced phonemes, or how often phonemes pronounced correctly are falsely labeled incorrect. A confusion matrix helps answer these questions in a (more-or-less) straight-forward manner by plotting each possible ground-truth and predicted label combination, and giving the counts for each combination. The left-upper to right-lower diagonal indicates correct predictions, and the other boxes are incorrect predictions. Although it may take some practice to get familar with these visualizations, they’re very handy for fine-grained assessments of a classifier’s performance!</p>
+</div>
+<div id="readers-guide" class="section level2">
+<h2>Reader’s Guide</h2>
+<p>If you’ve made it this far, I’ll assume that you’re interested in getting a bit more detail about just how to use this visualization! Although I mentioned that my audience is primarily those already familiar with the data, this is not entirely true…with a bit of explaination, I think anyone could play around with this dashboard and make some interesting observations.</p>
+<p>So, with the basics of the data as described above in mind, I’ll begin by describing each element of the dashboard, starting from the left column and continuing counterclockwise. For now, please ignore the sliders and buttons (I know, it’s hard!).</p>
+<div id="basic-metrics" class="section level3">
+<h3>Basic Metrics</h3>
+<center>
+<img src="images/basics.png" alt="Basic Metrics" />
+</center>
+<p>The element above is pretty straightforward – this is just some text that reports a couple of basic metrics about the data. The most basic, perhaps, is the overall mispronunciation detection accuracy, although it is important to note that we use balanced accuracy for this dataset. That is, instead of computing it using the typical accuracy formula:</p>
+<p><span class="math display">\[accuracy=\frac{total\text{ }correct}{total\text{ }examples}\]</span></p>
+<p>…it is calculated using the <em>average</em> of the accuracies for each <em>individual</em> class, as in the formula below:</p>
+<p><span class="math display">\[balanced\text{ }accuracy=\frac{1}{2}\left(\frac{total\text{ }mispronunciations\text{ }predicted\text{ } correctly}{total\text{ }mispronunciations}+\frac{total\text{ }correct\text{ }pronunciations\text{ }predicted\text{ } correctly}{total\text{ }correct\text{ }pronunciations}\right)\]</span></p>
+<p>Wow, that’s a wordy equation! For a less-specific, more technical discussion of balanced accuracy, please check out <a href="http://mvpa.blogspot.com/2015/12/balanced-accuracy-what-and-why.html">this article</a>.</p>
+<p>Basically, this is used when a dataset has an imbalanced number of examples in each class, so that the accuracy of the model on one particular class does not overwhelm the others. We have a lot more correct pronunciations than mispronunciations in this dataset, which is why this is the metric we are using!</p>
+<p>The basic metrics section also reports on how many phonemes are assigned scores, therefore are used in the calculation of accuracy. The more strict a threshold chosen, the fewer phonemes are assigned scores…I will discuss this a bit more when I review the sliders and buttons. The number on the left is the total phonemes scored, and on the right is the total number of phonemes in the dataset, giving the proportion of how many phonemes were scored.</p>
+<p>The dashboard also reports (standard) accuracy for the phonological feature feedback. This is a bit complicated, but essentially, each phoneme has a set of expected phonological features expected to be present when that phoneme is realized in speech. A pronunciation error occurs when a realized phoneme does not match the phoneme expected, for example, someone may “fum” instead of “thumb”, substituting the “f” sound for the “th” sound. In this case, there are certain phonological features expected to be present or absent in the “th” sound that differ from the expectations for the “f” sound. If the system predicts a top error as one of the discrepancies between the actual and expected phoneme, we consider that a “correct” prediction, otherwise it is incorrect. From this information, we can calculate the feedback accuracy, however, it is important to note that feedback performance is only assessed for mispronounced phonemes which the system correctly identifies as mispronounced. In addition, the proportion of these phonemes that are assigned feedback is reported, in the same fashion as the proportion of phonemes assigned scores.</p>
+</div>
+<div id="binary-confusion-matrix" class="section level3">
+<h3>Binary Confusion Matrix</h3>
+<center>
+<img src="images/binaryconf.png" alt="Binary Confusion Matrix" />
+</center>
+<p>Although the confusion matrix was discussed briefly above, I’ll give a few more details here of how to go about reading this particular example. As labeled, the <span class="math inline">\(x\)</span>-axis corresponds to correct, ground-truth labels, and the <span class="math inline">\(y\)</span>-axis to the model-predicted labels. So, the top-left box corresponds to true negatives, or mispronounced phonemes correctly identified as mispronounced, whereas the bottom-left box corresponds to false positives, or mispronounced phonemes falsely identified as correctly pronounced. The upper-right box corresponds to false negatives, and the lower-right to true positives, defined as correctly pronounced phonemes mislabeled and correctly labeled, respectively.</p>
+<p>In this particular example, we can see that the majority of the examples are correctly labeled, however we do have 125 false positives, and 760 false negatives. The model still has room for improvement!</p>
+</div>
+<div id="phonological-feature-confusion-matrix" class="section level3">
+<h3>Phonological Feature Confusion Matrix</h3>
+<center>
+<img src="images/bigconf.png" alt="Phonological Features Confusion Matrix" />
+</center>
+<p>Wow, this is quite the figure! The general idea behind this figure is exactly the same as the figure depicted/described in the previous section, only we have many, many more classes here. Again, the upper-left to bottom-right diagonal corresponds to top phonological feature errors that were correctly identified by the model, and the other boxes to incorrect guesses. As we can see (if we squint!), we can make a number of observations about the model’s performance using this plot, for example, for the “coronal” feature, the system identifies this correctly a good portion of the time (908 times, to be exact), but does rather commonly mistakenly predict “lateral” as the top error when it should be “coronal”. Does this make sense? Well, we can consider what these features really mean: “coronal” refers to a sound which is articulated using the tip/blade of the tongue, specifically referring to the place of articulation, and “lateral” refers to sounds in which the center of the tongue contacts the roof of the mouth, so the flow air is forced through the sides of the vocal tract. So, it does seem reasonable that the model would get these somewhat similar qualities “confused”…interesting! As you can see, while this figure has a lot going on, close inspection can be rewarded with fascinating insights.</p>
+</div>
+<div id="feature-level-accuracy-for-phonological-feedback" class="section level3">
+<h3>Feature-Level Accuracy for Phonological Feedback</h3>
+<center>
+<img src="images/barchart.png" alt="Bar Chart" />
+</center>
+<p>One may also be interested the overall accuracy of the for individual phonological features…well, here is the plot to answer all of those questions! This is a fairly simple bar chart, where each phonological feature that was predicted as an error in the current data subset is on the <span class="math inline">\(x\)</span>-axis, and the percentage of instances where it was correctly predicted is on the <span class="math inline">\(y\)</span>-axis. Using this plot, we can carefully determine whether the system performs better on certain phonological features than others, which may inform how to tweak the system or balance the input data in the future. We can see here that the system performs well on the “lateral” feature, but not so well on the “round” feature.</p>
+<p>For this type of analysis, it’s also important to know how many times each feature occured – a feature with 100% accuracy, but only one example, tells us much less than a feature with 97% accuracy over 100 examples. So, the frequency of each feature is listed under it’s label, and the features are arranged going left-to-right from most to least occurances.</p>
+</div>
+<div id="top-substitutions" class="section level3">
+<h3>Top Substitutions</h3>
+<center>
+<img src="images/tables.png" alt="Tables" />
+</center>
+<p>Finally, there are a couple of tables reporting on the most frequent, specific phoneme substitutions in the dataset, as well as how accurately the model predicts them to be mispronounced. This, like the phonological feature confusion matrix, allows for detailed analyses of the model’s performance, for example, that commonly occuring substitutions are, fortunately, correctly identified most, if not all, of the time. It is important, though, to examine pairs for which the model does not perform well, as can be seen in the table on the right. Although some of these phonemes are quite seldom-occuring, it’s interesting to note that three of the pairs are vowel errors, and two are nasal consonont errors. Perhaps these are difficult problems for the model, in a larger sense. Certainly, this information can guide further analyses and questions about the model’s performance, and the data itself.</p>
+</div>
+<div id="now-to-click-the-buttons-and-move-the-dials" class="section level3">
+<h3>Now, to click the buttons and move the dials!</h3>
+<p>Finally, the interactive part!</p>
+<center>
+<img src="images/dials.png" alt="Dials" />
+</center>
+<p>There are several elements that can be adjusted in this dashboard, to examine certain subsets of the data. First, there are two sliders that can be used to adjust the confidence level thresholds used to determine which phonemes to deliver binary feedback on, as well as which mispronounciations to provide feature feedback for. As alluded to previously, the higher the threshold value, the stricter the system is, and the fewer phonemes are assigned feedback.</p>
+This thresholding impacts the entire dashboard, as it limits the data used to generate the figures to just the phonemes that satisfy these threshold requirements. As expected, a lax mispronunciation detection threshold of 0.2, or a minimum required confidence of 20%, will assign feedback to many phonemes, but may result in lower accuracy, whereas a strict threshold of 0.7 will only assign feedback for examples which the system is 70% “confident” in its decision (please excuse the anthropomorphization!), hopefully resulting in higher accuracy. Similar logic applies for the feedback assignment thresholding. Playing with different combinations help the user uncover yet more about the behavior of the system, and how it may be best utilized in practice.<br />
+
+<center>
+<img src="images/buttons.png" alt="Buttons" />
+</center>
+<p>Finally, the user can decide whether they would like to work with the force-aligned, or manually segmented data, as well as subset it based on speaker’s diagnosis (again, TD refers to “typically-developing” and SD to &quot;speech-disordered).</p>
+<p>I encourage you to play around with the data, and please let me know if you uncover anything particularly interesting!</p>
+</div>
+</div>
+<div id="aesthetic-choices" class="section level2">
+<h2>Aesthetic Choices</h2>
+<p>My main goal when considering the aesthetics of the visualization was to make it as calm and easy to digest as possible, to offset the large amount and wide variety of information present. Although we learned a lot of neat tricks in this class to customize color palettes and fonts, I ended up taking a “less is more” approach in this particular case.</p>
+<p>Specifically, I decided to continue with Shiny’s default color and font choices, and propogate them into the rest of the content. For the most part, this didn’t require much modification, other than changing some font sizes in the figures to better match those in the Shiny h*() elements, and pulling the pretty default blue used in the Shiny sliders/buttons into the plots.</p>
+<p>The tricker part was arranging the widgets/plots in the overall dashboard. I spent <em>a lot</em> of time thinking through the best/most aesthetically pleasing way to arrange everything on the page, which had to be torn down and built back up several times as I added elements. I ended up arranging the page into three main sections; a bar across the top with the title, description, and toggles, the higher-level elements, and two evenly-sized columns containing the analyses. Having as few invisible “lines” breaking up the elements as possible really helped calm down the overall visual effect, in my opinion. I wish I had more to say about aesthetics, as it was something I put a lot of thought in to, but it manifested in a very simple way! I suppose I did use the lovely “theme_minimal()” option on my plots, but otherwise, I kept it clean and basic for a reason.</p>
+</div>
+<div id="methods" class="section level2">
+<h2>Methods</h2>
+<p>Now, on to methods. I began by contemplating what I wanted to include in the dashboard, and then I proceeded to dive right in, without thinking too much about aesthetics or layout. I ended up with an early version that looked something like this:</p>
+<center>
+<img src="images/early_draft.png" alt="Draft" />
+</center>
+<p>I wasn’t happy with the layout at this point, it felt sort of uneven and clunky, and it was starting to get a little bit tricky to continue adding on, knowing that I would have to rearrange eventually. It’s a somewhat challenging to arrange widgets in a Shiny application, especially without having a very solid plan of how the final layout would be, so I went, quite literally, back to the drawing board:</p>
+<center>
+<img src="images/drawing.jpg" alt="Drawing" />
+</center>
+<p>I knew I wanted to have an even split down the middle of the page as much as possible, with a cohesive bar across the top with the higher-level details/interactive elements. Drawing it out really helped plan how to set up the fluidRow() functions in the ui() portion below, as some nesting was required. Thinking and planning it out before coding it up made the process much smoother.</p>
+<p>Although I did end up switching around the placement of a few elements, the final product’s layout ended up very similar to my outlined vision!</p>
+<p>I’ve included the code corresponding to the final version below, with a few comments and details on a few of the more perplexing steps:</p>
+<pre class="r"><code>library(shiny)
+library(gt)
+library(ggpubr)
+library(tidyverse)
+library(ggplot2)
+library(comprehenr)
+library(yardstick)
+
+feature_mapper &lt;- function(abbreviation) {
+    full &lt;- case_when(abbreviation == &#39;delrel&#39; ~ &quot;Delayed Release&quot;,
+                      abbreviation == &#39;back&#39; ~ &quot;Back&quot;, 
+                      abbreviation == &#39;cor&#39; ~ &quot;Coronal&quot;,
+                      abbreviation == &#39;round&#39; ~ &quot;Round&quot;,
+                      abbreviation == &#39;lo&#39; ~ &quot;Low&quot;,
+                      abbreviation == &#39;voi&#39; ~ &quot;Voiced&quot;,
+                      abbreviation == &#39;hi&#39; ~ &quot;High&quot;,
+                      abbreviation == &#39;son&#39; ~ &quot;Sonorant&quot;,
+                      abbreviation == &#39;syl&#39; ~ &quot;Syllabic&quot;,
+                      abbreviation == &#39;labiodental&#39; ~ &quot;Labiodental&quot;, 
+                      abbreviation == &#39;tense&#39; ~ &quot;Tense&quot;,
+                      abbreviation == &#39;cont&#39; ~ &quot;Continuant&quot;,
+                      abbreviation == &#39;pause&#39; ~ &quot;Pause&quot;,
+                      abbreviation == &#39;ant&#39; ~ &quot;Anterior&quot;,
+                      abbreviation == &#39;lat&#39; ~ &quot;Lateral&quot;,
+                      abbreviation == &#39;front&#39; ~ &quot;Front&quot;,
+                      abbreviation == &#39;nas&#39; ~ &quot;Nasal&quot;,
+                      abbreviation == &#39;cons&#39; ~ &quot;Consonantal&quot;, 
+                      abbreviation == &#39;lab&#39; ~ &quot;Labial&quot;,
+                      abbreviation == &#39;distr&#39; ~ &quot;Distributed&quot;,
+                      abbreviation == &#39;strid&#39; ~ &quot;Strident&quot;,
+                      abbreviation == &#39;sg&#39; ~ &quot;Spread Glottis&quot;)
+    return(full)
+}
+
+# Read in both datasets. Could do this dynamically, 
+# but then the datasets would be repeatedly read in.
+# This way it is only done once.
+data_child_fa &lt;- read.csv(&quot;data/phono_data_FA.csv&quot;) %&gt;%
+    mutate(actual_phn = as.character(actual_phn),
+           expected_phn = as.character(expected_phn),
+           actual_top_error = as.character(actual_top_error),
+           predicted_top_error = as.character(predicted_top_error)) %&gt;%
+    mutate(actual_top_error = feature_mapper(actual_top_error),
+           predicted_top_error = feature_mapper(predicted_top_error)) %&gt;%
+    mutate(actual_top_error = as.factor(actual_top_error),
+           predicted_top_error = as.factor(predicted_top_error))
+
+data_child_manual &lt;- read.csv(&quot;data/phono_data_manual.csv&quot;) %&gt;%
+    mutate(actual_phn = as.character(actual_phn),
+           expected_phn = as.character(expected_phn),
+           actual_top_error = as.character(actual_top_error),
+           predicted_top_error = as.character(predicted_top_error)) %&gt;%
+    mutate(actual_top_error = feature_mapper(actual_top_error),
+           predicted_top_error = feature_mapper(predicted_top_error)) %&gt;%
+    mutate(actual_top_error = as.factor(actual_top_error),
+           predicted_top_error = as.factor(predicted_top_error))
+
+
+# Define UI for application
+ui &lt;- fluidPage(
+    titlePanel(&quot;Data Exploration for Mispronunciation Detection System&quot;),
+    
+    fluidRow(
+        column(6, h5(&quot;This module allows a user to explore performance metrics 
+                      for a prototype automatic mispronunciation detection system. The system scores
+                      individual phonemes on overall pronunciation (correct/incorrect), and
+                      assigns corrective feedback based on the most-likely phonological feature error.
+                      The confidence threshold used to determine whether to assign an overall
+                      score and feedback can be adjusted using the sliders on the right, higher 
+                      values corresponding to higher confidence in the assessment.  
+                      Phoneme alignment method and speaker diagnosis (TD: typically developing, SD:
+                      speech disordered) can also be toggled.&quot;)),
+        column(2, sliderInput(&quot;threshold_binary&quot;, &quot;Mispronunciation Detection:&quot;,
+                              min=0.0, max=0.90, value=0.5, step=0.05)),
+        column(2, sliderInput(&quot;threshold_feedback&quot;, &quot;Feedback Assignment:&quot;,
+                              min=0.0, max=0.90, value=0.5, step=0.05)),
+        column(1, radioButtons(&quot;type&quot;, &quot;Alignment:&quot;, 
+                              choices = c(&quot;FA&quot;, &quot;Manual&quot;))),
+        column(1, radioButtons(&quot;dx&quot;, &quot;Diagnosis:&quot;, 
+                               choices = c(&quot;TD&quot;, &quot;SD&quot;, &quot;TD+SD&quot;),
+                               selected = &quot;TD+SD&quot;))),
+    
+    fluidRow(
+        column(6,
+                    column(8,
+                      h3(&quot;Overall Performance:&quot;, style = &quot;font-weight: 800&quot;),
+                      span(textOutput(&quot;mp_accuracy&quot;), style = &quot;font-size: 16px&quot;),
+                      span(textOutput(&quot;mp_accuracy_phonemes&quot;), style = &quot;font-size: 16px&quot;),
+                      span(textOutput(&quot;pf_accuracy&quot;), style = &quot;font-size: 16px&quot;),
+                      span(textOutput(&quot;pf_accuracy_phonemes&quot;), style = &quot;font-size: 16px&quot;),
+                      h2(&quot; &quot;)),
+                    column(4,
+                      br(),
+                      plotOutput(&quot;phn_conf_matrix&quot;, height=&quot;150px&quot;),
+                      h2(&quot; &quot;)),
+                    br(),
+                    br(),
+                    plotOutput(&quot;pf_conf_matrix&quot;, height=&quot;500px&quot;)),
+        column(6,
+               column(6,
+                      gt_output(&quot;top_substitutions_table&quot;),
+                      h2(&quot; &quot;)),
+               column(6,
+                      gt_output(&quot;worst_top_substitutions_table&quot;),
+                      h2(&quot; &quot;)),
+               plotOutput(&quot;feature_accuracy&quot;)),
+    )
+)
+
+# Define server logic
+server &lt;- function(input, output) {
+    output$mp_accuracy &lt;- renderText({
+        mp_data &lt;- current_data() %&gt;% 
+                   filter(predicted_score_conf &gt;= input$threshold_binary) %&gt;%
+                   mutate(binary_accuracy = if_else(actual_score == predicted_score, 1, 0))
+        mp_data_incorrect &lt;- mp_data %&gt;%
+                             filter(actual_score == 0)
+        mp_data_correct &lt;- mp_data %&gt;%
+                           filter(actual_score == 1)
+        mp_correct_0 &lt;- sum(mp_data_incorrect$binary_accuracy)
+        mp_total_0 &lt;- nrow(mp_data_incorrect)
+        mp_correct_1 &lt;- sum(mp_data_correct$binary_accuracy)
+        mp_total_1 &lt;- nrow(mp_data_correct)
+        mp_accuracy_0 &lt;- round(mp_correct_0/mp_total_0,2)*100
+        mp_accuracy_1 &lt;- round(mp_correct_1/mp_total_1,2)*100
+        mp_balanced_acc &lt;- round((mp_accuracy_0 + mp_accuracy_1)/2, 2)
+        paste(&quot;Mispronunciation detection (balanced) accuracy: &quot;, mp_balanced_acc, &quot;%&quot;, sep=&quot;&quot;)
+    })
+    
+    output$mp_accuracy_phonemes &lt;- renderText({
+        mp_data &lt;- current_data() %&gt;% 
+            filter(predicted_score_conf &gt;= input$threshold_binary) %&gt;%
+            mutate(binary_accuracy = if_else(actual_score == predicted_score, 1, 0))
+        mp_total &lt;- nrow(mp_data)
+        mp_overall &lt;- nrow(current_data())
+        paste(&quot;Phonemes assigned scores: &quot;, mp_total, &quot;/&quot;, mp_overall, sep=&quot;&quot;)
+    })
+    
+    output$pf_accuracy &lt;- renderText({
+        pf_data &lt;- current_data() %&gt;% 
+            filter(predicted_score_conf &gt;= input$threshold_binary) %&gt;%
+            filter(actual_phn != &#39;-&#39;,
+                   predicted_top_error_conf &gt;= input$threshold_feedback,
+                   actual_score == 0 &amp; predicted_score == 0) %&gt;%
+            mutate(feedback_accuracy = if_else(predicted_top_error_validity == &quot;True&quot;, 1, 0))
+        pf_correct &lt;- sum(pf_data$feedback_accuracy)
+        pf_total &lt;- nrow(pf_data)
+        paste(&quot;Feedback accuracy: &quot;, round(pf_correct/pf_total,2)*100, &quot;%&quot;,  sep=&quot;&quot;)
+    })
+    
+    output$pf_accuracy_phonemes &lt;- renderText({
+        pf_data &lt;- current_data() %&gt;% 
+            filter(predicted_score_conf &gt;= input$threshold_binary) %&gt;%
+            filter(actual_phn != &#39;-&#39;,
+                   predicted_top_error_conf &gt;= input$threshold_feedback,
+                   actual_score == 0 &amp; predicted_score == 0) %&gt;%
+            mutate(feedback_accuracy = if_else(predicted_top_error_validity == &quot;True&quot;, 1, 0))
+        pf_data_all &lt;- current_data() %&gt;% 
+            filter(predicted_score_conf &gt;= input$threshold_binary) %&gt;%
+            filter(actual_phn != &#39;-&#39;,
+                   actual_score == 0 &amp; predicted_score == 0)
+        pf_total &lt;- nrow(pf_data)
+        pf_overall &lt;- nrow(pf_data_all)
+        paste(&quot;Mispronounced phonemes assigned feedback: &quot;, pf_total, &quot;/&quot;, pf_overall, sep=&quot;&quot;)
+    })
+    
+    output$feature_accuracy &lt;- renderPlot({
+        # Dataframe including phonemes for which feedback was assigned, given
+        # *binary* and *feedback* thresholds.
+        pf_data &lt;- current_data() %&gt;% 
+            filter(predicted_score_conf &gt;= input$threshold_binary) %&gt;%
+            filter(actual_phn != &#39;-&#39;,
+                   predicted_top_error_conf &gt;= input$threshold_feedback,
+                   actual_score == 0 &amp; predicted_score == 0) %&gt;%
+            mutate(feedback_accuracy = if_else(predicted_top_error_validity == &quot;True&quot;, 1, 0)) %&gt;% 
+            group_by(predicted_top_error) %&gt;%
+            summarise(fb_acc = sum(feedback_accuracy),
+                      fb_total = n()) %&gt;%
+            mutate(percent_correct = fb_acc/fb_total * 100) %&gt;%
+            arrange(desc(fb_total)) %&gt;%
+            ungroup() %&gt;%
+            mutate(predicted_top_error = as.character(predicted_top_error))
+        
+        x_labs_feature = pf_data$predicted_top_error
+        x_labs_count = c(as.character(pf_data$fb_total))
+        
+        x_labs &lt;- to_list(for(index in seq(from = 1, to = length(x_labs_count))) 
+                          paste(x_labs_feature[index], &#39;\n&#39;, x_labs_count[index], sep = &quot;&quot;))
+        
+        pf_plot &lt;- pf_data %&gt;%
+                   ggplot(aes(x = predicted_top_error, y = percent_correct)) +
+                   geom_col(color=rgb(66, 139, 202, max=255),
+                            fill=rgb(66, 139, 202, max=255)) +
+                   theme_minimal() +
+                   xlab(&quot;\nPredicted Top Phonological Error and # Occurrences&quot;) +
+                   ylab(&quot;Percent Correct&quot;) +
+                   ggtitle(&quot;Feature-level Accuracy of Assigned Phonological Feedback, by Frequency\n&quot;) +
+                   theme(plot.title = element_text(size = 16, face = &quot;bold&quot;, hjust=0.5),
+                         axis.title = element_text(size = 14),
+                         axis.text = element_text(size = 11)) +
+                   scale_x_discrete(labels=x_labs)
+        
+        pf_plot
+    })
+    
+    output$pf_conf_matrix &lt;- renderPlot({
+        data &lt;- current_data() %&gt;% 
+          filter(predicted_score_conf &gt;= input$threshold_binary) 
+        conf_matrix &lt;- conf_mat(data, actual_top_error, predicted_top_error,
+                                dnn=c(&quot;Prediction&quot;,&quot;Truth&quot;))
+        autoplot(conf_matrix, type=&quot;heatmap&quot;) +
+          scale_y_discrete(position = &quot;left&quot;) +
+          theme_minimal() +
+          scale_fill_gradient(low = &quot;white&quot;, 
+                              high = rgb(109,159,212, max=255)) +
+          theme(axis.text.x = element_text(angle = 45,
+                                           hjust = 1),
+                legend.position = &quot;right&quot;,
+                plot.title = element_text(size = 16, face = &quot;bold&quot;, hjust=0.5),
+                axis.title = element_text(size = 14),
+                axis.text = element_text(size = 11)) +
+          ggtitle(&quot;\nTop Phonological Feature Error Confusion Matrix\n&quot;)
+    })
+    
+    output$phn_conf_matrix &lt;- renderPlot({
+      data &lt;- current_data() %&gt;%
+        mutate(actual_score = as.factor(actual_score),
+               predicted_score = as.factor(predicted_score))
+      data &lt;- data %&gt;% 
+        filter(predicted_score_conf &gt;= input$threshold_binary) 
+      conf_matrix &lt;- conf_mat(data, actual_score, predicted_score)
+      autoplot(conf_matrix, type=&quot;heatmap&quot;) +
+        scale_y_discrete(position = &quot;left&quot;) +
+        theme_minimal() +
+        scale_fill_gradient(low = &quot;white&quot;, 
+                            #high = rgb(66, 139, 202, max=255)) +
+                            high = rgb(109,159,212, max=255)) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         hjust = 0.5),
+              title = element_text(hjust=0.5),
+              legend.position = &quot;right&quot;) +
+        ggtitle(&quot;Binary Classification\nConfusion Matrix&quot;)
+    })
+    
+    output$top_substitutions_table &lt;- render_gt({
+        # Filter to actual substitutions, in total dataset.
+        subs_data_raw &lt;- current_data() %&gt;% 
+            filter(predicted_score_conf &gt;= input$threshold_binary,
+                   actual_phn != &#39;-&#39;) %&gt;%
+            filter(actual_phn != expected_phn,
+                   actual_score == 0) %&gt;%
+            group_by(actual_phn, expected_phn) %&gt;%
+            summarise(total_subs = n(),
+                      num_correctly_identified = n() - sum(predicted_score),
+                      percent_correctly_identified = (num_correctly_identified/n())) %&gt;%
+            arrange(desc(total_subs))
+        
+        subs_data_raw %&gt;% head(n=5) %&gt;% ungroup() %&gt;% gt() %&gt;%
+            tab_header(title = md(&quot;**Top Overall Substitutions:**&quot;)) %&gt;%
+            fmt_percent(columns = vars(percent_correctly_identified),
+                       decimals = 2) %&gt;%
+            cols_label(actual_phn=&quot;Actual\nPhoneme&quot;, 
+                       expected_phn=&quot;Expected\nPhoneme&quot;, 
+                       total_subs=&quot;Count&quot;,
+                       num_correctly_identified=&quot;Correctly\nIdentified\n(#)&quot;,
+                       percent_correctly_identified=&quot;Correctly\nIdentified\n(%)&quot;) %&gt;%
+            tab_options(heading.title.font.weight = &quot;bolder&quot;,
+                        heading.align = &quot;left&quot;,
+                        table.font.size = 13,
+                        table.border.top.color = &quot;white&quot;)
+    })
+    
+    output$worst_top_substitutions_table &lt;- render_gt({
+        # Filter to actual substitutions, in total dataset.
+        subs_data_raw &lt;- current_data() %&gt;% 
+            filter(predicted_score_conf &gt;= input$threshold_binary,
+                   actual_phn != &#39;-&#39;) %&gt;%
+            filter(actual_phn != expected_phn,
+                   actual_score == 0) %&gt;%
+            group_by(actual_phn, expected_phn) %&gt;%
+            summarise(total_subs = n(),
+                      num_correctly_identified = n() - sum(predicted_score),
+                      percent_correctly_identified = (num_correctly_identified/n())) %&gt;%
+            arrange(desc(total_subs)) %&gt;%
+            filter(percent_correctly_identified &lt; 0.5)
+        
+        subs_data_raw %&gt;% head(n=5) %&gt;% ungroup() %&gt;% gt() %&gt;%
+            tab_header(title = md(&quot;**Top Poorly-Performing Substitutions:**&quot;)) %&gt;%
+            fmt_percent(columns = vars(percent_correctly_identified),
+                        decimals = 2) %&gt;%
+            cols_label(actual_phn=&quot;Actual\nPhoneme&quot;, 
+                       expected_phn=&quot;Expected\nPhoneme&quot;, 
+                       total_subs=&quot;Count&quot;,
+                       num_correctly_identified=&quot;Correctly\nIdentified\n(#)&quot;,
+                       percent_correctly_identified=&quot;Correctly\nIdentified\n(%)&quot;) %&gt;%
+            tab_options(heading.title.font.weight = &quot;bolder&quot;,
+                        heading.align = &quot;left&quot;,
+                        table.font.size = 13,
+                        table.border.top.color = &quot;white&quot;)
+    })
+    
+    current_data &lt;- reactive({
+      data &lt;- if(input$type == &quot;FA&quot;) data_child_fa else data_child_manual
+      data &lt;- if(input$dx == &quot;TD&quot;) data %&gt;% filter(dx == &quot;TD&quot;) else data
+      data &lt;- if(input$dx == &quot;SD&quot;) data %&gt;% filter(dx == &quot;SD&quot;) else data
+    })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)</code></pre>
+<p>And that concludes the discussion of this visualization! I hope you enjoyed learning about the process, as well as the data used and the project from which it came, I certainly had fun building the application and discussing the process.</p>
+</div>
 
     </div>
 
