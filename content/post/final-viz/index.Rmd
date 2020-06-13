@@ -25,10 +25,7 @@ The interactive visualization above was created primarily as a final project sub
 
 For a brief overview, please to check out a short presentation about the visualization below:
 
-
-
-< video here >
-
+![](https://vimeo.com/428874346)
 
 If you'd like more specific, in-depth details, including how I went about building this visualization, read on!
 
