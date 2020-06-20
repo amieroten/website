@@ -13,7 +13,7 @@ library(readr)
 ```
 
 
-```{r, echo = FALSE, fig.width=12}
+```{r, echo = FALSE, fig.width=11}
 knitr::include_url('https://amie-roten.shinyapps.io/Data_Exploration_Phonological_Features/', height = '800px')
 ```
 
